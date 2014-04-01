@@ -723,6 +723,38 @@ var customCommands = {
 		}
 		user.updateIdentity();
 	},
+	
+	nt: 'newtour',
+	  newtour: function() {
+	  this.parse('/tour new ' + target);
+	  },
+	  
+	  st: 'starttour',
+	  starttour: function() {
+	  this.parse('/tour start');
+	  },
+	  
+	  jt: 'jointour',
+	  jointour: function() {
+	  this.parse('/tour join');
+	  }, 
+	  
+	  lt: 'leavetour',
+	  leavetour: function() {
+	  this.parse('/tour leave');
+	  },
+	  
+	  remind: function() {
+	  this.parse('/tour remind');
+	  },
+	  
+	  dq: function() {
+	  this.parse('/tour dq ' + target);
+	  },
+	  
+	  settype: function() {
+	  this.parse('/tour settype ' + target);
+	  }
 
 };
 
