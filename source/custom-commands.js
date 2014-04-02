@@ -10,6 +10,7 @@ var customCommands = {
 	/*********************************************************
 	 * General commands
 	 *********************************************************/
+	atm: 'sh',
 	serverhelp: 'sh',
 	sh: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
@@ -723,7 +724,42 @@ var customCommands = {
 		}
 		user.updateIdentity();
 	},
-
+	
+	nt: 'newtour',
+	  newtour: function(target, room, user) {
+	  this.parse('/tour new ' + target);
+	  },
+	  
+	  st: 'starttour',
+	  starttour: function(target, room, user) {
+	  this.parse('/tour start');
+	  },
+	  
+	  jt: 'jointour',
+	  jointour: function(target, room, user) {
+	  this.parse('/tour join');
+	  }, 
+	  
+	  lt: 'leavetour',
+	  leavetour: function(target, room, user) {
+	  this.parse('/tour leave');
+	  },
+	  
+	  remind: function(target, room, user) {
+	  this.parse('/tour remind');
+	  },
+	  
+	  dq: function(target, room, user) {
+	  this.parse('/tour dq ' + target);
+	  },
+	  
+	  settype: function(target, room, user) {
+	  this.parse('/tour settype ' + target);
+	  },
+	  et: 'endtour',
+	  endtour: function(target, room, user) {
+	  this.parse('/tour end');
+	  },
 };
 
 Object.merge(CommandParser.commands, customCommands);

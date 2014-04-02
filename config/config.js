@@ -162,6 +162,7 @@ exports.customAvatars = {
 	'unovachampionn': 'ucn.gif',
 	'soraypusef': 'yousef.gif',
 	'zarif': 'zarif.png',
+	'white2rosamei': 'white.gif',
 };
 
 // appealUri - specify a URI containing information on how users can appeal
