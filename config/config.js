@@ -163,6 +163,7 @@ exports.customAvatars = {
 	'soraypusef': 'yousef.gif',
 	'zarif': 'zarif.png',
 	'white2rosamei': 'white.gif',
+	'pikajesin': 'pika.gif',
 };
 
 // appealUri - specify a URI containing information on how users can appeal
