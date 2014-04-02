@@ -754,8 +754,11 @@ var customCommands = {
 	  
 	  settype: function() {
 	  this.parse('/tour settype ' + target);
-	  }
-
+	  },
+	  
+	  settype: function() {
+	  this.parse('/tour end');
+	  },
 };
 
 Object.merge(CommandParser.commands, customCommands);
