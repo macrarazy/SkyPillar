@@ -725,38 +725,38 @@ var customCommands = {
 	},
 	
 	nt: 'newtour',
-	  newtour: function() {
+	  newtour: function(target, room, user) {
 	  this.parse('/tour new ' + target);
 	  },
 	  
 	  st: 'starttour',
-	  starttour: function() {
+	  starttour: function(target, room, user) {
 	  this.parse('/tour start');
 	  },
 	  
 	  jt: 'jointour',
-	  jointour: function() {
+	  jointour: function(target, room, user) {
 	  this.parse('/tour join');
 	  }, 
 	  
 	  lt: 'leavetour',
-	  leavetour: function() {
+	  leavetour: function(target, room, user) {
 	  this.parse('/tour leave');
 	  },
 	  
-	  remind: function() {
+	  remind: function(target, room, user) {
 	  this.parse('/tour remind');
 	  },
 	  
-	  dq: function() {
+	  dq: function(target, room, user) {
 	  this.parse('/tour dq ' + target);
 	  },
 	  
-	  settype: function() {
+	  settype: function(target, room, user) {
 	  this.parse('/tour settype ' + target);
 	  },
 	  
-	  settype: function() {
+	  settype: function(target, room, user) {
 	  this.parse('/tour end');
 	  },
 };
