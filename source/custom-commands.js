@@ -755,8 +755,8 @@ var customCommands = {
 	  settype: function(target, room, user) {
 	  this.parse('/tour settype ' + target);
 	  },
-	  
-	  settype: function(target, room, user) {
+	  et: 'endtour',
+	  endtour: function(target, room, user) {
 	  this.parse('/tour end');
 	  },
 };
