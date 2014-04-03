@@ -583,6 +583,10 @@ var customCommands = {
 		if (targetUser.group === '~') {
 			return this.sendReply('Administrators can\'t be room kicked.');
 		}
+		var a = targetUser.name;
+                if (a === "BlakJack" || a === "BlakJack - Away") {
+                        return user.popup('This user is too awesome to be kicked!');
+                }
 		if (!Rooms.rooms[room.id].users[targetUser.userid]) return this.sendReply(target+' is not in this room.');
 		targetUser.popup('You have been kicked from room '+ room.title +' by '+user.name+'.');
 		targetUser.leaveRoom(room);
