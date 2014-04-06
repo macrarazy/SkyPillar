@@ -27,11 +27,15 @@ var customCommands = {
 			'/ratingtier - Tells you about rating tiers. <br/>' +
 			'/earnbucks - Shows other ways to earn bucks. <br/>' +
 			'/regdate <em>username</em> - Shows the registration date of the user<br/><br/>'+
-			'<b>For more commands or help:</b> Do /serverhelp with either of the following categories: <em>tour</em>, <em>profile</em>, <em>staff</em> Example - /serverhelp <em>tour</em><br/>');
+			'<b>For more commands or help:</b> Do /serverhelp with either of the following categories: <em>tour</em>, <em>profile</em>, <em>staff</em> Example - /serverhelp <em>tour</em>, <em>hangman</em>, <em>poll</em><br/>');
         }
 
 		if (target.toLowerCase() === 'tour') {
 			return this.parse('/tour help');
+		}
+
+		if (target.toLowerCase() === 'hangman') {
+			return this.parse('/hangmanhelp');
 		}
 
 		if (target.toLowerCase() === 'profile') {
@@ -557,6 +561,20 @@ var customCommands = {
 			'<br/><br/>&nbsp;&nbsp;&nbsp;If you have any questions, issues or concerns should be directed at someone with a rank such as Voice (+), Driver (%), Moderator (@) and Leader (&). ' +
 			'Only serious issues or questions should be directed to Administrators (~).</div>');
 		}
+	},
+
+	makechatroom: function(target, room, user) {
+		if (!this.can('makeroom')) return;
+		var id = toId(target);
+		if (Rooms.rooms[id]) {
+			return this.sendReply("The room '"+target+"' already exists.");
+		}
+		if (Rooms.global.addChatRoom(target)) {
+			tour.reset(id);
+			hangman.reset(id);
+			return this.sendReply("The room '"+target+"' was created.");
+		}
+		return this.sendReply("An error occurred while trying to create the room '"+target+"'.");
 	},
 
 	/*********************************************************
