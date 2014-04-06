@@ -358,6 +358,7 @@ var User = (function () {
 		this.views = 0;
 		this.status = '';
 		this.statusTime = '';
+		this.elo = 1000;
 		this.canCustomSymbol = false;
 		this.hasCustomSymbol = false;
 		this.isAway = false;

@@ -12,28 +12,19 @@ var Profile = {
 	},
 
 	unregisteredName: function (user) {
-	    return '<b><font size="2" color="' + Utilities.hashColor(user.name) + '">' + user.name + ' </b></font><font color="2">(Unregistered)</font><br/>';
+	    return '<b><font size="2" color="' + Utilities.hashColor(user.name) + '">' + user.name + ' </b></font><font color="2">(Unregistered)</font>';
 	},
 
 	rank: function (user) {
 		return Utilities.rank(user);
 	},
 
-	tier: function (user) {
-		io.stdinNumber('db/tourWins.csv', user, 'tourWins');
-		if (user.tourWins  < 8) {
-			return ' | Rating tier: <font color="#8C7853"><b>Bronze</b></font><br/>';
-		} else if (user.tourWins >= 8 && user.tourWins < 20) {
-			return ' | Rating tier: <font color="#545454"><b>Silver</b></font><br/>';
-		} else if (user.tourWins >= 20 && user.tourWins < 40) {
-			return ' | Rating tier: <font color="#FFD700"><b>Gold</b></font><br/>';
-		} else if (user.tourWins >= 40 && user.tourWins < 60) {
-			return ' | Rating tier: <font color="#C0C0C0"><b>Platinum</b></font><br/>';
-		} else if (user.tourWins >= 60 && user.tourWins <= 99) {
-			return ' | Rating tier: <font color="#236B8E"><b>Diamond</b></font><br/>';
-		} else {
-			return ' | Rating tier: <font color="#FF851B"><b>Legend</b></font><br/>';
+	elo: function (user) {
+		io.stdinNumber('db/elo.csv', user, 'elo');
+		if (user.elo === 0) {
+			user.elo = 1000;
 		}
+		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';
 	},
 
 	views: function (user) {
@@ -78,13 +69,13 @@ var cmds = {
 
 	    io.stdoutNumber('db/views.csv', targetUser, 'views', 1);
 
-	    var display = Profile.avatar(targetUser, height) + Profile.name(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.tier(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
+	    var display = Profile.avatar(targetUser, height) + Profile.name(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.elo(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
 	  
 	    if (!targetUser.authenticated) {
-	        display = Profile.avatar(targetUser, height) + Profile.unregisteredName(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.tier(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
+	        display = Profile.avatar(targetUser, height) + Profile.unregisteredName(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.elo(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
 	        return this.sendReplyBox(display);
 	    } else if (typeof (targetUser.avatar) === typeof ('')) {
-	        display = Profile.customAvatar(targetUser, height) + Profile.name(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.tier(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
+	        display = Profile.customAvatar(targetUser, height) + Profile.name(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.elo(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
 	        return this.sendReplyBox(display);
 	    } else {
 	        return this.sendReplyBox(display);
@@ -96,7 +87,7 @@ var cmds = {
 		if (!target) return this.sendReply('|raw|Set your status for profile. Usage: /status <i>status information</i>');
 		if (target.length > 30) return this.sendReply('Status is too long.');
 		if (target.indexOf(',') >= 1) return this.sendReply('Unforunately, your status cannot contain a comma.');
-		var escapeHTML = Utilities.escapeHTML(target);
+		var escapeHTML = sanitize(target, true);
 		io.stdoutString('db/status.csv', user, 'status', escapeHTML);
 		
 		var currentdate = new Date(); 

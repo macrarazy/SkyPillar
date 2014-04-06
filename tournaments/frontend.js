@@ -1,5 +1,7 @@
 require('es6-shim');
 
+const DEBUG = false;
+
 var TournamentGenerators = {
 	roundrobin: require('./generator-round-robin.js').RoundRobin,
 	elimination: require('./generator-elimination.js').Elimination
@@ -183,7 +185,7 @@ var Tournament = (function () {
 	};
 
 	Tournament.prototype.addUser = function (user, isAllowAlts, output) {
-		if (!isAllowAlts) {
+		if (!isAllowAlts && DEBUG === false) {
 			var users = {};
 			this.generator.getUsers().forEach(function (user) { users[user.name] = 1; });
 			var alts = user.getAlts();
@@ -518,10 +520,21 @@ var Tournament = (function () {
 		var to = Users.get(room.p2);
 
 		var result = 'draw';
-		if (from === winner)
+		if (from === winner) {
 			result = 'win';
-		else if (to === winner)
+			var elo = Utilities.calcElo(from, to);
+			io.stdoutNumber('db/elo.csv', from, 'elo', elo[0]);
+			setTimeout(function() {
+				io.stdoutNumber('db/elo.csv', to, 'elo', elo[1]);
+			}, 1000);
+		} else if (to === winner) {
 			result = 'loss';
+			var elo = Utilities.calcElo(to, from);
+			io.stdoutNumber('db/elo.csv', to, 'elo', elo[0]);
+			setTimeout(function() {
+				io.stdoutNumber('db/elo.csv', from, 'elo', elo[1]);
+			}, 1000);
+		}
 
 		if (result === 'draw' && !this.generator.isDrawingSupported) {
 			this.room.add('|tournament|battleend|' + from.name + '|' + to.name + '|' + result + '|' + room.battle.score.join(',') + '|fail');
@@ -571,7 +584,11 @@ var Tournament = (function () {
 			winner = data;
 		}
 		tourSize = this.generator.users.size;
-		if (this.room.isOfficial && tourSize >= 4) {
+		var amountPlayers = 4;
+		if (DEBUG === true) {
+			amountPlayers = 2;
+		} 
+		if (this.room.isOfficial && tourSize >= amountPlayers) {
 			firstMoney = Math.round(tourSize/5);
 			secondMoney = Math.round(firstMoney/4);
 			firstBuck = 'buck';
@@ -588,31 +605,14 @@ var Tournament = (function () {
 				this.room.add('Error: runnerUp is undefined');
 			}else {
 				io.stdoutNumber('db/money.csv', winnerUser, 'money', firstMoney);
+				fs.appendFile('logs/transactions.log', '\n' + Date() + ': ' + winner + ' won ' + firstMoney + ' ' + firstBuck + ' from a tournament in ' + this.room.title + '.');
 				if (runnerUp) {
 					setTimeout(function() {
 						io.stdoutNumber('db/money.csv', secondUser, 'money', secondMoney);
+						fs.appendFile('logs/transactions.log', '\n' + Date() + ': ' + runnerUp + ' won ' + secondMoney + ' ' + secondBuck + ' from a tournament in ' + this.room.title + '.');
 					}, 1000);
 				}
 				io.stdoutNumber('db/tourWins.csv', winnerUser, 'tourWins', 1);
-				setTimeout(function() {
-					io.stdinNumber('db/tourWins.csv', winnerUser, 'tourWins');
-				}, 1000);
-				if (winnerUser.tourWins === 8) {
-					this.room.add('|raw|<b><font size="2">Congratulations to '+winner+' for getting <font color="#545454"><b>Silver</b></font> Rating Tier! You have earned an extra 1 buck!</font></b>');
-					io.stdoutNumber('db/money.csv', winnerUser, 'money', 1);
-				} else if (winnerUser.tourWins === 20) {
-					this.room.add('|raw|<b><font size="2">Congratulations to '+winner+' for getting <font color="#FFD700"><b>Gold</b></font> Rating Tier! You have earned an extra 5 bucks!</font></b>');
-					io.stdoutNumber('db/money.csv', winnerUser, 'money', 5);
-				} else if (winnerUser.tourWins === 40) {
-					this.room.add('|raw|<b><font size="2">Congratulations to '+winner+' for getting <font color="#C0C0C0"><b>Platinum</b></font> Rating Tier! You have earned an extra 10 bucks!</font></b>');
-					io.stdoutNumber('db/money.csv', winnerUser, 'money', 10);
-				} else if (winnerUser.tourWins === 60) {
-					this.room.add('|raw|<b><font size="2">Congratulations to '+winner+' for getting <font color="#236B8E"><b>Diamond</b></font> Rating Tier! You have earned an extra 20 bucks!</font></b>');
-					io.stdoutNumber('db/money.csv', winnerUser, 'money', 20);
-				} else if (winnerUser.tourWins === 100) {
-					this.room.add('|raw|<b><font size="2">Congratulations to '+winner+' for getting <font color="'+Utilities.hashColor(winner)+'"><b>Legend</b></font> Rating Tier! You have earned an extra 30 bucks and promotion to voice!</font></b>');
-					io.stdoutNumber('db/money.csv', winnerUser, 'money', 30);
-				}
 			}
 		}
 		delete exports.tournaments[toId(this.room.id)];
