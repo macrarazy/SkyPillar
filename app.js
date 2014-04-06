@@ -472,3 +472,13 @@ try {
 } catch (e) {
 	console.log('Error loading utilities.js: ' + e.stack);
 }
+try {
+	global.tour = require('./source/poll.js').tour();
+} catch (e) {
+	console.log('Error loading poll.js');
+}
+try {
+	global.hangman = require('./source/hangman.js').hangman();
+} catch (e) {
+	console.log('Error loading hangman.js');
+}

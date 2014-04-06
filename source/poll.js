@@ -17,12 +17,6 @@ exports.tour = function(t) {
 			for (var i = 0; i < cmdArr.length; i++) cmdArr[i] = cmdArr[i].trim();
 			return cmdArr;
 		},
-		lowauth: function(user, room) {
-			if (!config.tourlowauth && user.can('broadcast')) return true;
-			if (config.tourlowauth && config.groupsranking.indexOf(user.group) >= config.groupsranking.indexOf(config.tourlowauth)) return true;
-			if (room.auth && room.auth[user.userid]) return true;
-			return false;
-		},
 	};
 
 	for (var i in tourStuff) tour[i] = tourStuff[i];
@@ -53,7 +47,7 @@ function clean(string) {
 var cmds = {
 	survey: 'poll',
 	poll: function(target, room, user) {
-		if (!tour.lowauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
+		if (!this.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
 		if (tour[room.id].question) return this.sendReply('There is currently a poll going on already.');
 		var separacion = "&nbsp;&nbsp;";
 		var answers = tour.splint(target);
@@ -69,7 +63,6 @@ var cmds = {
 		var answers = answers.join(',').toLowerCase().split(',');
 		tour[room.id].question = question;
 		tour[room.id].answerList = answers;
-		tour[room.id].usergroup = config.groupsranking.indexOf(user.group);
 		room.addRaw('<div class="infobox"><h2>' + tour[room.id].question + separacion + '<font size=2 color = "#939393"><small>/vote OPTION<br /><i><font size=1>Poll started by '+user.name+'</font size></i></small></font></h2><hr />' + separacion + separacion + " &bull; " + tour[room.id].answerList.join(' &bull; ') + '</div>');
 	},
 	
@@ -89,9 +82,8 @@ var cmds = {
 	
 	endsurvey: 'endpoll',
 	endpoll: function(target, room, user) {
-		if (!tour.lowauth(user,room)) return this.sendReply('You do not have enough authority to use this command.');
+		if (!this.can('broadcast')) return this.sendReply('You do not have enough authority to use this command.');
 		if (!tour[room.id].question) return this.sendReply('There is no poll to end in this room.');
-		if (tour[room.id].usergroup > config.groupsranking.indexOf(user.group)) return this.sendReply('You cannot end this poll as it was started by a user of higher auth than you.');
 		var votes = Object.keys(tour[room.id].answers).length;
 		if (votes == 0) {
 			tour[room.id].question = undefined;

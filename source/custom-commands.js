@@ -38,6 +38,10 @@ var customCommands = {
 			return this.parse('/hangmanhelp');
 		}
 
+		if (target.toLowerCase() === 'poll') {
+			return this.sendReply('/poll, /vote, /votes, /pr');
+		}
+
 		if (target.toLowerCase() === 'profile') {
 			return this.sendReply('|raw|<img src="http://i.imgur.com/sd7CkSw.png" width="100%">');
 		}
@@ -674,6 +678,14 @@ var customCommands = {
 	        CommandParser.uncacheTree('./source/system-operators.js');
 	        systemOperators = require('./system-operators.js').SystemOperatorOverRide();
 
+	        this.sendReply('Reloading poll.js...');
+	        CommandParser.uncacheTree('./source/poll.js');
+	        tour = require('./poll.js').tour();
+
+	        this.sendReply('Reloading hangman.js...');
+	        CommandParser.uncacheTree('./source/hangman.js');
+	        hangman = require('./hangman.js').hangman();
+
 	        this.sendReply('Reloading utilities.js...');
 	        CommandParser.uncacheTree('./source/utilities.js');
 	        Utilities = require('./utilities.js').Utilities;
@@ -687,9 +699,9 @@ var customCommands = {
 	        profile = require('./profile.js');
 	        
 	        var runningTournaments = Tournaments.tournaments;
-		CommandParser.uncacheTree(path.join(__dirname, '../', 'tournaments/frontend.js'));
-		Tournaments = require(path.join(__dirname, '../', 'tournaments/frontend.js'));
-		Tournaments.tournaments = runningTournaments;
+			CommandParser.uncacheTree(path.join(__dirname, '../', 'tournaments/frontend.js'));
+			Tournaments = require(path.join(__dirname, '../', 'tournaments/frontend.js'));
+			Tournaments.tournaments = runningTournaments;
 	        
 	        this.sendReply('Reloading custom-commands.js...');
 	        CommandParser.uncacheTree('./source/custom-commands.js');
