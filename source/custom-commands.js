@@ -3,7 +3,7 @@
  *
  * This is bascially where most of the core custom commands goes.
  * Commands Table of Contents:
- * General, Money, Override, Staff
+ * General, Money, Tour, Override, Staff
  */
 
 var customCommands = {
@@ -520,6 +520,21 @@ var customCommands = {
 	},
 
 	/*********************************************************
+	 * Tour commands
+	 *********************************************************/
+	j: function(target, room, user) {
+		return this.parse('/tour join');
+	},
+
+	l: function(target, room, user) {
+		return this.parse('/tour leave');
+	},
+
+	dq: function(target, room, user) {
+		return this.parse('/tour dq' + target);
+	},
+
+	/*********************************************************
 	 * Override commands
 	 *********************************************************/
 	join: function(target, room, user, connection) {
@@ -729,41 +744,6 @@ var customCommands = {
 		user.updateIdentity();
 	},
 	
-	nt: 'newtour',
-	  newtour: function(target, room, user) {
-	  this.parse('/tour new ' + target);
-	  },
-	  
-	  st: 'starttour',
-	  starttour: function(target, room, user) {
-	  this.parse('/tour start');
-	  },
-	  
-	  jt: 'jointour',
-	  jointour: function(target, room, user) {
-	  this.parse('/tour join');
-	  }, 
-	  
-	  lt: 'leavetour',
-	  leavetour: function(target, room, user) {
-	  this.parse('/tour leave');
-	  },
-	  
-	  remind: function(target, room, user) {
-	  this.parse('/tour remind');
-	  },
-	  
-	  dq: function(target, room, user) {
-	  this.parse('/tour dq ' + target);
-	  },
-	  
-	  settype: function(target, room, user) {
-	  this.parse('/tour settype ' + target);
-	  },
-	  et: 'endtour',
-	  endtour: function(target, room, user) {
-	  this.parse('/tour end');
-	  },
 };
 
 Object.merge(CommandParser.commands, customCommands);
