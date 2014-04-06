@@ -523,16 +523,16 @@ var Tournament = (function () {
 		if (from === winner) {
 			result = 'win';
 			var elo = Utilities.calcElo(from, to);
-			io.stdoutNumber('db/elo.csv', from, 'elo', elo[0]);
+			io.stdoutString('db/elo.csv', from, 'elo', elo[0]);
 			setTimeout(function() {
-				io.stdoutNumber('db/elo.csv', to, 'elo', elo[1]);
+				io.stdoutString('db/elo.csv', to, 'elo', elo[1]);
 			}, 1000);
 		} else if (to === winner) {
 			result = 'loss';
 			var elo = Utilities.calcElo(to, from);
-			io.stdoutNumber('db/elo.csv', to, 'elo', elo[0]);
+			io.stdoutString('db/elo.csv', to, 'elo', elo[0]);
 			setTimeout(function() {
-				io.stdoutNumber('db/elo.csv', from, 'elo', elo[1]);
+				io.stdoutString('db/elo.csv', from, 'elo', elo[1]);
 			}, 1000);
 		}
 
