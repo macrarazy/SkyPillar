@@ -31,7 +31,7 @@ exports.bot = function() {
 			bot.renamePending = botName;
 			bot.authenticated = true;
 			bot.userid = toUserid(botName);
-			bot.group = '~';
+			bot.group = '@';
 
 			// Rooms that bot will join and adding bot user to Users list and
 			// removing the fake user created to easily fill in the gaps of all the user's property
