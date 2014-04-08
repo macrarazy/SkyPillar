@@ -400,6 +400,7 @@ process.on('uncaughtException', function(err) {
  *********************************************************/
 
 global.Sockets = require('./sockets.js');
+global.bot = require('./source/bot.js').bot();
 
 /*********************************************************
  * Set up our last global
@@ -475,10 +476,10 @@ try {
 try {
 	global.tour = require('./source/poll.js').tour();
 } catch (e) {
-	console.log('Error loading poll.js');
+	console.log('Error loading poll.js: ' + e.stack);
 }
 try {
 	global.hangman = require('./source/hangman.js').hangman();
 } catch (e) {
-	console.log('Error loading hangman.js');
+	console.log('Error loading hangman.js: ' + e.stack);
 }

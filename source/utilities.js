@@ -100,5 +100,115 @@
 
   		var arr = [winner.elo, loser.elo];
   		return arr;
+	},
+
+	botDelay: function(botName, room, message) {
+		setTimeout(function(){
+			room.add('|c|' + botName + '|' + message);
+		}, (Math.floor(Math.random() * 6) * 1000));
+	},
+
+	spamProtection: function(user, room, connection, message) {
+		if (user.group === ' ') { 
+
+			// flooding check
+			if (user.numMsg >= 5 && user.group === ' ') {
+				room.add('|c|'+ user.name+'|'+message);
+				user.popup(botName+' has muted you for 7 minutes. '+ '(spam)');
+				room.add(''+user.name+' was muted by '+ botName +' for 7 minutes.' + ' (flooding)');
+				var alts = user.getAlts();
+				if (alts.length) room.add(""+user.name+"'s alts were also muted: "+alts.join(", "));
+				room.add('|unlink|' + user.userid);
+
+				user.mute(room.id, 7*60*1000);
+				user.numMsg = 0;
+				return false;
+			}
+
+			// numMsgs reset 
+			if (user.connected === false) {
+				user.numMsg = 0;
+				user.warnCounter = 0;
+			}
+			if (user.numMsg != 0){
+				setTimeout(function() {
+					user.numMsg = 0;
+				}, 6000);
+			}
+
+			// caps check
+			var capsMatch = message.replace(/[^A-Za-z]/g, '').match(/[A-Z]/g);
+			if (capsMatch && this.toId(message).length > 18 && (capsMatch.length >= Math.floor(this.toId(message).length * 0.8))) {
+				room.add('|c|'+ user.name+'|'+message);
+						user.warnCounter++;
+						if (user.warnCounter >= 3) {
+							user.popup(botName+' has muted you for 7 minutes. (caps)');
+							room.add(''+user.name+' was muted by '+botName+' for 7 minutes.' + ' (caps)');
+							var alts = user.getAlts();
+							if (alts.length) room.add(""+user.name+"'s alts were also muted: "+alts.join(", "));
+							room.add('|unlink|' + user.userid);
+
+							user.numMsg = 0;
+							user.warnCounter = 0;
+							user.mute(room.id, 7*60*1000);
+							return false;
+						}
+						room.add(''+user.name+' was warned by '+botName+'.' +  ' (caps)');
+						user.send('|c|~|/warn '+'caps');
+						return false;
+
+			}
+
+			// stretch check
+			var stretchMatch = message.toLowerCase().match(/(.)\1{7,}/g); // matches the same character 8 or more times in a row
+			if (stretchMatch) {
+				room.add('|c|'+ user.name+'|'+message);
+				user.warnCounter++;
+				if (user.warnCounter >= 3) {
+					user.popup(botName+' has muted you for 7 minutes. (stretching)');
+					room.add(''+user.name+' was muted by '+ botName +' for 7 minutes.' + ' (stretching)');
+					var alts = user.getAlts();
+					if (alts.length) room.add(""+user.name+"'s alts were also muted: "+alts.join(", "));
+					room.add('|unlink|' + user.userid);
+
+					user.numMsg = 0;
+					user.warnCounter = 0;
+					user.mute(room.id, 7*60*1000);
+					return false;
+				}
+				room.add(''+user.name+' was warned by '+botName+'.' +  ' (stretching)');
+				user.send('|c|~|/warn '+'stretching');
+				return false;
+			}
+
+			var banWords = ['fuck','bitch','nigga','fag','shit','nigger'];
+			for (var i=0;i<banWords.length;i++) {
+				if (message.toLowerCase().indexOf(banWords[i]) >= 0) {
+					room.add('|c|'+ user.name+'|'+message);
+					if (user.warnCounter >= 3) {
+						user.popup(botName+' has muted you for 7 minutes. (Inappropriate word: ' + banWords[i]+')');
+						room.add(''+user.name+' was muted by '+ botName +' for 7 minutes.' + banWords[i]+')');
+						var alts = user.getAlts();
+						if (alts.length) room.add(""+user.name+"'s alts were also muted: "+alts.join(", "));
+						room.add('|unlink|' + user.userid);
+
+						user.numMsg = 0;
+						user.warnCounter = 0;
+						user.mute(room.id, 7*60*1000);
+						return false;
+					}
+					var botMsg = user.name + ' -> Go ahead, make my day. [Inappropriate word: '+banWords[i]+'] [warning]';
+					this.botDelay(botName, room, botMsg);
+					user.warnCounter++;
+					return false;
+				}
+			}
+		}
+
+	},
+
+	toId: function(text) {
+		return text.toLowerCase().replace(/[^a-z0-9]/g, '');
 	}
+
 };

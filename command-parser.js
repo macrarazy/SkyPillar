@@ -76,6 +76,8 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 		message = '/evalbattle ' + message.substr(4);
 	}
 
+	var prevent = message.substr(0,1);
+
 	if (message.substr(0,2) !== '//' && message.substr(0,1) === '/') {
 		var spaceIndex = message.indexOf(' ');
 		if (spaceIndex > 0) {
@@ -100,6 +102,13 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 	if (cmd.charAt(0) === '!') {
 		broadcast = true;
 		cmd = cmd.substr(1);
+	}
+
+	// prevent users from using / with bot commands. They must broadcast it with '!'
+	for (var i in botcmds) {
+		if (prevent === '/' && cmd === botcmds[i]) {
+			return false;
+		}
 	}
 
 	var commandHandler = commands[cmd];
@@ -162,6 +171,27 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 				return true;
 			},
 			canBroadcast: function() {
+				// bot commands
+				for (var i in botcmds) {
+					if (cmd === botcmds[i]) {
+						// broadcast cooldown
+						var normalized = toId(message);
+						if (room.lastBroadcast === normalized &&
+								room.lastBroadcastTime >= Date.now() - BROADCAST_COOLDOWN) {
+							connection.sendTo(room, "You can't broadcast this because it was just broadcast.");
+							return false;
+						}
+						this.add('|c|' + user.getIdentity(room.id) + '|' + message);
+						room.lastBroadcast = normalized;
+						room.lastBroadcastTime = Date.now();
+
+						this.broadcasting = true;
+
+						return true;
+					}
+				}
+
+				// default
 				if (broadcast) {
 					message = this.canTalk(message);
 					if (!message) return false;
@@ -243,7 +273,11 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 			}
 		});
 	}
-
+	user.numMsg++;
+	//var Utilities = require('./source/utilities.js').Utilities;
+	if (Utilities.spamProtection(user, room, connection, message) === false) {
+		return false;
+	}
 	return message;
 };
 

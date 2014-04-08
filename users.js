@@ -368,6 +368,8 @@ var User = (function () {
 		this.canCustomSymbol = false;
 		this.hasCustomSymbol = false;
 		this.isAway = false;
+		this.numMsg = 0;
+		this.warnCounter = 0;
 	}
 
 	User.prototype.isSysop = false;
