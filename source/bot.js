@@ -1,3 +1,7 @@
+/*
+ * Created by CreaturePhil
+ */
+
 // Bot's Name
 global.botName = 'Bot';
 
