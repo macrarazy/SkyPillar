@@ -104,7 +104,7 @@
 
 	botDelay: function(botName, room, message) {
 		setTimeout(function(){
-			room.add('|c|' + botName + '|' + message);
+			room.add('|c|' + Users.users[toUserid(botName)].group + botName + '|' + message);
 		}, (Math.floor(Math.random() * 6) * 1000));
 	},
 
