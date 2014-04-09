@@ -34,7 +34,8 @@ exports.bot = function() {
 			bot.group = '@';
 
 			// Rooms that bot will join and adding bot user to Users list and
-			// removing the fake user created to easily fill in the gaps of all the user's property
+			// removing the fake user created which already filled its purpose
+			// of easily filling in the gaps of all the user's property
 			if (joinAllRooms === true) {
 				for (var all in Rooms.rooms) {
 					if (all != 'global' && all != 'spamroom') {
@@ -93,6 +94,7 @@ var botCommands = {
 			case 'but you are a mod tho?': Utilities.botDelay(botName, room, 'yeah i hate myself T_T'); break;
 			case 'you suck': Utilities.botDelay(botName, room, (user.name+', why are you so mean to me? :(')); break;
 			case 'you suck!': Utilities.botDelay(botName, room, (user.name+', why are you so mean to me? :(')); break;
+			case 'what is the color of the sky?': Utilities.botDelay(botName, room, (user.name+', just google it: http://tinyurl.com/la8pdrk')); break;
 			default: Utilities.botDelay(botName, room, 'Sorry, I don\'t know what you are trying to ask.');
 		}
 	},
@@ -100,6 +102,11 @@ var botCommands = {
 	riot: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
 		Utilities.botDelay(botName, room, 'ヽ༼ຈل͜ຈ༽ﾉ RIOT or RIOT ヽ༼ຈل͜ຈ༽ﾉ');
+	},
+
+	atm: function(target, room, user) {
+		if (!this.canBroadcast()) return false;
+		Utilities.botDelay(botName, room, (user.name+', use **/profile** instead.'));
 	},
 };
 

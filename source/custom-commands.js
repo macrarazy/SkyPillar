@@ -10,7 +10,6 @@ var customCommands = {
 	/*********************************************************
 	 * General commands
 	 *********************************************************/
-	atm: 'sh',
 	serverhelp: 'sh',
 	sh: function(target, room, user) {
 		if (!this.canBroadcast()) return false;

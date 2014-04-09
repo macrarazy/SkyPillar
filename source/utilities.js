@@ -187,7 +187,7 @@
 					room.add('|c|'+ user.name+'|'+message);
 					if (user.warnCounter >= 3) {
 						user.popup(botName+' has muted you for 7 minutes. (Inappropriate word: ' + banWords[i]+')');
-						room.add(''+user.name+' was muted by '+ botName +' for 7 minutes.' + banWords[i]+')');
+						room.add(''+user.name+' was muted by '+ botName +' for 7 minutes. (Inappropriate word: ' + banWords[i]+')');
 						var alts = user.getAlts();
 						if (alts.length) room.add(""+user.name+"'s alts were also muted: "+alts.join(", "));
 						room.add('|unlink|' + user.userid);
