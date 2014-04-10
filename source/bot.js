@@ -98,19 +98,28 @@ var botCommands = {
 		var unknown = [
 			"Just another Pokemon Showdown user",
 			"A loser",
-			"A very good pokemon competitive player",
+			"A very good competetive pokemon player",
+			"A worthy opponent",
+			"Your Worst Nightmare",
 			"Generally, a bad user",
 			"Generally, a good user",
 			"Someone who is better than you",
 			"An amazing person",
 			"A beautiful person",
-			"is probably still a virgin",
-			"A Pokemon Champion in Pokemon Red",
+			"A person who is probably still a virgin",
 			"A leader",
 			"A lord helix follower",
 			"An annoying person",
 			"A person with a salty personality",
-			"Not me"
+			"Not me",
+			"StarCraft Pro",
+			"Cheater McCheaterson",
+			"Really slow guy",
+			"Coffee Addict",
+			"Diamond League Player",
+			"Grand Master",
+			"Mediocre Player",
+			"A guy who works at google"
 		];
 
 		return function(target, room, user) {
@@ -118,7 +127,7 @@ var botCommands = {
 			var message = unknown[Math.floor(Math.random() * unknown.length)];
 
 			if(target.toLowerCase() === 'creaturephil') return Utilities.botDelay(botName, room, 'An experienced **coder** for pokemon showdown. He has coded for over 5 servers such as kill the noise, moxie, aerdeith, nova, etc. Please follow him on github: https://github.com/CreaturePhil');
-			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other areas, he is consider a God. Respect him or get ban.');
+			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other regions, he is consider a God. Respect him or get ban.');
 			if(target.toLowerCase() === 'bot') return Utilities.botDelay(botName, room, 'That\'s me.');
 			if(target.toLowerCase() === 'zarel') return Utilities.botDelay(botName, room, 'Pokemon Showdown Creator');
 			if(target.toLowerCase() === 'arjunb') return Utilities.botDelay(botName, room, 'Ladies Man. This guy gets all the bitches!');
