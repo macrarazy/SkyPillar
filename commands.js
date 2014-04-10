@@ -605,7 +605,7 @@ var commands = exports.commands = {
 			return this.sendReply("User " + this.targetUsername + " not found.");
 		}
 		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away") {
+                if (a === "BlakJack" || a === "BlakJack - Away" || a === botName) {
                         return user.popup('This user is too awesome to be banned!');
                         }
 		if (target.length > MAX_REASON_LENGTH) {
