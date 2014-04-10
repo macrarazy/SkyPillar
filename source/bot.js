@@ -1,4 +1,6 @@
 /*
+ * Bot.js
+ * 
  * Created by CreaturePhil
  */
 
@@ -35,7 +37,7 @@ exports.bot = function() {
 
 			// Rooms that bot will join and adding bot user to Users list and
 			// removing the fake user created which already filled its purpose
-			// of easily filling in the gaps of all the user's property
+			// of easily filling  in the gaps of all the user's property
 			if (joinAllRooms === true) {
 				for (var all in Rooms.rooms) {
 					if (all != 'global' && all != 'spamroom') {
@@ -75,7 +77,8 @@ var botCommands = {
 	joke: (function () {
 		var jokes = [
 			"currently has no jokes",
-			"no jokes sadly"
+			"no jokes sadly",
+			"I'm harder than a metapod."
 		];
 
 		return function(target, room, user) {
@@ -108,8 +111,15 @@ var botCommands = {
 		if (!this.canBroadcast()) return false;
 		Utilities.botDelay(botName, room, (user.name+', use **/profile** instead.'));
 	},
+
+	salt: function(target, room, user) {
+		if (!this.canBroadcast()) return false;
+		salt++;
+		Utilities.botDelay(botName, room, (salt + '% salty.'));
+	},
 };
 
+global.salt = 0; // for salt command.[count]% salty.
 global.botcmds = [];
 for(var i in botCommands) {
 	botcmds.push(i);
