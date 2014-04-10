@@ -60,6 +60,7 @@ var customCommands = {
 			'/takemoney <i>user</i>, <i>amount</i> - Take money from a user REQUIRES: ~ <br/>' +
 			'/away - Sets user to away REQUIRES: % <br/>' +
 			'/back - Sets use back from away REQUIRES: % <br/>' +
+			'/db <em>file</em> -  Displays database files REQUIRES: ~ <br/>' +
 			'/kick <i>user</i> - Kicks the user from the room. REQUIRES: %@&~');
 		}
 
