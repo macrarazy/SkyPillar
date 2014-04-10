@@ -21,7 +21,7 @@ var Profile = {
 
 	elo: function (user) {
 		io.stdinNumber('db/elo.csv', user, 'elo');
-		if (user.elo === 0 || user.elo === undefined) {
+		if (user.elo === 0 || isNaN(user.elo)) {
 			user.elo = 1000;
 		}
 		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';
