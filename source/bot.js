@@ -119,7 +119,7 @@ var botCommands = {
 	},
 };
 
-global.salt = 0; // for salt command.[count]% salty.
+global.salt = 0; // for salt command. [count]% salty.
 global.botcmds = [];
 for(var i in botCommands) {
 	botcmds.push(i);

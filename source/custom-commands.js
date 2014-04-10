@@ -246,6 +246,23 @@ var customCommands = {
 	    connection.popup('Administrators: \n--------------------\n' + admins + '\n\nLeaders:\n-------------------- \n' + leaders + '\n\nModerators:\n-------------------- \n' + mods + '\n\nDrivers: \n--------------------\n' + drivers + '\n\nVoices:\n-------------------- \n' + voices);
 	},
 
+	tell: function(target, room, user) {
+		if (!target) return false;
+		var message = this.splitTarget(target);
+		if (!message) return this.sendReply("You forgot the comma.");
+		if (user.locked) return this.sendReply("You cannot use this command while locked.");
+
+		message = this.canTalk(message, null);
+		if (!message) return false;
+
+		if (!global.tells) global.tells = {};
+		if (!tells[toUserid(this.targetUsername)]) tells[toUserid(this.targetUsername)] = [];
+		if (tells[toUserid(this.targetUsername)].length > 5) return this.sendReply("User " + this.targetUsername + " has too many tells queued.");
+
+		tells[toUserid(this.targetUsername)].push(Date().toLocaleString() + " - " + user.getIdentity() + " said: " + message);
+		return this.sendReply("Message \"" + message + "\" sent to " + this.targetUsername + ".");
+	},
+
 	/*********************************************************
 	 * Money commands
 	 *********************************************************/
