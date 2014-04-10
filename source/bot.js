@@ -107,7 +107,8 @@ var botCommands = {
 			"A beautiful person",
 			"is probably still a virgin",
 			"A Pokemon Champion in Pokemon Red",
-			"A leader"
+			"A leader",
+			"A lord helix follower"
 		];
 
 		return function(target, room, user) {
