@@ -34,6 +34,8 @@ exports.bot = function() {
 			bot.authenticated = true;
 			bot.userid = toUserid(botName);
 			bot.group = '@';
+			bot.money = 1337;
+			bot.status = 'I\'m always watching.';
 
 			// Rooms that bot will join and adding bot user to Users list and
 			// removing the fake user created which already filled its purpose
