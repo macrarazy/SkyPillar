@@ -81,7 +81,6 @@ var botCommands = {
 
 	joke: (function () {
 		var jokes = [
-			"I'm harder than a metapod.",
 			"Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo",
 			"I ran out of jokes. Leave jokes in chat and if you can in staff room for a chance to be added"
 		];
@@ -108,7 +107,10 @@ var botCommands = {
 			"is probably still a virgin",
 			"A Pokemon Champion in Pokemon Red",
 			"A leader",
-			"A lord helix follower"
+			"A lord helix follower",
+			"An annoying person",
+			"A person with a salty personality",
+			"Not me"
 		];
 
 		return function(target, room, user) {
