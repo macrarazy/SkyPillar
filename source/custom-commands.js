@@ -799,7 +799,7 @@ var customCommands = {
 			var log = fs.readFileSync(('config/db/'+target+'.csv'),'utf8');
             return user.send('|popup|'+log);
 		} catch (e) {
-			return user.send('|popup|Error:\n\n ' + e.stack);
+			return user.send('|popup|Something bad happen:\n\n ' + e.stack);
 		}
 	},
 	
