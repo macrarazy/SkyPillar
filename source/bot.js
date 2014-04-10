@@ -121,6 +121,7 @@ var botCommands = {
 			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other areas, he is consider a God. Respect him or get ban.');
 			if(target.toLowerCase() === 'bot') return Utilities.botDelay(botName, room, 'That\'s me.');
 			if(target.toLowerCase() === 'zarel') return Utilities.botDelay(botName, room, 'Pokemon Showdown Creator');
+			if(target.toLowerCase() === 'arjunb') return Utilities.botDelay(botName, room, 'Ladies Man. This guy gets all the bitches!');
 
 			return Utilities.botDelay(botName, room, sanitize(message));
 		};

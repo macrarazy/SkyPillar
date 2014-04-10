@@ -795,6 +795,7 @@ var customCommands = {
 	database: 'db',
 	db: function(target, room, user, connection) {
 		if (!this.can('db')) return false;
+		if(!target) return user.send('|popup|You much enter a target.');
 		try {
 			var log = fs.readFileSync(('config/db/'+target+'.csv'),'utf8');
             return user.send('|popup|'+log);
