@@ -423,7 +423,7 @@ var commands = exports.commands = {
 			return this.sendReply("You can't warn here: This is a privately-owned room not subject to global rules.");
 		}
 		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away") {
+                if (a === "BlakJack" || a === "BlakJack - Away" || a === "Yolobots") {
                         return user.popup('This user is too awesome to be warned!');
                         }
 		if (target.length > MAX_REASON_LENGTH) {
@@ -474,7 +474,7 @@ var commands = exports.commands = {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
 		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away") {
+                if (a === "BlakJack" || a === "BlakJack - Away" || a === "Yolobots") {
                         return user.popup('This user is too awesome to be muted!');
                         }
 		if (!this.can('mute', targetUser, room)) return false;
@@ -559,7 +559,7 @@ var commands = exports.commands = {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
 		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away") {
+                if (a === "BlakJack" || a === "BlakJack - Away" || a === "yolobots") {
                         return user.popup('This user is too awesome to be locked!');
                         }
 		if (!this.can('lock', targetUser)) return false;
@@ -605,7 +605,7 @@ var commands = exports.commands = {
 			return this.sendReply("User " + this.targetUsername + " not found.");
 		}
 		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away" || a === botName) {
+                if (a === "BlakJack" || a === "BlakJack - Away" || a === botName || a === "yolobots") {
                         return user.popup('This user is too awesome to be banned!');
                         }
 		if (target.length > MAX_REASON_LENGTH) {
