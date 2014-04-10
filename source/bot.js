@@ -151,12 +151,12 @@ var botCommands = {
 
 	salt: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
+		if(!global.salt) global.salt = 0;
 		salt++;
 		Utilities.botDelay(botName, room, (salt + '% salty.'));
 	},
 };
 
-global.salt = 0; // for salt command. [count]% salty.
 global.botcmds = [];
 for(var i in botCommands) {
 	botcmds.push(i);
