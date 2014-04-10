@@ -635,7 +635,7 @@ var customCommands = {
 		if (!target) return this.sendReply('|raw|/kick <em>username</em> - kicks the user from the room.');
 		var targetUser = Users.get(target);
 		if (!targetUser) return this.sendReply('User '+target+' not found.');
-		if (targetUser.can('lockdown') || targetUser.name = botName) {
+		if (targetUser.can('lockdown') || targetUser.name === botName) {
 			return this.sendReply('This user can\'t be room kicked.');
 		}
 		if (!Rooms.rooms[room.id].users[targetUser.userid]) return this.sendReply(target+' is not in this room.');

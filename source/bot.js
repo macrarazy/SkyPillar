@@ -104,13 +104,15 @@ var botCommands = {
 			"Generally, a good user",
 			"Someone who is better than you",
 			"An amazing person",
-			"A beautiful person"
+			"A beautiful person",
+			"is probably still a virgin",
+			"A Pokemon Champion in Pokemon Red",
+			"A leader"
 		];
 
 		return function(target, room, user) {
 			if (!this.canBroadcast()) return false;
 			var message = unknown[Math.floor(Math.random() * unknown.length)];
-			if (!this.canTalk(message)) return false;
 
 			if(target.toLowerCase() === 'creaturephil') return Utilities.botDelay(botName, room, 'An experienced **coder** for pokemon showdown. He has coded for over 5 servers such as kill the noise, moxie, aerdeith, nova, etc. Please follow him on github: https://github.com/CreaturePhil');
 			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other areas, he is consider a God. Respect him or get ban.');
