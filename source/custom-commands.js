@@ -599,6 +599,71 @@ var customCommands = {
 		return this.sendReply("An error occurred while trying to create the room '"+target+"'.");
 	},
 
+	pm: 'msg',
+	whisper: 'msg',
+	w: 'msg',
+	msg: function(target, room, user) {
+		if (!target) return this.parse('/help msg');
+		target = this.splitTarget(target);
+		var targetUser = this.targetUser;
+		if (!target) {
+			this.sendReply("You forgot the comma.");
+			return this.parse('/help msg');
+		}
+		if (!targetUser || !targetUser.connected) {
+			if (targetUser && !targetUser.connected) {
+				this.popupReply("User " + this.targetUsername + " is offline.");
+			} else if (!target) {
+				this.popupReply("User " + this.targetUsername + " not found. Did you forget a comma?");
+			} else {
+				this.popupReply("User "  + this.targetUsername + " not found. Did you misspell their name?");
+			}
+			return this.parse('/help msg');
+		}
+
+		if (config.modchat.pm) {
+			var userGroup = user.group;
+			if (config.groups.bySymbol[userGroup].globalRank < config.groups.bySymbol[config.modchat.pm].globalRank) {
+				var groupName = config.groups.bySymbol[config.modchat.pm].name || config.modchat.pm;
+				this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to PM users.");
+				return false;
+			}
+		}
+
+		if (user.locked && !targetUser.can('lock', user)) {
+			return this.popupReply("You can only private message members of the moderation team (users marked by " + Users.getGroupsThatCan('lock', user).join(", ") + ") when locked.");
+		}
+		if (targetUser.locked && !user.can('lock', targetUser)) {
+			return this.popupReply("This user is locked and cannot PM.");
+		}
+		if (targetUser.ignorePMs && !user.can('lock')) {
+			if (!targetUser.can('lock')) {
+				return this.popupReply("This user is blocking Private Messages right now.");
+			} else if (targetUser.can('hotpatch')) {
+				return this.popupReply("This " + (config.groups.bySymbol[targetUser.group].name || "Administrator") + " is too busy to answer Private Messages right now. Please contact a different staff member.");
+			}
+		}
+
+		target = this.canTalk(target, null);
+		if (!target) return false;
+
+		var message = '|pm|' + user.getIdentity() + '|' + targetUser.getIdentity() + '|' + target;
+		user.send(message);
+		if (targetUser !== user) {
+			if (Spamroom.isSpamroomed(user)) {
+				Spamroom.room.add('|c|' + user.getIdentity() + "|__(Private to " + targetUser.getIdentity() + ")__ " + target);
+			} else {
+				targetUser.send(message);
+			}
+		}
+		targetUser.lastPM = user.userid;
+		user.lastPM = targetUser.userid;
+
+		if (targetUser.userid === toUserid(botName)) {
+			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + user.name + ' sent this message, "' + target + '".');
+		}
+	},
+
 	/*********************************************************
 	 * Staff commands
 	 *********************************************************/
@@ -751,7 +816,7 @@ var customCommands = {
 		if (!this.can('lock')) return false;
 		try {
 			var log = fs.readFileSync('logs/transactions.log','utf8');
-            return user.send('|popup|'+log);
+            return user.send('|popup|' + 'Current Date: ' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a transactions.log in the logs folder yet.\n\n ' + e.stack);
 		}
@@ -803,6 +868,17 @@ var customCommands = {
 			return user.send('|popup|Something bad happen:\n\n ' + e.stack);
 		}
 	},
+
+	bpl: 'botpmlog',
+	botpmlog: function(target, room, user, connection) {
+		if (!this.can('lockdown')) return false;
+		try {
+			var log = fs.readFileSync('logs/botpms.log','utf8');
+            return user.send('|popup|'+'Current Date: ' + Date() + '\n' + log);
+		} catch (e) {
+			return user.send('|popup|You have not set made a botpms.log in the logs folder yet.\n\n ' + e.stack);
+		}
+	}
 	
 };
 
