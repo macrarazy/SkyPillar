@@ -634,13 +634,9 @@ var customCommands = {
 		if (!target) return this.sendReply('|raw|/kick <em>username</em> - kicks the user from the room.');
 		var targetUser = Users.get(target);
 		if (!targetUser) return this.sendReply('User '+target+' not found.');
-		if (targetUser.group === '~') {
-			return this.sendReply('Administrators can\'t be room kicked.');
+		if (targetUser.can('lockdown') || targetUser.name = botName) {
+			return this.sendReply('This user can\'t be room kicked.');
 		}
-		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away") {
-                        return user.popup('This user is too awesome to be kicked!');
-                }
 		if (!Rooms.rooms[room.id].users[targetUser.userid]) return this.sendReply(target+' is not in this room.');
 		targetUser.popup('You have been kicked from room '+ room.title +' by '+user.name+'.');
 		targetUser.leaveRoom(room);
@@ -789,6 +785,17 @@ var customCommands = {
 			return this.sendReply('You are not set as away.');
 		}
 		user.updateIdentity();
+	},
+
+	database: 'db',
+	db: function(target, room, user, connection) {
+		if (!this.can('db')) return false;
+		try {
+			var log = fs.readFileSync(('config/db/'+target+'.csv'),'utf8');
+            return user.send('|popup|'+log);
+		} catch (e) {
+			return user.send('|popup|Error:\n\n ' + e.stack);
+		}
 	},
 	
 };

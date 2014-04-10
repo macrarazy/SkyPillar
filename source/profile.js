@@ -21,7 +21,7 @@ var Profile = {
 
 	elo: function (user) {
 		io.stdinNumber('db/elo.csv', user, 'elo');
-		if (user.elo === 0) {
+		if (user.elo === 0 || user.elo === undefined) {
 			user.elo = 1000;
 		}
 		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';

@@ -74,11 +74,16 @@ var botCommands = {
 		Utilities.botDelay(botName, room, '8.5 inches from the base. Perv.');
 	},
 
+	creator: function(target, room, user) {
+		if (!this.canBroadcast()) return false;
+		Utilities.botDelay(botName, room, 'CreaturePhil is my creator.');
+	},
+
 	joke: (function () {
 		var jokes = [
-			"currently has no jokes",
-			"no jokes sadly",
-			"I'm harder than a metapod."
+			"I'm harder than a metapod.",
+			"Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo",
+			"I ran out of jokes. Leave jokes in chat and if you can in staff room for a chance to be added"
 		];
 
 		return function(target, room, user) {
@@ -87,6 +92,32 @@ var botCommands = {
 			if (!this.canTalk(message)) return false;
 
 			Utilities.botDelay(botName, room, sanitize(message));
+		};
+	})(),
+
+	whois: (function () {
+		var unknown = [
+			"Just another Pokemon Showdown user",
+			"A loser",
+			"A very good pokemon competitive player",
+			"Generally, a bad user",
+			"Generally, a good user",
+			"Someone who is better than you",
+			"An amazing person",
+			"A beautiful person"
+		];
+
+		return function(target, room, user) {
+			if (!this.canBroadcast()) return false;
+			var message = unknown[Math.floor(Math.random() * unknown.length)];
+			if (!this.canTalk(message)) return false;
+
+			if(target.toLowerCase() === 'creaturephil') return Utilities.botDelay(botName, room, 'An experienced **coder** for pokemon showdown. He has coded for over 5 servers such as kill the noise, moxie, aerdeith, nova, etc. Please follow him on github: https://github.com/CreaturePhil');
+			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other areas, he is consider a God. Respect him or get ban.');
+			if(target.toLowerCase() === 'bot') return Utilities.botDelay(botName, room, 'That\'s me.');
+			if(target.toLowerCase() === 'zarel') return Utilities.botDelay(botName, room, 'Pokemon Showdown Creator');
+
+			return Utilities.botDelay(botName, room, sanitize(message));
 		};
 	})(),
 

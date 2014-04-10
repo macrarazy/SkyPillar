@@ -145,14 +145,13 @@
 
 var commands = exports.commands = {
 
-	ip: 'whois',
-	getip: 'whois',
-	rooms: 'whois',
-	altcheck: 'whois',
-	alt: 'whois',
-	alts: 'whois',
-	getalts: 'whois',
-	whois: function(target, room, user) {
+	ip: 'alt',
+	getip: 'alt',
+	rooms: 'alt',
+	altcheck: 'alt',
+	alts: 'alt',
+	getalts: 'alt',
+	alt: function(target, room, user) {
 		var targetUser = this.targetUserOrSelf(target);
 		if (!targetUser) {
 			return this.sendReply("User " + this.targetUsername + " not found.");
