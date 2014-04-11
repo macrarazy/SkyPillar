@@ -816,7 +816,7 @@ var customCommands = {
 		if (!this.can('lock')) return false;
 		try {
 			var log = fs.readFileSync('logs/transactions.log','utf8');
-            return user.send('|popup|' + '**Current Date:**' + Date() + '\n' + log);
+            return user.send('|popup|' + '**Current Date:** ' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a transactions.log in the logs folder yet.\n\n ' + e.stack);
 		}
