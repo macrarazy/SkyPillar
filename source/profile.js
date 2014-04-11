@@ -21,7 +21,10 @@ var Profile = {
 
 	elo: function (user) {
 		io.stdinNumber('db/elo.csv', user, 'elo');
-		if (user.elo === 0 || isNaN(user.elo)) {
+		if (user.elo === 0) {
+			user.elo = 1000;
+		}
+		if (isNaN(user.elo)) {
 			user.elo = 1000;
 			io.stdoutString('db/elo.csv', user, 'elo', user.elo);
 		}
