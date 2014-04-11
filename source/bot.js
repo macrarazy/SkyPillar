@@ -165,7 +165,7 @@ var botCommands = {
 		Utilities.botDelay(botName, room, (salt + '% salty.'));
 	},
 
-	choose: function(target, room, user) {
+	pick: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
 		Utilities.botDelay(botName, room, (target.split(',').map(function (s) { return s.trim(); }).randomize()[0]));
 	},
