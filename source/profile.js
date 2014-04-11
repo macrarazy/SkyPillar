@@ -24,10 +24,6 @@ var Profile = {
 		if (user.elo === 0) {
 			user.elo = 1000;
 		}
-		if (isNaN(user.elo)) {
-			user.elo = 1000;
-			io.stdoutString('db/elo.csv', user, 'elo', user.elo);
-		}
 		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';
 	},
 
