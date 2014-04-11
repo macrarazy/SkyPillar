@@ -175,10 +175,9 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 				for (var i in botcmds) {
 					if (cmd === botcmds[i]) {
 						// broadcast cooldown
-						var normalized = toId(message);
-						if (room.lastBroadcast === normalized &&
-								room.lastBroadcastTime >= Date.now() - BROADCAST_COOLDOWN) {
-							connection.sendTo(room, "You can't broadcast this because it was just broadcast.");
+						var normalized = toId(cmd);
+						if (room.lastBroadcast === normalized && room.lastBroadcastTime >= Date.now() - 60*1000) {
+							this.sendReply('You can\'t broadcast this because it was just broadcast. You must wait ' + Math.floor(((room.lastBroadcastTime-(Date.now() - 60*1000))/1000)) + ' seconds.');
 							return false;
 						}
 						this.add('|c|' + user.getIdentity(room.id) + '|' + message);
@@ -274,7 +273,6 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 		});
 	}
 	user.numMsg++;
-	//var Utilities = require('./source/utilities.js').Utilities;
 	if (Utilities.spamProtection(user, room, connection, message) === false) {
 		return false;
 	}

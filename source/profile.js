@@ -23,6 +23,7 @@ var Profile = {
 		io.stdinNumber('db/elo.csv', user, 'elo');
 		if (user.elo === 0 || isNaN(user.elo)) {
 			user.elo = 1000;
+			stdoutString('db/elo.csv', user, 'elo', user.elo);
 		}
 		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';
 	},
