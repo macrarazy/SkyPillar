@@ -660,7 +660,7 @@ var customCommands = {
 		user.lastPM = targetUser.userid;
 
 		if (targetUser.userid === toUserid(botName)) {
-			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + user.name + ' sent this message, "' + target + '".');
+			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + '**' + user.name + '**' + ' sent this message, "' + sanitize(target) + '".');
 		}
 	},
 
@@ -816,7 +816,7 @@ var customCommands = {
 		if (!this.can('lock')) return false;
 		try {
 			var log = fs.readFileSync('logs/transactions.log','utf8');
-            return user.send('|popup|' + 'Current Date: ' + Date() + '\n' + log);
+            return user.send('|popup|' + '**Current Date: **' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a transactions.log in the logs folder yet.\n\n ' + e.stack);
 		}
@@ -874,10 +874,33 @@ var customCommands = {
 		if (!this.can('lockdown')) return false;
 		try {
 			var log = fs.readFileSync('logs/botpms.log','utf8');
-            return user.send('|popup|'+'Current Date: ' + Date() + '\n' + log);
+            return user.send('|popup|'+'**Current Date:** ' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a botpms.log in the logs folder yet.\n\n ' + e.stack);
 		}
+	},
+
+	truncate: function(target, room, user, connection) {
+		if (!this.can('lockdown')) return false;
+		if (!target) return this.sendReply('You must put a target. For logs, transactions and botpms');
+		var parts = target.split(', ');
+		if(parts[0] === 'logs') {
+			try {
+				fs.truncateSync(('logs/'+parts[1]+'.log'), 0);
+				return this.sendReply('Truncate Sucessful.');
+			} catch (e) {
+				return user.send('|popup|File not found or something bad happen:\n\n ' + e.stack);
+			}
+		}
+		if(parts[0] === 'db') {
+			try {
+				fs.truncateSync(('config/db/'+parts[1]+'.csv'), 0);
+				return this.sendReply('Truncate Sucessful.');
+			} catch (e) {
+				return user.send('|popup|File not found or something bad happen:\n\n ' + e.stack);
+			}
+		}
+		this.sendReply(target + ' could not be found.');
 	}
 	
 };
