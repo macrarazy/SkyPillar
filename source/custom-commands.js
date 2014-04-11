@@ -25,8 +25,8 @@ var customCommands = {
 			'/transferbucks <i>username</i> - Transfer bucks to other users.<br/>'+
 			'/ratingtier - Tells you about rating tiers. <br/>' +
 			'/earnbucks - Shows other ways to earn bucks. <br/>' +
-			'/regdate <em>username</em> - Shows the registration date of the user<br/><br/>'+
 			'/tell - Tells a user a message. <br/>' +
+			'/regdate <em>username</em> - Shows the registration date of the user<br/><br/>'+
 			'<b>For more commands or help:</b> Do /serverhelp with either of the following categories: <em>tour</em>, <em>profile</em>, <em>staff</em> Example - /serverhelp <em>tour</em>, <em>hangman</em>, <em>poll</em><br/>');
         }
 
