@@ -457,7 +457,7 @@ var Tournament = (function () {
 		this.isBracketInvalidated = true;
 		this.update();
 	};
-	Tournament.prototype.cancelChallenge = function (user) {
+	Tournament.prototype.cancelChallenge = function (user, output) {
 		if (!this.isTournamentStarted) {
 			output.sendReply('|tournament|error|NotStarted');
 			return;
@@ -478,7 +478,7 @@ var Tournament = (function () {
 		this.isAvailableMatchesInvalidated = true;
 		this.update();
 	};
-	Tournament.prototype.acceptChallenge = function (user) {
+	Tournament.prototype.acceptChallenge = function (user, output) {
 		if (!this.isTournamentStarted) {
 			output.sendReply('|tournament|error|NotStarted');
 			return;
@@ -649,10 +649,10 @@ var commands = {
 			tournament.challenge(user, targetUser, this);
 		},
 		cancelchallenge: function (tournament, user) {
-			tournament.cancelChallenge(user);
+			tournament.cancelChallenge(user, this);
 		},
 		acceptchallenge: function (tournament, user) {
-			tournament.acceptChallenge(user);
+			tournament.acceptChallenge(user, this);
 		}
 	},
 	creation: {
@@ -710,7 +710,7 @@ CommandParser.commands.tournament = function (paramString, room, user) {
 			"- settype &lt;type> [, &lt;comma-separated arguments>]: Modifies the type of tournament after it's been created, but before it has started.<br />" +
 			"- end/stop/delete: Forcibly ends the tournament in the current room.<br />" +
 			"- begin/start: Starts the tournament in the current room.<br />" +
-			"- dq/disqualify &lt;user>: Disqualifies an user.<br />" +
+			"- dq/disqualify &lt;user>: Disqualifies a user.<br />" +
 			"More detailed help can be found <a href=\"https://gist.github.com/kotarou3/7872574\">here</a>"
 		);
 	} else if (cmd === 'create' || cmd === 'new') {
