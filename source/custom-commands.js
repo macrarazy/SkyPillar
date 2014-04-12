@@ -824,7 +824,7 @@ var customCommands = {
 
 	afk: 'away',
 	away: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isAway) {
 			var originalName = user.name;
 			var awayName = user.name + ' - Away';
@@ -841,7 +841,7 @@ var customCommands = {
 
 	unafk: 'unafk',
 	back: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isAway) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 7);
