@@ -182,7 +182,7 @@
 				return false;
 			}
 
-			var banWords = ['fuck','bitch','nigga','fag','shit','nigger'];
+			/*var banWords = ['fuck','bitch','nigga','fag','shit','nigger'];
 			for (var i=0;i<banWords.length;i++) {
 				if (message.toLowerCase().indexOf(banWords[i]) >= 0) {
 					room.add('|c|'+ user.name+'|'+message);
@@ -203,7 +203,7 @@
 					user.warnCounter++;
 					return false;
 				}
-			}
+			}*/
 
 		}
 
