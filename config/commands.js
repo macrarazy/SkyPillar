@@ -1094,7 +1094,7 @@ var commands = exports.commands = {
 		if (!this.targetUser) {
 			return this.sendReply("The user '" + this.targetUsername + "' does not exist.");
 		}
-		if (!this.can('mute', this.targetUser)) {
+		if (!this.can('lockdown', this.targetUser)) {
 			return false;
 		}
 
@@ -1110,7 +1110,7 @@ var commands = exports.commands = {
 		if (!target) return this.sendReply("Please specify a user.");
 		this.splitTarget(target);
 
-		if (!this.can('mute')) {
+		if (!this.can('lockdown')) {
 			return false;
 		}
 
