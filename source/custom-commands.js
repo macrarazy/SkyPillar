@@ -47,7 +47,7 @@ var customCommands = {
 		}
 
 		if (target.toLowerCase() === 'staff') {
-			if (!user.can('lock')) return this.sendReply('/serverhelp <i>staff</i> - Access denied.');
+			if (!user.can('lock')) return this.sendReply('|raw|/serverhelp <i>staff</i> - Access denied.');
 			return this.sendReplyBox('' +
 			'/hide - Hide your symbol REQUIRES: ~<br/> ' +
 			'/show - Show your symbol REQUIRES: ~<br/> ' +
