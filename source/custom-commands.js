@@ -25,8 +25,8 @@ var customCommands = {
 			'/transferbucks <i>username</i> - Transfer bucks to other users.<br/>'+
 			'/ratingtier - Tells you about rating tiers. <br/>' +
 			'/earnbucks - Shows other ways to earn bucks. <br/>' +
-			'/regdate <em>username</em> - Shows the registration date of the user<br/><br/>'+
 			'/tell - Tells a user a message. <br/>' +
+			'/regdate <em>username</em> - Shows the registration date of the user<br/><br/>'+
 			'<b>For more commands or help:</b> Do /serverhelp with either of the following categories: <em>tour</em>, <em>profile</em>, <em>staff</em> Example - /serverhelp <em>tour</em>, <em>hangman</em>, <em>poll</em><br/>');
         }
 
@@ -47,7 +47,7 @@ var customCommands = {
 		}
 
 		if (target.toLowerCase() === 'staff') {
-			if (!user.can('lock')) return this.sendReply('/serverhelp <i>staff</i> - Access denied.');
+			if (!user.can('lock')) return this.sendReply('|raw|/serverhelp <i>staff</i> - Access denied.');
 			return this.sendReplyBox('' +
 			'/hide - Hide your symbol REQUIRES: ~<br/> ' +
 			'/show - Show your symbol REQUIRES: ~<br/> ' +
@@ -660,7 +660,7 @@ var customCommands = {
 		user.lastPM = targetUser.userid;
 
 		if (targetUser.userid === toUserid(botName)) {
-			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + user.name + ' sent this message, "' + target + '".');
+			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + '**' + user.name + '**' + ' sent this message, "' + sanitize(target) + '".');
 		}
 	},
 
@@ -816,7 +816,7 @@ var customCommands = {
 		if (!this.can('lock')) return false;
 		try {
 			var log = fs.readFileSync('logs/transactions.log','utf8');
-            return user.send('|popup|' + 'Current Date: ' + Date() + '\n' + log);
+            return user.send('|popup|' + '**Current Date:** ' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a transactions.log in the logs folder yet.\n\n ' + e.stack);
 		}
@@ -824,7 +824,7 @@ var customCommands = {
 
 	afk: 'away',
 	away: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isAway) {
 			var originalName = user.name;
 			var awayName = user.name + ' - Away';
@@ -841,7 +841,7 @@ var customCommands = {
 
 	unafk: 'unafk',
 	back: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isAway) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 7);
@@ -874,10 +874,33 @@ var customCommands = {
 		if (!this.can('lockdown')) return false;
 		try {
 			var log = fs.readFileSync('logs/botpms.log','utf8');
-            return user.send('|popup|'+'Current Date: ' + Date() + '\n' + log);
+            return user.send('|popup|'+'**Current Date:** ' + Date() + '\n' + log);
 		} catch (e) {
 			return user.send('|popup|You have not set made a botpms.log in the logs folder yet.\n\n ' + e.stack);
 		}
+	},
+
+	truncate: function(target, room, user, connection) {
+		if (!this.can('lockdown')) return false;
+		if (!target) return this.sendReply('You must put a target. For logs, transactions and botpms');
+		var parts = target.split(', ');
+		if(parts[0] === 'logs') {
+			try {
+				fs.truncateSync(('logs/'+parts[1]+'.log'), 0);
+				return this.sendReply('Truncate Sucessful.');
+			} catch (e) {
+				return user.send('|popup|File not found or something bad happen:\n\n ' + e.stack);
+			}
+		}
+		if(parts[0] === 'db') {
+			try {
+				fs.truncateSync(('config/db/'+parts[1]+'.csv'), 0);
+				return this.sendReply('Truncate Sucessful.');
+			} catch (e) {
+				return user.send('|popup|File not found or something bad happen:\n\n ' + e.stack);
+			}
+		}
+		this.sendReply(target + ' could not be found.');
 	}
 	
 };

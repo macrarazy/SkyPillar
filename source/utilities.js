@@ -113,7 +113,7 @@
 		if (user.group === ' ') { 
 
 			// flooding check
-			if (user.numMsg >= 5 && user.group === ' ') {
+			/*if (user.numMsg >= 5 && user.group === ' ') {
 				room.add('|c|'+ user.name+'|'+message);
 				user.popup(botName+' has muted you for 7 minutes. '+ '(spam)');
 				room.add(''+user.name+' was muted by '+ botName +' for 7 minutes.' + ' (flooding)');
@@ -124,7 +124,7 @@
 				user.mute(room.id, 7*60*1000);
 				user.numMsg = 0;
 				return false;
-			}
+			}*/
 
 			// numMsgs reset 
 			if (user.connected === false) {
@@ -182,7 +182,7 @@
 				return false;
 			}
 
-			var banWords = ['fuck','bitch','nigga','fag','shit','nigger'];
+			/*var banWords = ['fuck','bitch','nigga','fag','shit','nigger'];
 			for (var i=0;i<banWords.length;i++) {
 				if (message.toLowerCase().indexOf(banWords[i]) >= 0) {
 					room.add('|c|'+ user.name+'|'+message);
@@ -203,7 +203,8 @@
 					user.warnCounter++;
 					return false;
 				}
-			}
+			}*/
+
 		}
 
 	},

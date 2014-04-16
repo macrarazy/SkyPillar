@@ -34,8 +34,6 @@ exports.bot = function() {
 			bot.authenticated = true;
 			bot.userid = toUserid(botName);
 			bot.group = '@';
-			bot.money = 1337;
-			bot.status = 'I\'m always watching.';
 
 			// Rooms that bot will join and adding bot user to Users list and
 			// removing the fake user created which already filled its purpose
@@ -114,20 +112,20 @@ var botCommands = {
 			"An annoying person",
 			"A person with a salty personality",
 			"Not me",
-			"StarCraft Pro",
+			"A StarCraft Pro",
 			"Cheater McCheaterson",
-			"Really slow guy",
-			"Coffee Addict",
-			"Diamond League Player",
-			"Grand Master",
-			"Mediocre Player",
+			"A Really slow guy",
+			"A Coffee Addict",
+			"A Diamond League Player",
+			"A Grand Master in chess",
+			"A Mediocre Player",
 			"A guy who works at google"
 		];
 
 		return function(target, room, user) {
 			if (!this.canBroadcast()) return false;
 			var message = unknown[Math.floor(Math.random() * unknown.length)];
-
+			
 			if(target.toLowerCase() === 'creaturephil') return Utilities.botDelay(botName, room, 'An experienced **coder** for pokemon showdown. He has coded for over 5 servers such as kill the noise, moxie, aerdeith, nova, etc. Please follow him on github: https://github.com/CreaturePhil');
 			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other regions, he is consider a God. Respect him or get ban.');
 			if(target.toLowerCase() === 'bot') return Utilities.botDelay(botName, room, 'That\'s me.');
@@ -165,6 +163,11 @@ var botCommands = {
 		if(!global.salt) global.salt = 0;
 		salt++;
 		Utilities.botDelay(botName, room, (salt + '% salty.'));
+	},
+
+	pick: function(target, room, user) {
+		if (!this.canBroadcast()) return false;
+		Utilities.botDelay(botName, room, (target.split(',').map(function (s) { return s.trim(); }).randomize()[0]));
 	},
 };
 

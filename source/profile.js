@@ -21,7 +21,7 @@ var Profile = {
 
 	elo: function (user) {
 		io.stdinNumber('db/elo.csv', user, 'elo');
-		if (user.elo === 0 || isNaN(user.elo)) {
+		if (user.elo === 0) {
 			user.elo = 1000;
 		}
 		return ' | Elo Ranking: ' + Math.round(user.elo) + '<br/>';
@@ -71,7 +71,7 @@ var cmds = {
 
 	    var display = Profile.avatar(targetUser, height) + Profile.name(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.elo(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
 	  
-	    if (!targetUser.authenticated) {
+	    if (!targetUser.authenticated && targetUser.isAway === false) {
 	        display = Profile.avatar(targetUser, height) + Profile.unregisteredName(targetUser) + Profile.views(targetUser) + '<hr>' + Profile.rank(targetUser) + Profile.elo(targetUser) + Profile.money(targetUser) + Profile.tourWins(targetUser) + Profile.status(targetUser) + Profile.statusTime(targetUser);
 	        return this.sendReplyBox(display);
 	    } else if (typeof (targetUser.avatar) === typeof ('')) {
