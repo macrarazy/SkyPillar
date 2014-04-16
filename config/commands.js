@@ -642,8 +642,8 @@ var commands = exports.commands = {
 		if (!this.canBroadcast()) return;
 		this.sendReplyBox('Pokemon Showdown is open source:<br />'+
 			'- Language: JavaScript (Node.js)<br />'+
-			'- <a href="https://github.com/kupochu/Pokemon-Showdown">TBT\'s Source Code</a><br />'+
-			'- <a href="https://github.com/kupochu/Pokemon-Showdown/commits/master">TBT\'s latest updates</a><br />'+
+			'- <a href="https://github.com/Kill-The-Noise/Kill-The-Noise/">KTN\'s Source Code</a><br />'+
+			'- <a href="https://github.com/Kill-The-Noise/Kill-The-Noise/commits/master">KTN\'s latest updates</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown/commits/master">What\'s new with main?</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown">Main Server source code</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown-Client">Client source code</a>');
