@@ -643,8 +643,8 @@ var commands = exports.commands = {
 		if (!this.canBroadcast()) return;
 		this.sendReplyBox('Pokemon Showdown is open source:<br />'+
 			'- Language: JavaScript (Node.js)<br />'+
-			'- <a href="https://github.com/kupochu/Pokemon-Showdown">TBT\'s Source Code</a><br />'+
-			'- <a href="https://github.com/kupochu/Pokemon-Showdown/commits/master">TBT\'s latest updates</a><br />'+
+			'- <a href="https://github.com/Kill-The-Noise/Kill-The-Noise/">KTN\'s Source Code</a><br />'+
+			'- <a href="https://github.com/Kill-The-Noise/Kill-The-Noise/commits/master">KTN\'s latest updates</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown/commits/master">What\'s new with main?</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown">Main Server source code</a><br />'+
 			'- <a href="https://github.com/Zarel/Pokemon-Showdown-Client">Client source code</a>');
@@ -1088,6 +1088,7 @@ var commands = exports.commands = {
 	},
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	/*********************************************************
 	 * Custom commands
@@ -1319,6 +1320,9 @@ var commands = exports.commands = {
 	},
 
 >>>>>>> upstream/master
+=======
+
+>>>>>>> fbbbf6c9eb5f9385ccd12a1efb2c601b3b48edb0
 	spam: 'spamroom',
 	spamroom: function (target, room, user) {
 		if (!target) return this.sendReply("Please specify a user.");
