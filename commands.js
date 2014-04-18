@@ -449,8 +449,9 @@ var commands = exports.commands = {
 		buffer.mods = buffer.mods.join(', ');
 		buffer.drivers = buffer.drivers.join(', ');
 		buffer.voices = buffer.voices.join(', ');
-		connection.popup('Administrators: \n--------------------\n' + buffer.admins + '\n\nLeaders:\n-------------------- \n' + buffer.leaders + '\n\nModerators:\n-------------------- \n' + buffer.mods + '\n\nDrivers: \n--------------------\n' + buffer.drivers + '\n\nVoices:\n-------------------- \n' + buffer.voices);
 		this.sendReply(process.hrtime(t1));
+		connection.popup('Administrators: \n--------------------\n' + buffer.admins + '\n\nLeaders:\n-------------------- \n' + buffer.leaders + '\n\nModerators:\n-------------------- \n' + buffer.mods + '\n\nDrivers: \n--------------------\n' + buffer.drivers + '\n\nVoices:\n-------------------- \n' + buffer.voices);
+		
 	},
 
 
