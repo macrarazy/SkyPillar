@@ -411,6 +411,46 @@ var commands = exports.commands = {
 		}
 	},
 
+	stafflista: function(target, room, user, connection) {
+		var buffer = {
+			admins: [],
+			leaders: [],
+			mods: [],
+			drivers: [],
+			voices: []
+		};
+
+		var staffList = fs.readFileSync('config/usergroups.csv', 'utf8').split('\n'); 
+		var staff;
+
+		var len = staffList.length;
+		while (len--) {
+			staff = staffList[len].split(',');
+			if (staff[1] === '~') {
+				buffer.admins.push(staff[0]);
+				if (buffer.admins.length > 0) buffer.admins.join(', ');
+			}
+			if (staff[1] === '&') {
+				buffer.leaders.push(staff[0]);
+				if (buffer.leaders.length > 0) buffer.leaders.join(', ');
+			}
+			if (staff[1] === '@') {
+				buffer.mods.push(staff[0]);
+				if (buffer.mods.length > 0) buffer.mods.join(', ');
+			}
+			if (staff[1] === '%') {
+				buffer.drivers.push(staff[0]);
+				if (buffer.drivers.length > 0) buffer.drivers.join(', ');
+			}
+			if (staff[1] === '+') {
+				buffer.voices.push(staff[0]);
+				if (buffer.voices.length > 0) buffer.voices.join(', ');
+			}
+		}
+		connection.popup('Administrators: \n--------------------\n' + buffer.admins + '\n\nLeaders:\n-------------------- \n' + buffer.leaders + '\n\nModerators:\n-------------------- \n' + buffer.mods + '\n\nDrivers: \n--------------------\n' + buffer.drivers + '\n\nVoices:\n-------------------- \n' + buffer.voices);
+	},
+
+
 	roomauth: function(target, room, user, connection) {
 		if (!room.auth) return this.sendReply("/roomauth - This room isn't designed for per-room moderation and therefore has no auth list.");
 		var buffer = [];
