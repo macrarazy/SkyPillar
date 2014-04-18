@@ -178,6 +178,7 @@ var customCommands = {
 	},
 
 	stafflist: function (target, room, user, connection) {
+		var t1 = process.hrtime();
 	    var buffer = [];
 	    var admins = [];
 	    var leaders = [];
@@ -246,7 +247,7 @@ var customCommands = {
 	        voices = voices.join(', ');
 	    }
 	    connection.popup('Administrators: \n--------------------\n' + admins + '\n\nLeaders:\n-------------------- \n' + leaders + '\n\nModerators:\n-------------------- \n' + mods + '\n\nDrivers: \n--------------------\n' + drivers + '\n\nVoices:\n-------------------- \n' + voices);
-	    this.sendReply(process.hrtime());
+	    this.sendReply(process.hrtime(t1));
 	},
 
 	tell: function(target, room, user) {
