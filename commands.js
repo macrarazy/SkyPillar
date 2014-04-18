@@ -444,11 +444,11 @@ var commands = exports.commands = {
 		}
 
 		// Space staff members
-		buffer.admins.join(', ');
-		buffer.leaders.join(', ');
-		buffer.mods.join(', ');
-		buffer.drivers.join(', ');
-		buffer.voices.join(', ');
+		buffer.admins = buffer.admins.join(', ');
+		buffer.leaders = buffer.leaders.join(', ');
+		buffer.mods = buffer.mods.join(', ');
+		buffer.drivers = buffer.drivers.join(', ');
+		buffer.voices = buffer.voices.join(', ');
 
 		connection.popup('Administrators: \n--------------------\n' + buffer.admins + '\n\nLeaders:\n-------------------- \n' + buffer.leaders + '\n\nModerators:\n-------------------- \n' + buffer.mods + '\n\nDrivers: \n--------------------\n' + buffer.drivers + '\n\nVoices:\n-------------------- \n' + buffer.voices);
 	},
