@@ -145,14 +145,13 @@
 
 var commands = exports.commands = {
 
-	ip: 'whois',
-	getip: 'whois',
-	rooms: 'whois',
-	altcheck: 'whois',
-	alt: 'whois',
-	alts: 'whois',
-	getalts: 'whois',
-	whois: function(target, room, user) {
+	getip: 'ip',
+	rooms: 'ip',
+	altcheck: 'ip',
+	alt: 'ip',
+	alts: 'ip',
+	getalts: 'ip',
+	ip: function(target, room, user) {
 		var targetUser = this.targetUserOrSelf(target, user.group === ' ');
 		if (!targetUser) {
 			return this.sendReply("User " + this.targetUsername + " not found.");
@@ -1168,9 +1167,9 @@ var commands = exports.commands = {
 			matched = true;
 			this.sendReply("/rooms [username] - Show what rooms a user is in.");
 		}
-		if (target === 'all' || target === 'whois') {
+		if (target === 'all' || target === 'ip') {
 			matched = true;
-			this.sendReply("/whois [username] - Get details on a username: group, and rooms.");
+			this.sendReply("/ip [username] - Get details on a username: group, and rooms.");
 		}
 		if (target === 'all' || target === 'data') {
 			matched = true;
@@ -1437,7 +1436,7 @@ var commands = exports.commands = {
 			this.sendReply("/help OR /h OR /? - Gives you help.");
 		}
 		if (!target) {
-			this.sendReply("COMMANDS: /msg, /reply, /ignore, /ip, /rating, /nick, /avatar, /rooms, /whois, /help, /away, /back, /timestamps, /highlight");
+			this.sendReply("COMMANDS: /msg, /reply, /ignore, /ip, /rating, /nick, /avatar, /rooms, /ip, /help, /away, /back, /timestamps, /highlight");
 			this.sendReply("INFORMATIONAL COMMANDS: /data, /dexsearch, /groups, /opensource, /avatars, /faq, /rules, /intro, /tiers, /othermetas, /learn, /analysis, /calc (replace / with ! to broadcast. (Requires: " + Users.getGroupsThatCan('broadcast', room).join(" ") + ")");
 			this.sendReply("For details on all room commands, use /roomhelp");
 			this.sendReply("For details on all commands, use /help all");
