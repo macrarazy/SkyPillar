@@ -428,25 +428,28 @@ var commands = exports.commands = {
 			staff = staffList[len].split(',');
 			if (staff[1] === '~') {
 				buffer.admins.push(staff[0]);
-				if (buffer.admins.length > 0) buffer.admins.join(', ');
 			}
 			if (staff[1] === '&') {
 				buffer.leaders.push(staff[0]);
-				if (buffer.leaders.length > 0) buffer.leaders.join(', ');
 			}
 			if (staff[1] === '@') {
 				buffer.mods.push(staff[0]);
-				if (buffer.mods.length > 0) buffer.mods.join(', ');
 			}
 			if (staff[1] === '%') {
 				buffer.drivers.push(staff[0]);
-				if (buffer.drivers.length > 0) buffer.drivers.join(', ');
 			}
 			if (staff[1] === '+') {
 				buffer.voices.push(staff[0]);
-				if (buffer.voices.length > 0) buffer.voices.join(', ');
 			}
 		}
+
+		// Space staff members
+		buffer.admins.join(', ');
+		buffer.leaders.join(', ');
+		buffer.mods.join(', ');
+		buffer.drivers.join(', ');
+		buffer.voices.join(', ');
+
 		connection.popup('Administrators: \n--------------------\n' + buffer.admins + '\n\nLeaders:\n-------------------- \n' + buffer.leaders + '\n\nModerators:\n-------------------- \n' + buffer.mods + '\n\nDrivers: \n--------------------\n' + buffer.drivers + '\n\nVoices:\n-------------------- \n' + buffer.voices);
 	},
 
