@@ -114,7 +114,7 @@ var customCommands = {
 		];
 
 		return function(target, room, user) {
-			if (config.poofOff) return this.sendReply("Poof is currently disabled.");
+			if (Config.poofOff) return this.sendReply("Poof is currently disabled.");
 			if (target && !this.can('broadcast')) return false;
 			if (room.id !== 'lobby') return false;
 			var message = target || messages[Math.floor(Math.random() * messages.length)];
@@ -621,10 +621,10 @@ var customCommands = {
 			return this.parse('/help msg');
 		}
 
-		if (config.modchat.pm) {
+		if (Config.modchat.pm) {
 			var userGroup = user.group;
-			if (config.groups.bySymbol[userGroup].globalRank < config.groups.bySymbol[config.modchat.pm].globalRank) {
-				var groupName = config.groups.bySymbol[config.modchat.pm].name || config.modchat.pm;
+			if (Config.groups.bySymbol[userGroup].globalRank < Config.groups.bySymbol[Config.modchat.pm].globalRank) {
+				var groupName = Config.groups.bySymbol[Config.modchat.pm].name || Config.modchat.pm;
 				this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to PM users.");
 				return false;
 			}
@@ -640,7 +640,7 @@ var customCommands = {
 			if (!targetUser.can('lock')) {
 				return this.popupReply("This user is blocking Private Messages right now.");
 			} else if (targetUser.can('hotpatch')) {
-				return this.popupReply("This " + (config.groups.bySymbol[targetUser.group].name || "Administrator") + " is too busy to answer Private Messages right now. Please contact a different staff member.");
+				return this.popupReply("This " + (Config.groups.bySymbol[targetUser.group].name || "Administrator") + " is too busy to answer Private Messages right now. Please contact a different staff member.");
 			}
 		}
 
@@ -670,11 +670,11 @@ var customCommands = {
 	hide: 'hideauth',
 	hideauth: function(target, room, user) {
 		if (!this.can('hideauth')) return false;
-		target = target || config.groups.default.global;
-		if (!config.groups.global[target]) {
-			target = config.groups.default.global;
+		target = target || Config.groups.default.global;
+		if (!Config.groups.global[target]) {
+			target = Config.groups.default.global;
 			this.sendReply("You have picked an invalid group, defaulting to '" + target + "'.");
-		} else if (config.groups.bySymbol[target].globalRank >= config.groups.bySymbol[user.group].globalRank)
+		} else if (Config.groups.bySymbol[target].globalRank >= Config.groups.bySymbol[user.group].globalRank)
 			return this.sendReply("The group you have chosen is either your current group OR one of higher rank. You cannot hide like that.");
 
 		user.getIdentity = function (roomid) {
