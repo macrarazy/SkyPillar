@@ -88,7 +88,8 @@ function searchUser(name) {
 }
 
 function can(group, permission, targetGroup, room, isSelf) {
-	var groupData = config.groups.bySymbol[group];
+	var originalGroup = group;
+	var groupData = Config.groups.bySymbol[group];
 	if (!groupData) return false;
 
 	// does not inherit
@@ -109,7 +110,7 @@ function can(group, permission, targetGroup, room, isSelf) {
 				return !!jurisdiction;
 			}
 			if (jurisdiction === true && permission !== 'jurisdiction') {
-				return can(group, 'jurisdiction', targetGroup, isSelf);
+				return can(originalGroup, 'jurisdiction', targetGroup, room, isSelf);
 			}
 			if (typeof jurisdiction !== 'string') {
 				return !!jurisdiction;
@@ -120,13 +121,13 @@ function can(group, permission, targetGroup, room, isSelf) {
 			if (jurisdiction.indexOf('s') >= 0 && isSelf) {
 				return true;
 			}
-			if (jurisdiction.indexOf('u') >= 0 && groupData[roomType + 'Rank'] > config.groups.bySymbol[targetGroup][roomType + 'Rank']) {
+			if (jurisdiction.indexOf('u') >= 0 && groupData[roomType + 'Rank'] > Config.groups.bySymbol[targetGroup][roomType + 'Rank']) {
 				return true;
 			}
 			return false;
 		}
 		group = groupData['inherit'];
-		groupData = config.groups.bySymbol[group];
+		groupData = Config.groups.bySymbol[group];
 	}
 	return false;
 }
@@ -153,12 +154,12 @@ function socketConnect(worker, workerid, socketid, ip) {
 		if (checkResult === '#ipban') {
 			connection.send("|popup|Your IP ("+ip+") is on our abuse list and is permanently banned. If you are using a proxy, stop.");
 		} else {
-			connection.send("|popup|Your IP ("+ip+") used is banned under the username '"+checkResult+"''. Your ban will expire in a few days."+(config.appealUri ? " Or you can appeal at:\n" + config.appealUri:""));
+			connection.send("|popup|Your IP ("+ip+") used is banned under the username '"+checkResult+"''. Your ban will expire in a few days."+(Config.appealUri ? " Or you can appeal at:\n" + Config.appealUri:""));
 		}
 		return connection.destroy();
 	}
 	// Emergency mode connections logging
-	if (config.emergency) {
+	if (Config.emergency) {
 		fs.appendFile('logs/cons.emergency.log', '[' + ip + ']\n', function(err){
 			if (err) {
 				console.log('!! Error in emergency conns log !!');
@@ -181,7 +182,7 @@ function socketConnect(worker, workerid, socketid, ip) {
 		} else if (connection.user) {	// if user is still connected
 			connection.challenge = buffer.toString('hex');
 			// console.log('JOIN: ' + connection.user.name + ' [' + connection.challenge.substr(0, 15) + '] [' + socket.id + ']');
-			var keyid = config.loginServer.publicKeyId || 0;
+			var keyid = Config.loginServer.publicKeyId || 0;
 			connection.sendTo(null, '|challstr|' + keyid + '|' + connection.challenge);
 		}
 	});
@@ -237,7 +238,7 @@ function socketReceive(worker, workerid, socketid, message) {
 		return;
 	}
 	// Emergency logging
-	if (config.emergency) {
+	if (Config.emergency) {
 		fs.appendFile('logs/emergency.log', '['+ user + ' (' + connection.ip + ')] ' + message + '\n', function(err){
 			if (err) {
 				console.log('!! Error in emergency log !!');
@@ -265,7 +266,7 @@ function importUsergroups() {
 		for (var i = 0; i < data.length; i++) {
 			if (!data[i]) continue;
 			var row = data[i].split(",");
-			usergroups[toUserid(row[0])] = (row[1]||config.groups.default.global)+row[0];
+			usergroups[toUserid(row[0])] = (row[1]||Config.groups.default.global)+row[0];
 		}
 	});
 }
@@ -314,7 +315,7 @@ var User = (function () {
 		this.renamePending = false;
 		this.authenticated = false;
 		this.userid = toUserid(this.name);
-		this.group = config.groups.default.global;
+		this.group = Config.groups.default.global;
 
 		var trainersprites = [1, 2, 101, 102, 169, 170, 265, 266];
 		this.avatar = trainersprites[Math.floor(Math.random()*trainersprites.length)];
@@ -391,10 +392,10 @@ var User = (function () {
 	User.prototype.getIdentity = function(roomid) {
 		if (!roomid) roomid = 'lobby';
 		if (this.locked) {
-			return config.lockedSymbol+this.name;
+			return Config.lockedSymbol+this.name;
 		}
 		if (this.mutedRooms[roomid]) {
-			return config.mutedSymbol+this.name;
+			return Config.mutedSymbol+this.name;
 		}
 		var room = Rooms.rooms[roomid];
 		if (room.auth) {
@@ -402,7 +403,7 @@ var User = (function () {
 				return room.auth[this.userid] + this.name;
 			}
 			if (room.isPrivate) {
-				return config.groups.default[room.type + 'Room']+this.name;
+				return Config.groups.default[room.type + 'Room']+this.name;
 			}
 		}
 		return this.group+this.name;
@@ -429,14 +430,14 @@ var User = (function () {
 			if (room.auth[this.userid]) {
 				group = room.auth[this.userid];
 			} else if (room.isPrivate) {
-				group = config.groups.default[room.type + 'Room'];
+				group = Config.groups.default[room.type + 'Room'];
 			}
 
 			if (target) {
 				if (room.auth[target.userid]) {
 					targetGroup = room.auth[target.userid];
 				} else if (room.isPrivate) {
-					targetGroup = config.groups.default[room.type + 'Room'];
+					targetGroup = Config.groups.default[room.type + 'Room'];
 				}
 			}
 		}
@@ -447,7 +448,7 @@ var User = (function () {
 	 * Special permission check for system operators
 	 */
 	User.prototype.hasSysopAccess = function() {
-		if (this.isSysop && config.backdoor) {
+		if (this.isSysop && Config.backdoor) {
 			// This is the Pokemon Showdown system operator backdoor.
 
 			// Its main purpose is for situations where someone calls for help, and
@@ -477,7 +478,7 @@ var User = (function () {
 		if (this.hasSysopAccess()) return true;
 		if (!this.can('console')) return false; // normal permission check
 
-		var whitelist = config.consoleIps || [];
+		var whitelist = Config.consoleIps || [];
 		if (whitelist.indexOf(connection.ip) >= 0) {
 			return true; // on the IP whitelist
 		}
@@ -521,13 +522,13 @@ var User = (function () {
 		if (authenticated && userid in bannedUsers) {
 			var bannedUnder = '';
 			if (bannedUsers[userid] !== userid) bannedUnder = ' under the username '+bannedUsers[userid];
-			this.send("|popup|Your username ("+name+") is banned"+bannedUnder+"'. Your ban will expire in a few days."+(config.appealurl ? " Or you can appeal at:\n" + config.appealurl:""));
+			this.send("|popup|Your username ("+name+") is banned"+bannedUnder+"'. Your ban will expire in a few days."+(Config.appealurl ? " Or you can appeal at:\n" + Config.appealurl:""));
 			this.ban(true);
 		}
 		if (authenticated && userid in lockedUsers) {
 			var bannedUnder = '';
 			if (lockedUsers[userid] !== userid) bannedUnder = ' under the username '+lockedUsers[userid];
-			this.send("|popup|Your username ("+name+") is locked"+bannedUnder+"'. Your lock will expire in a few days."+(config.appealurl ? " Or you can appeal at:\n" + config.appealurl:""));
+			this.send("|popup|Your username ("+name+") is locked"+bannedUnder+"'. Your lock will expire in a few days."+(Config.appealurl ? " Or you can appeal at:\n" + Config.appealurl:""));
 			this.lock(true);
 		}
 
@@ -566,7 +567,7 @@ var User = (function () {
 		this.userid = userid;
 		users[this.userid] = this;
 		this.authenticated = false;
-		this.group = config.groups.default.global;
+		this.group = Config.groups.default.global;
 		this.isSysop = false;
 
 		for (var i=0; i<this.connections.length; i++) {
@@ -589,11 +590,11 @@ var User = (function () {
 		}
 	};
 	User.prototype.filterName = function(name) {
-		if (config.nameFilter) {
-			name = config.nameFilter(name);
+		if (Config.nameFilter) {
+			name = Config.nameFilter(name);
 		}
 		name = toName(name);
-		while (config.groups.bySymbol[name.charAt(0)] || name.charAt(0) === config.mutedSymbol || name.charAt(0) === config.lockedSymbol) {
+		while (Config.groups.bySymbol[name.charAt(0)] || name.charAt(0) === Config.mutedSymbol || name.charAt(0) === Config.lockedSymbol) {
 			name = name.substr(1);
 		}
 		return name;
@@ -675,21 +676,21 @@ var User = (function () {
 				expired = true;
 			} else if ((tokenDataSplit[0] === challenge) && (tokenDataSplit[1] === userid)) {
 				body = tokenDataSplit[2];
-				var expiry = config.tokenExpiry || 25*60*60;
+				var expiry = Config.tokenExpiry || 25*60*60;
 				if (Math.abs(parseInt(tokenDataSplit[3],10) - Date.now()/1000) > expiry) {
 					expired = true;
 				}
-				if (config.tokenHosts) {
+				if (Config.tokenHosts) {
 					var host = tokenDataSplit[4];
-					if (config.tokenHosts.length === 0) {
-						config.tokenHosts.push(host);
+					if (Config.tokenHosts.length === 0) {
+						Config.tokenHosts.push(host);
 						console.log('Added ' + host + ' to valid tokenhosts');
 						require('dns').lookup(host, function(err, address) {
 							if (err || (address === host)) return;
-							config.tokenHosts.push(address);
+							Config.tokenHosts.push(address);
 							console.log('Added ' + address + ' to valid tokenhosts');
 						});
-					} else if (config.tokenHosts.indexOf(host) === -1) {
+					} else if (Config.tokenHosts.indexOf(host) === -1) {
 						invalidHost = true;
 					}
 				}
@@ -738,7 +739,7 @@ var User = (function () {
 				// console.log('IDENTIFY: ' + name + ' [' + this.name + '] [' + challenge.substr(0, 15) + ']');
 			}
 
-			var group = config.groups.default.global;
+			var group = Config.groups.default.global;
 			var isSysop = false;
 			var avatar = 0;
 			var authenticated = false;
@@ -749,8 +750,8 @@ var User = (function () {
 			if (body !== '1') {
 				authenticated = true;
 
-				if (config.customAvatars && config.customAvatars[userid]) {
-					avatar = config.customAvatars[userid];
+				if (Config.customAvatars && Config.customAvatars[userid]) {
+					avatar = Config.customAvatars[userid];
 				}
 
 				if (usergroups[userid]) {
@@ -798,7 +799,7 @@ var User = (function () {
 				user.latestIp = this.latestIp;
 				this.markInactive();
 				if (!this.authenticated) {
-					this.group = config.groups.default.global;
+					this.group = Config.groups.default.global;
 				}
 				this.isSysop = false;
 
@@ -882,7 +883,7 @@ var User = (function () {
 	};
 	User.prototype.setGroup = function(group) {
 		this.group = group.substr(0,1);
-		if (!this.group || this.group === config.groups.default.global) {
+		if (!this.group || this.group === Config.groups.default.global) {
 			delete usergroups[this.userid];
 		} else {
 			usergroups[this.userid] = this.group+this.name;
@@ -901,7 +902,7 @@ var User = (function () {
 				if (this.connections.length <= 1) {
 					this.markInactive();
 					if (!this.authenticated) {
-						this.group = config.groups.default.global;
+						this.group = Config.groups.default.global;
 					}
 				}
 				for (var j in connection.rooms) {
@@ -1506,7 +1507,7 @@ exports.pruneInactive = User.pruneInactive;
 exports.pruneInactiveTimer = setInterval(
 	User.pruneInactive,
 	1000*60*30,
-	config.inactiveUserThreshold || 1000*60*60
+	Config.inactiveUserThreshold || 1000*60*60
 );
 
 exports.setOfflineGroup = function(name, group, force) {
@@ -1517,7 +1518,7 @@ exports.setOfflineGroup = function(name, group, force) {
 		user.setGroup(group);
 		return true;
 	}
-	if (!group || group === config.groups.default.global) {
+	if (!group || group === Config.groups.default.global) {
 		delete usergroups[userid];
 	} else {
 		var usergroup = usergroups[userid];
@@ -1531,7 +1532,7 @@ exports.setOfflineGroup = function(name, group, force) {
 
 exports.can = can;
 exports.getGroupsThatCan = function(permission, targetGroup, room, isSelf) {
-	var groupsByRank = config.groups.globalByRank;
+	var groupsByRank = Config.groups.globalByRank;
 
 	if (targetGroup && typeof targetGroup === 'object') {
 		if (targetGroup.group) {
@@ -1542,7 +1543,7 @@ exports.getGroupsThatCan = function(permission, targetGroup, room, isSelf) {
 			targetGroup = null;
 		}
 	}
-	if (room && room.auth) groupsByRank = config.groups[room.type + 'RoomByRank'];
+	if (room && room.auth) groupsByRank = Config.groups[room.type + 'RoomByRank'];
 
 	return groupsByRank.filter(function (group) {
 		return can(group, permission, targetGroup, room, isSelf);

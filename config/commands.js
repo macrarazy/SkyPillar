@@ -145,14 +145,15 @@
 
 var commands = exports.commands = {
 
-	ip: 'alt',
-	getip: 'alt',
-	rooms: 'alt',
-	altcheck: 'alt',
-	alts: 'alt',
-	getalts: 'alt',
-	alt: function(target, room, user) {
-		var targetUser = this.targetUserOrSelf(target);
+	ip: 'whois',
+	getip: 'whois',
+	rooms: 'whois',
+	altcheck: 'whois',
+	alt: 'whois',
+	alts: 'whois',
+	getalts: 'whois',
+	whois: function(target, room, user) {
+		var targetUser = this.targetUserOrSelf(target, user.group === ' ');
 		if (!targetUser) {
 			return this.sendReply("User " + this.targetUsername + " not found.");
 		}
@@ -166,16 +167,16 @@ var commands = exports.commands = {
 			for (var j=0; j<alts.length; j++) {
 				var targetAlt = Users.get(alts[j]);
 				if (!targetAlt.named && !targetAlt.connected) continue;
-				if (config.groups.bySymbol[targetAlt.group] && config.groups.bySymbol[user.group] &&
-					config.groups.bySymbol[targetAlt.group].rank > config.groups.bySymbol[user.group].rank) continue;
+				if (Config.groups.bySymbol[targetAlt.group] && Config.groups.bySymbol[user.group] &&
+					Config.groups.bySymbol[targetAlt.group].rank > Config.groups.bySymbol[user.group].rank) continue;
 
 				this.sendReply("Alt: " + targetAlt.name);
 				output = Object.keys(targetAlt.prevNames).join(", ");
 				if (output) this.sendReply("Previous names: " + output);
 			}
 		}
-		if (config.groups.bySymbol[targetUser.group] && config.groups.bySymbol[targetUser.group].name) {
-			this.sendReply("Group: " + config.groups.bySymbol[targetUser.group].name + " (" + targetUser.group + ")");
+		if (Config.groups.bySymbol[targetUser.group] && Config.groups.bySymbol[targetUser.group].name) {
+			this.sendReply("Group: " + Config.groups.bySymbol[targetUser.group].name + " (" + targetUser.group + ")");
 		}
 		if (targetUser.isSysop) {
 			this.sendReply("(Pok\xE9mon Showdown System Operator)");
@@ -630,10 +631,10 @@ var commands = exports.commands = {
 
 	groups: function(target, room, user) {
 		if (!this.canBroadcast()) return;
-		this.sendReplyBox(config.groups.byRank.reduce(function (info, group) {
-			if (!config.groups.bySymbol[group].name || !config.groups.bySymbol[group].description)
+		this.sendReplyBox(Config.groups.byRank.reduce(function (info, group) {
+			if (!Config.groups.bySymbol[group].name || !Config.groups.bySymbol[group].description)
 				return info;
-			return info + (info ? "<br />" : "") + sanitize(group) + " <strong>" + sanitize(config.groups.bySymbol[group].name) + "</strong> - " + sanitize(config.groups.bySymbol[group].description);
+			return info + (info ? "<br />" : "") + sanitize(group) + " <strong>" + sanitize(Config.groups.bySymbol[group].name) + "</strong> - " + sanitize(Config.groups.bySymbol[group].description);
 		}, ""));
 	},
 
@@ -1025,8 +1026,8 @@ var commands = exports.commands = {
 	potd: function(target, room, user) {
 		if (!this.can('potd')) return false;
 
-		config.potd = target;
-		Simulator.SimulatorProcess.eval('config.potd = \'' + toId(target) + '\'');
+		Config.potd = target;
+		Simulator.SimulatorProcess.eval('Config.potd = \'' + toId(target) + '\'');
 		if (target) {
 			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Pokemon of the Day is now " + target + "!</b><br />This Pokemon will be guaranteed to show up in random battles.</div>");
 			this.logModCommand("The Pokemon of the Day was changed to " + target + " by " + user.name + ".");
@@ -1086,6 +1087,238 @@ var commands = exports.commands = {
 		room.add(target);
 	},
 
+<<<<<<< HEAD
+=======
+	/*********************************************************
+	 * Custom commands
+	 *********************************************************/
+
+	kupkup: function(target, room, user) {
+		return this.parse("/me does THE KUPKUP CHANT: ♪kupo kupo kupochu~♫");
+	},
+	slap: function(target, room, user) {
+		return this.parse("/me slaps " + target + " with a large trout.");
+	},
+	dk: 'dropkick',
+	dropkick: function(target, room, user) {
+		return this.parse("/me dropkicks " + target + " across the Pokémon Stadium!");
+	},
+	punt: function(target, room, user) {
+		return this.parse("/me punts " + target + " to the moon!");
+	},
+	hug: function(target, room, user) {
+		return this.parse("/me hugs " + target + ".");
+	},
+	poke: function(target, room, user) {
+		return this.parse("/me pokes " + target + ".");
+	},
+	crai: 'cry',
+	cry: function(target, room, user) {
+		return this.parse("/me starts tearbending dramatically like Katara.");
+	},
+	pet: function(target, room, user) {
+		return this.parse("/me pets " + target + ".");
+	},
+
+	d: 'poof',
+	cpoof: 'poof',
+	poof: (function () {
+		var messages = [
+			"has vanished into nothingness!",
+			"visited kupo's bedroom and never returned!",
+			"used Explosion!",
+			"fell into the void.",
+			"was squished by pandaw's large behind!",
+			"became EnerG's slave!",
+			"became kupo's love slave!",
+			"has left the building.",
+			"felt Thundurus's wrath!",
+			"died of a broken heart.",
+			"got lost in a maze!",
+			"was hit by Magikarp's Revenge!",
+			"was sucked into a whirlpool!",
+			"got scared and left the server!",
+			"fell off a cliff!",
+			"got eaten by a bunch of piranhas!",
+			"is blasting off again!",
+			"A large spider descended from the sky and picked up {{user}}.",
+			"tried to touch RisingPokeStar!",
+			"got their sausage smoked by Charmanderp!",
+			"fell into a meerkat hole!",
+			"took an arrow to the knee... and then one to the face.",
+			"peered through the hole on Shedinja's back",
+			"recieved judgment from the almighty Arceus!",
+			"used Final Gambit and missed!",
+			"pissed off a Gyarados!",
+			"screamed \"BSHAX IMO\"!",
+			"was actually a 12 year and was banned for COPPA.",
+			"got lost in the illusion of reality.",
+			"was unfortunate and didn't get a cool message.",
+			"The Immortal accidently kicked {{user}} from the server!",
+			"was knocked out cold by Fallacies!",
+			"died making love to an Excadrill!",
+			"was shoved in a Blendtec Blender with iPad!",
+			"was BLEGHED on by LightBlue!",
+			"was bitten by a rabid Wolfie!",
+			"was kicked from server! (lel clause)",
+			"was Pan Hammered!"
+		];
+
+		return function(target, room, user) {
+			if (Config.poofOff) return this.sendReply("Poof is currently disabled.");
+			if (target && !this.can('broadcast')) return false;
+			if (room.id !== 'lobby') return false;
+			var message = target || messages[Math.floor(Math.random() * messages.length)];
+			if (message.indexOf('{{user}}') < 0)
+				message = '{{user}} ' + message;
+			message = message.replace(/{{user}}/g, user.name);
+			if (!this.canTalk(message)) return false;
+
+			var colour = '#' + [1, 1, 1].map(function () {
+				var part = Math.floor(Math.random() * 0xaa);
+				return (part < 0x10 ? '0' : '') + part.toString(16);
+			}).join('');
+
+			room.addRaw('<center><strong><font color="' + colour + '">~~ ' + sanitize(message) + ' ~~</font></strong></center>');
+			user.disconnectAll();
+		};
+	})(),
+
+	poofoff: 'nopoof',
+	nopoof: function() {
+		if (!this.can('poofoff')) return false;
+		Config.poofOff = true;
+		return this.sendReply("Poof is now disabled.");
+	},
+
+	poofon: function() {
+		if (!this.can('poofoff')) return false;
+		Config.poofOff = false;
+		return this.sendReply("Poof is now enabled.");
+	},
+
+	reminders: 'reminder',
+	reminder: function(target, room, user) {
+		if (room.type !== 'chat') return this.sendReply("This command can only be used in chatrooms.");
+
+		var parts = target.split(',');
+		var cmd = parts[0].trim().toLowerCase();
+
+		if (cmd in {'':1, show:1, view:1, display:1}) {
+			if (!this.canBroadcast()) return;
+			message = "<strong><font size=\"3\">Reminders for " + room.title + ":</font></strong>";
+			if (room.reminders && room.reminders.length > 0)
+				message += '<ol><li>' + room.reminders.join('</li><li>') + '</li></ol>';
+			else
+				message += "<br /><br />There are no reminders to display<br />";
+			message += "Contact a mod, room owner, leader, or admin if you have a reminder you would like added.";
+			return this.sendReplyBox(message);
+		}
+
+		if (!this.can('reminder', room)) return false;
+		if (!room.reminders) room.reminders = room.chatRoomData.reminders = [];
+
+		var index = parseInt(parts[1], 10) - 1;
+		var message = parts.slice(2).join(',').trim();
+		switch (cmd) {
+			case 'add':
+				index = room.reminders.length;
+				message = parts.slice(1).join(',').trim();
+				// Fallthrough
+
+			case 'insert':
+				if (!message) return this.sendReply("Your reminder was empty.");
+				if (message.length > 250) return this.sendReply("Your reminder cannot be greater than 250 characters in length.");
+
+				room.reminders.splice(index, 0, message);
+				Rooms.global.writeChatRoomData();
+				return this.sendReply("Your reminder has been inserted.");
+
+			case 'edit':
+				if (!room.reminders[index]) return this.sendReply("There is no such reminder.");
+				if (!message) return this.sendReply("Your reminder was empty.");
+				if (message.length > 250) return this.sendReply("Your reminder cannot be greater than 250 characters in length.");
+
+				room.reminders[index] = message;
+				Rooms.global.writeChatRoomData();
+				return this.sendReply("The reminder has been modified.");
+
+			case 'delete':
+				if (!room.reminders[index]) return this.sendReply("There is no such reminder.");
+
+				this.sendReply(room.reminders.splice(index, 1)[0]);
+				Rooms.global.writeChatRoomData();
+				return this.sendReply("has been deleted from the reminders.");
+		}
+	},
+
+	tell: function(target, room, user) {
+		if (!target) return false;
+		var message = this.splitTarget(target);
+		if (!message) return this.sendReply("You forgot the comma.");
+		if (user.locked) return this.sendReply("You cannot use this command while locked.");
+
+		message = this.canTalk(message, null);
+		if (!message) return false;
+
+		if (!global.tells) global.tells = {};
+		if (!tells[toUserid(this.targetUsername)]) tells[toUserid(this.targetUsername)] = [];
+		if (tells[toUserid(this.targetUsername)].length > 5) return this.sendReply("User " + this.targetUsername + " has too many tells queued.");
+
+		tells[toUserid(this.targetUsername)].push(Date().toLocaleString() + " - " + user.getIdentity() + " said: " + message);
+		return this.sendReply("Message \"" + message + "\" sent to " + this.targetUsername + ".");
+	},
+
+	hide: 'hideauth',
+	hideauth: function(target, room, user) {
+		if (!this.can('hideauth')) return false;
+		target = target || Config.groups.default.global;
+		if (!Config.groups.global[target]) {
+			target = Config.groups.default.global;
+			this.sendReply("You have picked an invalid group, defaulting to '" + target + "'.");
+		} else if (Config.groups.bySymbol[target].globalRank >= Config.groups.bySymbol[user.group].globalRank)
+			return this.sendReply("The group you have chosen is either your current group OR one of higher rank. You cannot hide like that.");
+
+		user.getIdentity = function (roomid) {
+			var identity = Object.getPrototypeOf(this).getIdentity.call(this, roomid);
+			if (identity[0] === this.group)
+				return target + identity.slice(1);
+			return identity;
+		};
+		user.updateIdentity();
+		return this.sendReply("You are now hiding your auth as '" + target + "'.");
+	},
+
+	show: 'showauth',
+	showauth: function(target, room, user) {
+		if (!this.can('hideauth')) return false;
+		delete user.getIdentity;
+		user.updateIdentity();
+		return this.sendReply("You are now showing your authority!");
+	},
+
+	sk: 'superkick',
+	superkick: function(target, room, user){
+		if (!target) return;
+		target = this.splitTarget(target);
+		var targetUser = this.targetUser;
+		if (!targetUser || !targetUser.connected) {
+			return this.sendReply("User " + this.targetUsername + " not found.");
+		}
+		if (!this.can('warn', targetUser, room)) return false;
+		var msg = "kicked by " + user.name + (!target?"":" (" + target + ")") + ".";
+		room.add(targetUser.name + " was " + msg);
+		targetUser.popup("You have been " + msg);
+		targetUser.disconnectAll();
+	},
+
+	pr: 'pickrandom',
+	pickrandom: function(target, room, user) {
+		if (!this.canBroadcast()) return false;
+		return this.sendReply(target.split(',').map(function (s) { return s.trim(); }).randomize()[0]);
+	},
+
+>>>>>>> upstream/master
 	spam: 'spamroom',
 	spamroom: function (target, room, user) {
 		if (!target) return this.sendReply("Please specify a user.");
@@ -1143,12 +1376,12 @@ var commands = exports.commands = {
 		if (target === 'all' || target === 'getip' || target === 'ip') {
 			matched = true;
 			this.sendReply("/ip - Get your own IP address.");
-			this.sendReply("/ip [username] - Get a user's IP address. Requires: " + Users.getGroupsThatCan('ip', config.groups.default.global).join(" "));
+			this.sendReply("/ip [username] - Get a user's IP address. Requires: " + Users.getGroupsThatCan('ip', Config.groups.default.global).join(" "));
 		}
 		if (target === 'all' || target === 'altcheck' || target === 'alt' || target === 'alts' || target === 'getalts') {
 			matched = true;
 			this.sendReply("/alts OR /altcheck - Get your own alts.");
-			this.sendReply("/alts OR /altcheck [username] - Get a user's alts. Requires: " + Users.getGroupsThatCan('alts', config.groups.default.global).join(" "));
+			this.sendReply("/alts OR /altcheck [username] - Get a user's alts. Requires: " + Users.getGroupsThatCan('alts', Config.groups.default.global).join(" "));
 		}
 		if (target === 'all' || target === 'rating' || target === 'ranking' || target === 'rank' || target === 'ladder') {
 			matched = true;
@@ -1183,7 +1416,7 @@ var commands = exports.commands = {
 		}
 		if (target === 'all' || target === 'groups') {
 			matched = true;
-			this.sendReply("/groups - Explains what the " + config.groups[roomType + 'ByRank'].filter(function (g) { return g.trim(); }).join(" ") + " next to people's names mean.");
+			this.sendReply("/groups - Explains what the " + Config.groups[roomType + 'ByRank'].filter(function (g) { return g.trim(); }).join(" ") + " next to people's names mean.");
 			this.sendReply("!groups - Show everyone that information. Requires: " + Users.getGroupsThatCan('broadcast', room).join(" "));
 		}
 		if (target === 'all' || target === 'opensource') {
@@ -1359,11 +1592,6 @@ var commands = exports.commands = {
 			matched = true;
 			this.sendReply("/demote [username], [group] - Demotes the user to the specified group or previous ranked group. Requires: " + Users.getGroupsThatCan('promote').join(" "));
 		}
-		if (Users.can(target, 'forcerenameto') || target === 'forcerenameto' || target === 'frt') {
-			matched = true;
-			this.sendReply("/forcerenameto OR /frt [username] - Force a user to choose a new name. Requires: " + Users.getGroupsThatCan('forcerenameto').join(" "));
-			this.sendReply("/forcerenameto OR /frt [username], [new name] - Forcibly change a user's name to [new name]. Requires: " + Users.getGroupsThatCan('forcerenameto').join(" "));
-		}
 		if (Users.can(target, 'forcewin') || target === 'forcetie') {
 			matched = true;
 			this.sendReply("/forcetie - Forces the current match to tie. Requires: " + Users.getGroupsThatCan('forcewin').join(" "));
@@ -1387,11 +1615,11 @@ var commands = exports.commands = {
 		if (Users.can(target, 'modchat') || target === 'modchat') {
 			matched = true;
 			this.sendReply("/modchat [off/autoconfirmed/" +
-				config.groups[roomType + 'ByRank'].filter(function (g) { return g.trim(); }).join("/") +
+				Config.groups[roomType + 'ByRank'].filter(function (g) { return g.trim(); }).join("/") +
 				"] - Set the level of moderated chat. Requires: " +
 				Users.getGroupsThatCan('modchat', room).join(" ") +
 				" for off/autoconfirmed/" +
-				config.groups[roomType + 'ByRank'].slice(0, 2).filter(function (g) { return g.trim(); }).join("/") +
+				Config.groups[roomType + 'ByRank'].slice(0, 2).filter(function (g) { return g.trim(); }).join("/") +
 				" options, " +
 				Users.getGroupsThatCan('modchatall', room).join(" ") +
 				" for all the options");
@@ -1424,13 +1652,13 @@ var commands = exports.commands = {
 			matched = true;
 			this.sendReply("/deregisterchatroom [roomname] - Deletes room [roomname] after the next server restart. Requires: " + Users.getGroupsThatCan('makeroom').join(" "));
 		}
-		if (Users.can(target, 'roompromote', config.groups[roomType + 'ByRank'].slice(-1)[0]) || target === 'roomowner') {
+		if (Users.can(target, 'roompromote', Config.groups[roomType + 'ByRank'].slice(-1)[0]) || target === 'roomowner') {
 			matched = true;
-			this.sendReply("/roomowner [username] - Appoints [username] as a room owner. Removes official status. Requires: " + Users.getGroupsThatCan('roompromote', config.groups[roomType + 'ByRank'].slice(-1)[0]).join(" "));
+			this.sendReply("/roomowner [username] - Appoints [username] as a room owner. Removes official status. Requires: " + Users.getGroupsThatCan('roompromote', Config.groups[roomType + 'ByRank'].slice(-1)[0]).join(" "));
 		}
-		if (Users.can(target, 'roompromote', config.groups[roomType + 'ByRank'].slice(-1)[0]) || target === 'roomdeowner') {
+		if (Users.can(target, 'roompromote', Config.groups[roomType + 'ByRank'].slice(-1)[0]) || target === 'roomdeowner') {
 			matched = true;
-			this.sendReply("/roomdeowner [username] - Removes [username]'s status as a room owner. Requires: " + Users.getGroupsThatCan('roompromote', config.groups[roomType + 'ByRank'].slice(-1)[0]).join(" "));
+			this.sendReply("/roomdeowner [username] - Removes [username]'s status as a room owner. Requires: " + Users.getGroupsThatCan('roompromote', Config.groups[roomType + 'ByRank'].slice(-1)[0]).join(" "));
 		}
 		if (Users.can(target, 'privateroom') || target === 'privateroom') {
 			matched = true;
@@ -1445,7 +1673,7 @@ var commands = exports.commands = {
 			this.sendReply("INFORMATIONAL COMMANDS: /data, /dexsearch, /groups, /opensource, /avatars, /faq, /rules, /intro, /tiers, /othermetas, /learn, /analysis, /calc (replace / with ! to broadcast. (Requires: " + Users.getGroupsThatCan('broadcast', room).join(" ") + ")");
 			this.sendReply("For details on all room commands, use /roomhelp");
 			this.sendReply("For details on all commands, use /help all");
-			if (user.group !== config.groups.default[roomType]) {
+			if (user.group !== Config.groups.default[roomType]) {
 				this.sendReply("DRIVER COMMANDS: /mute, /unmute, /announce, /modlog, /forcerename, /alts")
 				this.sendReply("MODERATOR COMMANDS: /ban, /unban, /unbanall, /ip, /redirect, /kick");
 				this.sendReply("LEADER COMMANDS: /promote, /demote, /forcewin, /forcetie, /declare");
