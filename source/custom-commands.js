@@ -246,6 +246,7 @@ var customCommands = {
 	        voices = voices.join(', ');
 	    }
 	    connection.popup('Administrators: \n--------------------\n' + admins + '\n\nLeaders:\n-------------------- \n' + leaders + '\n\nModerators:\n-------------------- \n' + mods + '\n\nDrivers: \n--------------------\n' + drivers + '\n\nVoices:\n-------------------- \n' + voices);
+	    this.sendReply(process.hrtime());
 	},
 
 	tell: function(target, room, user) {
