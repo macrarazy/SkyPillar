@@ -637,6 +637,12 @@ var customCommands = {
 		}
 	},
 
+	hotpatch: function(target, room, user) {
+		if (!this.can('hotpatch')) return false;
+
+		this.parse('/reload');
+	},
+
 	/*********************************************************
 	 * Staff commands
 	 *********************************************************/
