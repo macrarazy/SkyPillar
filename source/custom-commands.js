@@ -880,7 +880,41 @@ var customCommands = {
 			}
 		}
 		this.sendReply(target + ' could not be found.');
-	}
+	},
+
+	e: function(target, room, user, connection, cmd, message) {
+		if (!user.hasConsoleAccess(connection)) {
+			return this.sendReply("/eval - Access denied.");
+		}
+		if (!this.canBroadcast()) return;
+
+		if (!this.broadcasting) this.sendReply('||>> ' + target);
+		try {
+			var battle = room.battle;
+			var me = user;
+			if (target.indexOf('-h') >= 0 || target.indexOf('-help') >= 0) {
+				return this.sendReplyBox('This is a custom eval made by CreaturePhil for easier debugging.<br/>' +
+					'<b>-h</b> OR <b>-help</b>: show all options<br/>' +
+					'<b>-k</b>: object.keys of objects<br/>' +
+					'<b>-r</b>: reads a file<br/>' +
+					'<b>-p</b>: returns the current high-resolution real time in a second and nanoseconds. This is for speed/performance tests.');
+			}
+			if (target.indexOf('-k') >= 0) {
+				target = 'Object.keys(' + target.split('-k ')[1] + ');';
+			}
+			if (target.indexOf('-r') >= 0) {
+				target = 'fs.readFileSync("' + target.split('-r ')[1] + '","utf-8");';
+			}
+			if (target.indexOf('-p') >= 0) {
+				target = 'var time = process.hrtime();' + target.split('-p')[1] + 'var diff = process.hrtime(time);this.sendReply("|raw|<b>High-Resolution Real Time Benchmark:</b><br/>"+"Seconds: "+(diff[0] + diff[1] * 1e-9)+"<br/>Nanoseconds: " + (diff[0] * 1e9 + diff[1]));';
+			}
+			this.sendReply('||<< ' + eval(target));
+		} catch (e) {
+			this.sendReply('||<< error: ' + e.message);
+			var stack = '||' + ('' + e.stack).replace(/\n/g,'\n||');
+			connection.sendTo(room, stack);
+		}
+	},
 	
 };
 
