@@ -2,7 +2,6 @@
  * Utilities.js
  *
  * This is where extraneous and important functions are stored.
- * In addition to globals.
  *
  */
 
@@ -214,10 +213,3 @@
 	}
 
 };
-
-// Global Variables
-
-// Shortcut for using Object.keys
-global.k = function(o) {
-	return Object.keys(o);
-}
