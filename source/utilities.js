@@ -1,5 +1,6 @@
 /*
  * Utilities.js
+ * Created by CreaturePhil
  *
  * This is where extraneous and important functions are stored.
  *
