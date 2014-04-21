@@ -238,6 +238,141 @@ var customCommands = {
 		return this.sendReply("Message \"" + message + "\" sent to " + this.targetUsername + ".");
 	},
 
+	atm: 'profile',
+	profile: function (target, room, user, connection) {
+	    if (!this.canBroadcast()) return;
+
+	    if (target.length >= 19) {
+	    	return this.sendReply('Usernames are required to be less than 19 characters long.');
+	    }
+
+	    var targetUser = this.targetUserOrSelf(target);
+	    var name = '';
+	    if (!targetUser) {
+	    	name = toUserid(target);
+	    } else {
+	    	name = targetUser.userid;
+	    }
+	    var avatar = Utilities.findAvatar(name);
+	    var group = Utilities.stdin('usergroups.csv', name);
+	    var status = Utilities.stdin('db/status.csv', name);
+
+		var util = require("util");
+		var http = require("http");
+
+		var options = {
+		    host: "www.pokemonshowdown.com",
+		    port: 80,
+		    path: "/forum/~" + name
+		};
+
+		var content = "";
+		var self = this;
+
+		if (!targetUser) {
+			if (typeof(avatar) === typeof('')) {
+				avatar = 'http://192.184.93.98:8000/avatars/' + avatar;
+			} else {
+				avatar = 'http://play.pokemonshowdown.com/sprites/trainers/168.png';
+			}
+			if (group === ' ') {
+				group = 'Regular User';
+			} else {
+				group = Config.groups.bySymbol[group].name;
+			}
+			if (status === ' ') {
+				status = 'This user hasn\'t set their status yet.';
+			}
+
+			var lastOnline = Number(Utilities.stdin('db/lastOnline.csv', name));
+			if (lastOnline === Number(' ')) {
+				lastOnline = ' Never';
+			} else if (Math.floor((Date.now()-lastOnline)*0.001) < 60) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*0.001) + ' seconds ago';
+			} else if (Math.floor((Date.now()-lastOnline)*1.6667e-5) < 120) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*1.6667e-5) + ' minutes ago'; 
+			} else if (Math.floor((Date.now()-lastOnline)*2.7778e-7) < 48) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*2.7778e-7) + ' hours ago';
+			} else {
+				lastOnline = (Math.floor((Date.now()-lastOnline)*2.7778e-7)/24) + ' days ago';
+			}
+		} else {
+			if (targetUser.group === ' ') {
+				Config.groups.bySymbol[targetUser.group].name = 'Regular User';
+			}
+			if (targetUser.status === '' || targetUser.status === '""') {
+				targetUser.status = 'This user hasn\'t set their status yet.';
+			}
+			var lastOnline = Number(Utilities.stdin('db/lastOnline.csv', name));
+			if (Math.floor((Date.now()-lastOnline)*0.001) < 60) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*0.001) + ' seconds ago';
+			} else if (Math.floor((Date.now()-lastOnline)*1.6667e-5) < 120) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*1.6667e-5) + ' minutes ago'; 
+			} else if (Math.floor((Date.now()-lastOnline)*2.7778e-7) < 48) {
+				lastOnline = Math.floor((Date.now()-lastOnline)*2.7778e-7) + ' hours ago';
+			} else {
+				lastOnline = (Math.floor((Date.now()-lastOnline)*2.7778e-7)/24) + ' days ago';
+			}
+			if (targetUser.connected === true) {
+				lastOnline = '<font color="green">Currently Online</font>';
+			}
+			io.stdinNumber('db/money.csv', user, 'money');
+			io.stdinString('db/status.csv', user, 'status');
+			io.stdinString('db/statusTime.csv', user, 'statusTime');
+		}
+
+		var req = http.request(options, function (res) {
+		    res.setEncoding("utf8");
+		    res.on("data", function (chunk) {
+		        content += chunk;
+		    });
+		    res.on("end", function () {
+		        content = content.split("<em");
+		        if (content[1]) {
+		            content = content[1].split("</p>");
+		            if (content[0]) {
+		                content = content[0].split("</em>");
+		                if (content[1]) {
+		                	if (!targetUser) {
+		                		self.sendReplyBox('<img src="' + avatar + '" height="80" width="80" align="left">' + '&nbsp;<strong><font color="#24678d">Name:</font></strong> ' + target + '<br />' + '&nbsp;<strong><font color="#24678d">Registered:</font></strong>' + content[1] + '<br/>' + '&nbsp;<strong><font color="#24678d">Rank:</font></strong> ' + group + '<br/>' + '&nbsp;<strong><font color="#24678d">Money:</font></strong> ' + Utilities.stdin('db/money.csv', name) + '<br/>' + '&nbsp;<strong><font color="#24678d">Last Online:</font></strong> ' + lastOnline + '<br/>' + '&nbsp;<strong><font color="#24678d">Status:</font></strong> "' + status + '" <font color="gray">' + Utilities.stdin('db/statusTime.csv', name) + '</font><br clear="all" />');
+		                	} else if (targetUser.authenticated === true && typeof(targetUser.avatar) === typeof('')) {
+		                		self.sendReplyBox('<img src="http://192.184.93.98:8000/avatars/' + targetUser.avatar + '" height="80" width="80" align="left">' + '&nbsp;<strong><font color="#24678d">Name:</font></strong> ' + targetUser.name + '<br />' + '&nbsp;<strong><font color="#24678d">Registered:</font></strong>' + content[1] + '<br/>' + '&nbsp;<strong><font color="#24678d">Rank:</font></strong> ' + Config.groups.bySymbol[targetUser.group].name + '<br/>' + '&nbsp;<strong><font color="#24678d">Money:</font></strong> ' + targetUser.money + '<br/>' + '&nbsp;<strong><font color="#24678d">Last Online:</font></strong> ' + lastOnline + '<br/>' + '&nbsp;<strong><font color="#24678d">Status:</font></strong> "' + targetUser.status + '" <font color="gray">' + targetUser.statusTime + '</font><br clear="all" />');
+		                    } else {
+		                    	self.sendReplyBox('<img src="http://play.pokemonshowdown.com/sprites/trainers/' + targetUser.avatar + '.png" height="80" width="80" align="left">' + '&nbsp;<strong><font color="#24678d">Name:</font></strong> ' + targetUser.name + '<br />' + '&nbsp;<strong><font color="#24678d">Registered:</font></strong>' + content[1] + '<br/>' + '&nbsp;<strong><font color="#24678d">Rank:</font></strong> ' + Config.groups.bySymbol[targetUser.group].name + '<br/>' + '&nbsp;<strong><font color="#24678d">Money:</font></strong> ' + targetUser.money + '<br/>' + '&nbsp;<strong><font color="#24678d">Last Online:</font></strong> ' + lastOnline + '<br/>' + '&nbsp;<strong><font color="#24678d">Status:</font></strong> "' + targetUser.status + '" <font color="gray">' + targetUser.statusTime + '</font><br clear="all" />');
+		                    }
+		                }
+		            }
+		        } else {
+		        	if (!targetUser) {
+		        		self.sendReplyBox('<img src="' + avatar + '" height="80" width="80" align="left">' + '&nbsp;<strong><font color="#24678d">Name:</font></strong> ' + target + '<br />' + '&nbsp;<strong><font color="#24678d">Registered:</font></strong>' + content[1] + '<br/>' + '&nbsp;<strong><font color="#24678d">Rank:</font></strong> ' + group + '<br/>' + '&nbsp;<strong><font color="#24678d">Money:</font></strong> ' + '0' + '<br/>' + '&nbsp;<strong><font color="#24678d">Last Online:</font></strong> ' + lastOnline + '<br/>' + '&nbsp;<strong><font color="#24678d">Status:</font></strong> "' + status + '" <font color="gray">' + Utilities.stdin('db/statusTime.csv', name) + '</font><br clear="all" />');
+		        	} else {
+		        		self.sendReplyBox('<img src="http://play.pokemonshowdown.com/sprites/trainers/' + targetUser.avatar + '.png" height="80" width="80" align="left">' + '&nbsp;<strong><font color="#24678d">Name:</font></strong> ' + targetUser.name + '<br />' + '&nbsp;<strong><font color="#24678d">Registered:</font></strong>' + ' (Unregistered)' + '<br/>' + '&nbsp;<strong><font color="#24678d">Rank:</font></strong> ' + Config.groups.bySymbol[targetUser.group].name + '<br/>' + '&nbsp;<strong><font color="#24678d">Money:</font></strong> ' + targetUser.money + '<br/>' + '&nbsp;<strong><font color="#24678d">Last Online:</font></strong> ' + lastOnline + '<br/>' + '&nbsp;<strong><font color="#24678d">Status:</font></strong> "' + targetUser.status + '" <font color="gray">' + targetUser.statusTime + '</font><br clear="all" />');
+		        	}
+		        }
+		        room.update();
+		    });
+		});
+		req.end();
+	},
+
+	setstatus: 'status',
+	status: function(target, room, user){
+		if (!target) return this.sendReply('|raw|Set your status for profile. Usage: /status <i>status information</i>');
+		if (target.length > 30) return this.sendReply('Status is too long.');
+		if (target.indexOf(',') >= 1) return this.sendReply('Unforunately, your status cannot contain a comma.');
+		var escapeHTML = sanitize(target, true);
+		io.stdoutString('db/status.csv', user, 'status', escapeHTML);
+		
+		var currentdate = new Date(); 
+		var datetime = "Last Updated: " + (currentdate.getMonth()+1) + "/"+currentdate.getDate() + "/" + currentdate.getFullYear() + " @ "  + Utilities.formatAMPM(currentdate);
+		io.stdoutString('db/statusTime.csv', user, 'statusTime', datetime);
+	
+		this.sendReply('Your status is now: "' + target + '"');
+		if('+%@&~'.indexOf(user.group) >= 0) {
+			room.add('|raw|<b> * <font color="' + Utilities.hashColor(user.name) + '">' + user.name + '</font> set their status to: </b>"' + escapeHTML + '"');
+		}
+	},
+
 	/*********************************************************
 	 * Money commands
 	 *********************************************************/
@@ -756,10 +891,6 @@ var customCommands = {
 	        CommandParser.uncacheTree('./source/io.js');
 	        io = require('./io.js');
 
-	        this.sendReply('Reloading profile.js...');
-	        CommandParser.uncacheTree('./source/profile.js');
-	        profile = require('./profile.js');
-	        
 	        var runningTournaments = Tournaments.tournaments;
 			CommandParser.uncacheTree(path.join(__dirname, '../', 'tournaments/frontend.js'));
 			Tournaments = require(path.join(__dirname, '../', 'tournaments/frontend.js'));
@@ -914,7 +1045,7 @@ var customCommands = {
 			var stack = '||' + ('' + e.stack).replace(/\n/g,'\n||');
 			connection.sendTo(room, stack);
 		}
-	},
+	}
 	
 };
 

@@ -464,11 +464,6 @@ try {
 	console.log('Error loading custom-commands.js or trainer-cards.js: ' + e.stack);
 }
 try {
-	global.profile = require('./source/profile.js');
-} catch (e) {
-	console.log('Error loading profile.js: ' + e.stack);
-}
-try {
 	global.Utilities = require('./source/utilities.js').Utilities;
 } catch (e) {
 	console.log('Error loading utilities.js: ' + e.stack);

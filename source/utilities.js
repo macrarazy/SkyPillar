@@ -211,6 +211,39 @@
 
 	toId: function(text) {
 		return text.toLowerCase().replace(/[^a-z0-9]/g, '');
+	},
+
+	stdin: function(file, name) {
+		var info = " ";
+		var match = false;
+	
+    	var data = fs.readFileSync('config/'+file,'utf8');
+
+        var row = (''+data).split("\n");
+        for (var i = row.length; i > -1; i--) {
+                if (!row[i]) continue;
+                var parts = row[i].split(",");
+                var userid = toUserid(parts[0]);
+                if (toUserid(name) == userid) {
+                	info = String(parts[1]);
+                    match = true;
+                    if (match === true) {
+                            break;
+                    }
+                }
+        }
+        return info;
+	},
+
+	findAvatar: function(name) {
+		var info = "";
+
+		for (user in Config.customAvatars) {
+			if (user === name) {
+				return Config.customAvatars[user];
+			}
+		}
+		return 0;
 	}
 
 };
