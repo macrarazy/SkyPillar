@@ -109,8 +109,8 @@ global.reloadCustomAvatars = function() {
 	});
 
 	// Make sure the manually entered avatars exist
-	for (var a in config.customAvatars)
-		if (typeof config.customAvatars[a] === 'number')
+	for (var a in Config.customAvatars)
+		if (typeof Config.customAvatars[a] === 'number')
 			newCustomAvatars[a] = Config.customAvatars[a];
 		else
 			fs.exists('./config/avatars/' + Config.customAvatars[a], (function(user, file, isExists) {
