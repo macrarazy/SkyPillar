@@ -95,6 +95,32 @@ if (!fs.existsSync('./config/config.js')) {
 
 global.Config = require('./config/config.js');
 
+global.reloadCustomAvatars = function() {
+	var path = require('path');
+	var newCustomAvatars = {};
+	fs.readdirSync('./config/avatars').forEach(function (file) {
+		var ext = path.extname(file);
+		if (ext !== '.png' && ext !== '.gif')
+			return;
+
+		var user = toUserid(path.basename(file, ext));
+		newCustomAvatars[user] = file;
+		delete Config.customAvatars[user];
+	});
+
+	// Make sure the manually entered avatars exist
+	for (var a in Config.customAvatars)
+		if (typeof Config.customAvatars[a] === 'number')
+			newCustomAvatars[a] = Config.customAvatars[a];
+		else
+			fs.exists('./config/avatars/' + Config.customAvatars[a], (function(user, file, isExists) {
+				if (isExists)
+					Config.customAvatars[user] = file;
+			}).bind(null, a, Config.customAvatars[a]));
+
+	Config.customAvatars = newCustomAvatars;
+}
+
 var watchFile = function() {
 	try {
 		return fs.watchFile.apply(fs, arguments);
