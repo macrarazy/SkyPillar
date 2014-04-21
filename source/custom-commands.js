@@ -1045,7 +1045,7 @@ var customCommands = {
 			var stack = '||' + ('' + e.stack).replace(/\n/g,'\n||');
 			connection.sendTo(room, stack);
 		}
-	}
+	},
 	
 	customavatars: 'customavatar',
 	customavatar: (function() {
