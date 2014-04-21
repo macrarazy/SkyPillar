@@ -300,6 +300,7 @@ var customCommands = {
 			if (targetUser.group === ' ') {
 				Config.groups.bySymbol[targetUser.group].name = 'Regular User';
 			}
+			io.stdinString('db/status.csv', user, 'status');
 			if (targetUser.status === '' || targetUser.status === '""') {
 				targetUser.status = 'This user hasn\'t set their status yet.';
 			}
@@ -317,7 +318,6 @@ var customCommands = {
 				lastOnline = '<font color="green">Currently Online</font>';
 			}
 			io.stdinNumber('db/money.csv', user, 'money');
-			io.stdinString('db/status.csv', user, 'status');
 			io.stdinString('db/statusTime.csv', user, 'statusTime');
 		}
 
