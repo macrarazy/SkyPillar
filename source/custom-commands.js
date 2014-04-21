@@ -1028,7 +1028,8 @@ var customCommands = {
 					'<b>-h</b> OR <b>-help</b>: show all options<br/>' +
 					'<b>-k</b>: object.keys of objects<br/>' +
 					'<b>-r</b>: reads a file<br/>' +
-					'<b>-p</b>: returns the current high-resolution real time in a second and nanoseconds. This is for speed/performance tests.');
+					'<b>-p</b>: returns the current high-resolution real time in a second and nanoseconds. This is for speed/performance tests.' +
+					'<b>-pp</b>: does what -p does but parses the target');
 			}
 			if (target.indexOf('-k') >= 0) {
 				target = 'Object.keys(' + target.split('-k ')[1] + ');';
