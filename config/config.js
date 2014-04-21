@@ -166,7 +166,6 @@ exports.customAvatars = {
 	'pikajesin': 'pika.gif',
 	'aananth': 'aananth.gif',
 	'chaarizard': 'aananth.gif',
-	'anrindas': 'anrindas.gif',
 };
 
 // appealUri - specify a URI containing information on how users can appeal
