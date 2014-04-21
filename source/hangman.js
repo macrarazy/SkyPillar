@@ -78,7 +78,8 @@ var cmds = {
 			return this.add('|html|<div class = "infobox"><div class = "broadcast-green"><center><font size = 2><b>' + user.name + '</b> started a game of hangman! The word has ' + targets[0].length + ' letters.<br>' + hangman[room.id].spaces.join(" ") + '<br>The category: ' + hangman[room.id].hangmantopic[0] + '</font></center></div></div>');
 		}
 	},
-
+	
+	vh: 'viewhangman',
 	viewhangman: function(target, room, user) {
 		/*if(room.id === 'lobby') {
 				return this.sendReply('|html|Please play this in another room; it\'s too spammy for lobby.');
