@@ -253,7 +253,7 @@ exports.groups = {
 		},
 		'#': {
 			id: 'owner',
-			name: "Room Owner",
+			name: "Owner",
 			description: "They are administrators of the room and can almost totally control it",
 			inherit: '@',
 			jurisdiction: 'u',
