@@ -284,7 +284,7 @@ var customCommands = {
 			if (status === ' ') {
 				status = 'This user hasn\'t set their status yet.';
 			}
-			if (money === '') {
+			if (money === '' || money === ' ') {
 				money = 0;
 			}
 
@@ -323,7 +323,7 @@ var customCommands = {
 			}
 			io.stdinNumber('db/money.csv', user, 'money');
 			if (targetUser.money === Infinity) {
-				targetUser.money === Infinity
+				targetUser.money === Infinity;
 			}
 			io.stdinString('db/statusTime.csv', user, 'statusTime');
 		}
