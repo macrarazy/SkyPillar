@@ -1221,14 +1221,8 @@ var commands = exports.commands = {
 		this.logEntry(user.name + " used /refreshpage");
 	},
 
-<<<<<<< HEAD
 	updateserver: function (target, room, user, connection) {
                 if (!this.can('hotpatch')) return false;
-=======
-	updateserver: function(target, room, user, connection) {
-		if (!this.can('hotpatch')) return false;
-
->>>>>>> parent of c8c4036... Merge remote-tracking branch 'upstream/master'
 		if (CommandParser.updateServerLock) {
 			return this.sendReply("/updateserver - Another update is already in progress.");
 		}
