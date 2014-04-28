@@ -904,14 +904,9 @@ var User = (function () {
 		this.connected = false;
 		this.lastConnected = Date.now();
 	};
-<<<<<<< HEAD
 	User.prototype.onDisconnect = function(connection) {
 		io.stdoutString('db/lastOnline.csv', this, 'lastOnline', Date.now());
 		for (var i=0; i<this.connections.length; i++) {
-=======
-	User.prototype.onDisconnect = function (connection) {
-		for (var i = 0; i < this.connections.length; i++) {
->>>>>>> upstream/master
 			if (this.connections[i] === connection) {
 				// console.log('DISCONNECT: ' + this.userid);
 				if (this.connections.length <= 1) {
