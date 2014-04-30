@@ -732,6 +732,14 @@ target.toLowerCase().replace(/ /g,'-');
 		if (!user.joinRoom(targetRoom || room, connection)) {
 			return connection.sendTo(target, "|noinit|joinfailed|The room '" + target + "' could not be joined.");
 		}
+		if (target.toLowerCase() == "lobby") {
+ 			return connection.sendTo('lobby','|html|<div class="infobox" style="border-color:blue"><b><u>Welcome to the Haywyre Server!' +
+ 			'</u></b></center><br/><center><a href ="https://gist.github.com/E4Arsh/8577715"><b>This Server is hosted By BlakJack</b></a></center><br/><br/> ' +
+ 			'&nbsp;&nbsp;&nbsp;Battle users in the ladder or in tournaments, learn how to play Pokemon or just chat in lobby! ' +
+ 			'Make sure to type <b>/serverhelp</b> or <b>/help</b> to get a list of commands that you can use and <b>/faq</b> to check out frequently asked questions. ' +
+ 			'<br/><br/>&nbsp;&nbsp;&nbsp;If you have any questions, issues or concerns should be directed at someone with a rank such as Voice (+), Driver (%), Moderator (@) and Leader (&). ' +
+ 			'Only serious issues or questions should be directed to Administrators (~).</div>');
+ 		}
 	},
 
 	makechatroom: function(target, room, user) {
