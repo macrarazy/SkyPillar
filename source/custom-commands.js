@@ -1077,9 +1077,9 @@ target.toLowerCase().replace(/ /g,'-');
 		}
 	},
 	
-	customavatars: 'customavatar',
-	customavatar: (function() {
-		const script = (function() {/*
+		customavatars: 'customavatar',
+	customavatar: (function () {
+		const script = (function () {/*
 			FILENAME=`mktemp`
 			function cleanup {
 				rm -f $FILENAME
@@ -1088,7 +1088,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 			set -xe
 
-			wget "$1" -nv -O $FILENAME
+			timeout 10 wget "$1" -nv -O $FILENAME
 
 			FRAMES=`identify $FILENAME | wc -l`
 			if [ $FRAMES -gt 1 ]; then
@@ -1097,11 +1097,11 @@ target.toLowerCase().replace(/ /g,'-');
 				EXT=".png"
 			fi
 
-			convert $FILENAME -layers TrimBounds -coalesce -adaptive-resize 80x80\> -background transparent -gravity center -extent 80x80 "$2$EXT"
+			timeout 10 convert $FILENAME -layers TrimBounds -coalesce -adaptive-resize 80x80\> -background transparent -gravity center -extent 80x80 "$2$EXT"
 		*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
 
 		var pendingAdds = {};
-		return function(target) {
+		return function (target) {
 			var parts = target.split(',');
 			var cmd = parts[0].trim().toLowerCase();
 
@@ -1142,7 +1142,7 @@ target.toLowerCase().replace(/ /g,'-');
 					var avatar = pendingAdds[hash].avatar;
 					delete pendingAdds[hash];
 
-					require('child_process').execFile('bash', ['-c', script, '-', avatar, './config/avatars/' + userid], (function(e, out, err) {
+					require('child_process').execFile('bash', ['-c', script, '-', avatar, './config/avatars/' + userid], (function (e, out, err) {
 						if (e) {
 							this.sendReply(userid + "'s custom avatar failed to be set. Script output:");
 							(out + err).split('\n').forEach(this.sendReply.bind(this));
@@ -1160,7 +1160,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 					if (Config.customAvatars[userid].toString().split('.').slice(0, -1).join('.') !== userid)
 						return this.sendReply(userid + "'s custom avatar (" + Config.customAvatars[userid] + ") cannot be removed with this script.");
-					fs.unlink('./config/avatars/' + Config.customAvatars[userid], (function (e) {
+					require('fs').unlink('./config/avatars/' + Config.customAvatars[userid], (function (e) {
 						if (e) return this.sendReply(userid + "'s custom avatar (" + Config.customAvatars[userid] + ") could not be removed: " + e.toString());
 
 						delete Config.customAvatars[userid];
