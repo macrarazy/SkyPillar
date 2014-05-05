@@ -1,25 +1,25 @@
-@namespace url(http://www.w3.org/1999/xhtml);
+@namespace url(http://www.w3.org/1999/xhtml);<br />
 
 
-.userbar:before{
-        background: url(http://i.imgur.com/3tRYvEC.png);
- }
+.userbar:before{<br />
+        background: url(http://i.imgur.com/3tRYvEC.png);<br />
+ }<br />
 
 
-a{
- color: #3498db;  
-}
+a{<br />
+ color: #3498db;<br />  
+}<br />
 
-body{
-	background: url(http://i.imgur.com/Yb49OKy.jpg);
-  	background-size: cover;
-}
+body{<br />
+	background: url(http://i.imgur.com/Yb49OKy.jpg);<br />
+  	background-size: cover;<br />
+}<br />
 
-.highlighted, .message-announce {
-background: #9b59b6;
-}
+.highlighted, .message-announce {<br />
+background: #9b59b6;<br />
+}<br />
 
-.chat.timer {
+.chat.timer {<br />
 color: #e74c3c;
 }
 
