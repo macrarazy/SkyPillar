@@ -75,13 +75,13 @@
 		for (var i = row.length; i > -1; i--) {
 			if (!row[i]) continue;
 			var parts = row[i].split(",");
-			list.push([toUserid(parts[0]),Number(parts[1])]);
+			list.push([toId(parts[0]),Number(parts[1])]);
 		}
 		list.sort(function(a,b){
     		return a[1] - b[1];
 		});
 		var arr = list.filter( function( el ) {
-   			 return !!~el.indexOf(toUserid(user));
+   			 return !!~el.indexOf(toId(user));
 		});
 		if (list.indexOf(arr[0]) === -1) {
 			return 'Not Ranked';
@@ -105,7 +105,7 @@
 
 	botDelay: function(botName, room, message) {
 		setTimeout(function(){
-			room.add('|c|' + Users.users[toUserid(botName)].group + botName + '|' + message);
+			room.add('|c|' + Users.users[toId(botName)].group + botName + '|' + message);
 		}, (Math.floor(Math.random() * 6) * 1000));
 	},
 
@@ -223,8 +223,8 @@
         for (var i = row.length; i > -1; i--) {
                 if (!row[i]) continue;
                 var parts = row[i].split(",");
-                var userid = toUserid(parts[0]);
-                if (toUserid(name) == userid) {
+                var userid = toId(parts[0]);
+                if (toId(name) == userid) {
                 	info = String(parts[1]);
                     match = true;
                     if (match === true) {

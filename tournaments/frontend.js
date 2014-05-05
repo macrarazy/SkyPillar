@@ -604,8 +604,8 @@ var Tournament = (function () {
 			if (secondMoney > 1) secondBuck = 'bucks';
 			this.room.add('|raw|<b><font color=#24678d>'+sanitize(winner)+'</font> has also won <font color=#24678d>'+firstMoney+'</font> '+firstBuck+' for winning the tournament!</b>');
 			if (runnerUp) this.room.add('|raw|<b><font color=#24678d>'+sanitize(runnerUp)+'</font> has also won <font color=#24678d>'+secondMoney+'</font> '+secondBuck+' for winning the tournament!</b>');
-			var winnerUser = Users.get(toUserid(winner));
-			var secondUser = Users.get(toUserid(runnerUp));
+			var winnerUser = Users.get(toId(winner));
+			var secondUser = Users.get(toId(runnerUp));
 			if (winnerUser === undefined) {
 				this.room.add('Error: winner is undefined');
 			} else if (secondUser === undefined){

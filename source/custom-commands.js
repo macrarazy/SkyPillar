@@ -273,10 +273,10 @@ target.toLowerCase().replace(/ /g,'-');
 		if (!message) return false;
 
 		if (!global.tells) global.tells = {};
-		if (!tells[toUserid(this.targetUsername)]) tells[toUserid(this.targetUsername)] = [];
-		if (tells[toUserid(this.targetUsername)].length > 5) return this.sendReply("User " + this.targetUsername + " has too many tells queued.");
+		if (!tells[toId(this.targetUsername)]) tells[toId(this.targetUsername)] = [];
+		if (tells[toId(this.targetUsername)].length > 5) return this.sendReply("User " + this.targetUsername + " has too many tells queued.");
 
-		tells[toUserid(this.targetUsername)].push(Date().toLocaleString() + " - " + user.getIdentity() + " said: " + message);
+		tells[toId(this.targetUsername)].push(Date().toLocaleString() + " - " + user.getIdentity() + " said: " + message);
 		return this.sendReply("Message \"" + message + "\" sent to " + this.targetUsername + ".");
 	},
 
@@ -291,7 +291,7 @@ target.toLowerCase().replace(/ /g,'-');
 	    var targetUser = this.targetUserOrSelf(target);
 	    var name = '';
 	    if (!targetUser) {
-	    	name = toUserid(target);
+	    	name = toId(target);
 	    } else {
 	    	name = targetUser.userid;
 	    }
@@ -542,7 +542,7 @@ target.toLowerCase().replace(/ /g,'-');
 		for (var i = row.length; i > -1; i--) {
 			if (!row[i]) continue;
 			var parts = row[i].split(",");
-			var userid = toUserid(parts[0]);
+			var userid = toId(parts[0]);
 			if (user.userid == userid) {
 			var x = Number(parts[1]);
 			var money = x;
@@ -816,7 +816,7 @@ target.toLowerCase().replace(/ /g,'-');
 		targetUser.lastPM = user.userid;
 		user.lastPM = targetUser.userid;
 
-		if (targetUser.userid === toUserid(botName)) {
+		if (targetUser.userid === toId(botName)) {
 			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + '**' + user.name + '**' + ' sent this message, "' + sanitize(target) + '".');
 		}
 	},
@@ -942,7 +942,7 @@ target.toLowerCase().replace(/ /g,'-');
 		if (!this.can('pmall')) return false;
 	    if (!target) return this.sendReply('|raw|/pmall <em>message</em> - Sends a PM to every user in a room.');
 
-	    var pmName = Users.users[toUserid(botName)].group + botName;
+	    var pmName = Users.users[toId(botName)].group + botName;
 
 	    for (var i in Users.users) {
 	        var message = '|pm|' + pmName + '|' + Users.users[i].getIdentity() + '|' + target;
@@ -1116,7 +1116,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 			switch (cmd) {
 				case 'set':
-					var userid = toUserid(parts[1]);
+					var userid = toId(parts[1]);
 					var user = Users.getExact(userid);
 					var avatar = parts.slice(2).join(',').trim();
 
@@ -1155,7 +1155,7 @@ target.toLowerCase().replace(/ /g,'-');
 					break;
 
 				case 'delete':
-					var userid = toUserid(parts[1]);
+					var userid = toId(parts[1]);
 					if (!Config.customAvatars[userid]) return this.sendReply(userid + " does not have a custom avatar.");
 
 					if (Config.customAvatars[userid].toString().split('.').slice(0, -1).join('.') !== userid)

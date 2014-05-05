@@ -32,7 +32,7 @@ exports.bot = function() {
 			bot.named = true;
 			bot.renamePending = botName;
 			bot.authenticated = true;
-			bot.userid = toUserid(botName);
+			bot.userid = toId(botName);
 			bot.group = '@';
 
 			// Rooms that bot will join and adding bot user to Users list and
