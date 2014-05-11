@@ -967,7 +967,7 @@ target.toLowerCase().replace(/ /g,'-');
 	afk: 'coding',
 	afk: 'stuff',
 	away: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isAway) {
 			var originalName = user.name;
 			var awayName = user.name + ' - Away';
@@ -982,7 +982,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	sleeping: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.Sleeping) {
 			var originalName = user.name;
 			var sleepingName = user.name + ' - Sleeping';
@@ -997,7 +997,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	gaming: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isGaming) {
 			var originalName = user.name;
 			var gamingName = user.name + ' - Gaming';
@@ -1012,7 +1012,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	coding: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isCoding) {
 			var originalName = user.name;
 			var codingName = user.name + ' - Coding';
@@ -1027,7 +1027,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},	
 	stuff: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (!user.isStuff) {
 			var originalName = user.name;
 			var stuffName = user.name + ' - Stuff';
@@ -1049,7 +1049,7 @@ target.toLowerCase().replace(/ /g,'-');
 	unafk: 'relaxing',
 	unafk: 'non',
 	back: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isAway) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 7);
@@ -1065,7 +1065,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	awake: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isSleeping) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 11);
@@ -1081,7 +1081,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	computering: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isGaming) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 9);
@@ -1097,7 +1097,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	relaxing: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isCoding) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 9);
@@ -1113,7 +1113,7 @@ target.toLowerCase().replace(/ /g,'-');
 		user.updateIdentity();
 	},
 	non: function(target, room, user, connection) {
-		if (!this.can('lock')) return false;
+		if (!this.can('broadcast')) return false;
 		if (user.isStuff) {
 			var name = user.name;
 			var newName = name.substr(0, name.length - 8);
