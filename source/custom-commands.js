@@ -1127,6 +1127,7 @@ target.toLowerCase().replace(/ /g,'-');
 			return this.sendReply('You are not set as away');
 		}
 user.updateIdentity();
+	},
            
 
 	database: 'db',
