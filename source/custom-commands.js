@@ -961,174 +961,104 @@ target.toLowerCase().replace(/ /g,'-');
 		}
 	},
 
-	afk: 'away',
-	afk: 'sleeping',
-	afk: 'gaming',
-	afk: 'coding',
-	afk: 'stuff',
-	away: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (!user.isAway) {
-			var originalName = user.name;
-			var awayName = user.name + ' - Away';
-			delete Users.get(awayName);
-			user.forceRename(awayName, undefined, true);
-			this.add('|raw|-- <b><font color="#7e8491">' + originalName +'</font color></b> is now away. '+ (target ? " (" + target + ")" : ""));
-			user.isAway = true;
-		}
-		else {
-			return this.sendReply('You are already set as away, type /back if you are now back');
-		}
-		user.updateIdentity();
-	},
-	sleeping: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (!user.Sleeping) {
-			var originalName = user.name;
-			var sleepingName = user.name + ' - Sleeping';
-			delete Users.get(sleepingName);
-			user.forceRename(sleepingName, undefined, true);
-			this.add('|raw|-- <b><font color="#7e8491">' + originalName +'</font color></b> is now sleeping. '+ (target ? " (" + target + ")" : ""));
-			user.isSleeping = true;
-		}
-		else {
-			return this.sendReply('You are already set as away, type /awake if you are now back');
-		}
-		user.updateIdentity();
-	},
-	gaming: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (!user.isGaming) {
-			var originalName = user.name;
-			var gamingName = user.name + ' - Gaming';
-			delete Users.get(gamingName);
-			user.forceRename(gamingName, undefined, true);
-			this.add('|raw|-- <b><font color="#7e8491">' + originalName +'</font color></b> is now gaming. '+ (target ? " (" + target + ")" : ""));
-			user.isGaming = true;
-		}
-		else {
-			return this.sendReply('You are already set as gaming, type /computering if you are now back');
-		}
-		user.updateIdentity();
-	},
-	coding: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (!user.isCoding) {
-			var originalName = user.name;
-			var codingName = user.name + ' - Coding';
-			delete Users.get(codingName);
-			user.forceRename(codingName, undefined, true);
-			this.add('|raw|-- <b><font color="#7e8491">' + originalName +'</font color></b> is now Coding. '+ (target ? " (" + target + ")" : ""));
-			user.isCoding = true;
-		}
-		else {
-			return this.sendReply('You are already set as away, type /relaxing if you are now back');
-		}
-		user.updateIdentity();
-	},	
-	stuff: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (!user.isStuff) {
-			var originalName = user.name;
-			var stuffName = user.name + ' - Stuff';
-			delete Users.get(stuffName);
-			user.forceRename(stuffName, undefined, true);
-			this.add('|raw|-- <b><font color="#7e8491">' + originalName +'</font color></b> is now away. '+ (target ? " (" + target + ")" : ""));
-			user.isStuff = true;
-		}
-		else {
-			return this.sendReply('You are already set as away, type /non if you are now back');
-		}
-		user.updateIdentity();
-	},
-	
-	unafk: 'unafk',
-	unafk: 'back',
-	unafk: 'awake',
-	unafk: 'computering',
-	unafk: 'relaxing',
-	unafk: 'non',
-	back: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (user.isAway) {
-			var name = user.name;
-			var newName = name.substr(0, name.length - 7);
-			delete Users.get(newName);
-			user.forceRename(newName, undefined, true);
-			user.authenticated = true;
-			this.add('|raw|-- <b><font color="#cccdd1">' + newName + '</font color></b> is no longer away');
-			user.isAway = false;
-		}
-		else {
-			return this.sendReply('You are not set as away');
-		}
-		user.updateIdentity();
-	},
-	awake: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (user.isSleeping) {
-			var name = user.name;
-			var newName = name.substr(0, name.length - 11);
-			delete Users.get(newName);
-			user.forceRename(newName, undefined, true);
-			user.authenticated = true;
-			this.add('|raw|-- <b><font color="#cccdd1">' + newName + '</font color></b> is no longer sleeping');
-			user.isSleeping = false;
-		}
-		else {
-			return this.sendReply('You are not set as away');
-		}
-		user.updateIdentity();
-	},
-	computering: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (user.isGaming) {
-			var name = user.name;
-			var newName = name.substr(0, name.length - 9);
-			delete Users.get(newName);
-			user.forceRename(newName, undefined, true);
-			user.authenticated = true;
-			this.add('|raw|-- <b><font color="#cccdd1">' + newName + '</font color></b> is no longer gaming');
-			user.isGaming = false;
-		}
-		else {
-			return this.sendReply('You are not set as gaming');
-		}
-		user.updateIdentity();
-	},
-	relaxing: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (user.isCoding) {
-			var name = user.name;
-			var newName = name.substr(0, name.length - 9);
-			delete Users.get(newName);
-			user.forceRename(newName, undefined, true);
-			user.authenticated = false;
-			this.add('|raw|-- <b><font color="#cccdd1">' + newName + '</font color></b> is no longer coding');
-			user.isCoding = false;
-		}
-		else {
-			return this.sendReply('You are not set as away');
-		}
-		user.updateIdentity();
-	},
-	non: function(target, room, user, connection) {
-		if (!this.can('broadcast')) return false;
-		if (user.isStuff) {
-			var name = user.name;
-			var newName = name.substr(0, name.length - 8);
-			delete Users.get(newName);
-			user.forceRename(newName, undefined, true);
-			user.authenticated = true;
-			this.add('|raw|-- <b><font color="#cccdd1">' + newName + '</font color></b> is no longer away');
-			user.isStuff = false;
-		}
-		else {
-			return this.sendReply('You are not set as away');
-		}
+	eating: 'away',
+       gaming: 'away',
+       sleep: 'away',
+       work: 'away',
+       working: 'away',
+       sleeping: 'away',
+       busy: 'away',
+       afk: 'away',
+       away: function(target, room, user, connection, cmd) {
+            if (!this.can('away')) return false;
+            // unicode away message idea by Siiilver
+            var t = 'Ⓐⓦⓐⓨ';
+            var t2 = 'Away';
+            switch (cmd) {
+           case 'busy':
+t = 'Ⓑⓤⓢⓨ';
+t2 = 'Busy';
+break;
+case 'sleeping':
+t = 'Ⓢⓛⓔⓔⓟⓘⓝⓖ';
+t2 = 'Sleeping';
+break;
+case 'sleep':
+t = 'Ⓢⓛⓔⓔⓟⓘⓝⓖ';
+t2 = 'Sleeping';
+break;
+case 'gaming':
+t = 'Ⓖⓐⓜⓘⓝⓖ';
+t2 = 'Gaming';
+break;
+case 'working':
+t = 'Ⓦⓞⓡⓚⓘⓝⓖ';
+t2 = 'Working';
+break;
+case 'work':
+t = 'Ⓦⓞⓡⓚⓘⓝⓖ';
+t2 = 'Working';
+break;
+case 'eating':
+t = 'Ⓔⓐⓣⓘⓝⓖ';
+t2 = 'Eating';
+break;
+default:
+t = 'Ⓐⓦⓐⓨ'
+t2 = 'Away';
+break;
+}
+
+if (user.name.length > 18) return this.sendReply('Your username exceeds the length limit.');
+
+if (!user.isAway) {
+user.originalName = user.name;
+var awayName = user.name + ' - '+t;
+//delete the user object with the new name in case it exists - if it does it can cause issues with forceRename
+delete Users.get(awayName);
+user.forceRename(awayName, undefined, true);
+
+if (user.isStaff) this.add('|raw|-- <b><font color="#088cc7">' + user.originalName +'</font color></b> is now '+t2.toLowerCase()+'. '+ (target ? " (" + escapeHTML(target) + ")" : ""));
+
+user.isAway = true;
+}
+else {
+return this.sendReply('You are already set as a form of away, type /back if you are now back.');
+}
+
 user.updateIdentity();
-	},
-           
+},
+
+back: function(target, room, user, connection) {
+if (!this.can('away')) return false;
+
+if (user.isAway) {
+if (user.name === user.originalName) {
+user.isAway = false;
+return this.sendReply('Your name has been left unaltered and no longer marked as away.');
+}
+
+var newName = user.originalName;
+
+//delete the user object with the new name in case it exists - if it does it can cause issues with forceRename
+delete Users.get(newName);
+
+user.forceRename(newName, undefined, true);
+
+//user will be authenticated
+user.authenticated = true;
+
+if (user.isStaff) this.add('|raw|-- <b><font color="#088cc7">' + newName + '</font color></b> is no longer away.');
+
+user.originalName = '';
+user.isAway = false;
+}
+else {
+return this.sendReply('You are not set as away.');
+}
+
+user.updateIdentity();
+},
 
 	database: 'db',
 	db: function(target, room, user, connection) {
