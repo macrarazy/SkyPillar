@@ -53,19 +53,16 @@ border: 2px;
 	margin-top:-5px
 }
 
+/*"Look for a battle" buttons (when hovered over)*/
+.menugroup .button:hover {
+   	background: #100;
+  	color: #eff
+}
+
 /*"Look for a battle" buttons*/
 .menugroup .button {
-    	opacity: 1;
-    	font-size: 14pt;
-    	font-family: "Rockwell, Times New Roman, Times, serif";
-    	display: inline-block;
-    	padding: 2px;
-    	width: 200px;
-    	text-align: center;
-    	text-decoration: none;
-    	color: #000;
-    	background: url(http://www.imagemakerart.com/automotive/Flame%20black%20A%20small.jpg) center; 
-    	/*none repeat scroll 0% 0% rgb(189, 82, 127);*/
+    	background: #eff;
+  		color: #100
 }
 
 
