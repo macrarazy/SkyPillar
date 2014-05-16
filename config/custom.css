@@ -1,3 +1,10 @@
+/*Main BG*/
+body {
+background-image:url('http://i.imgur.com/jKyBWxZ.jpg');
+background-repeat:no-repeat;
+background-position:center fixed;
+}
+
 /*PM Box*/
 .pm-log {
 	min-height: 100px;
@@ -18,7 +25,7 @@
 background: url(http://freedesignfile.com/upload/2012/09/sun-background-3.jpg);
 border: 2px;
 }
-.pm-log-add{
+.pm-log-add {
         background: #a00;
   		border: 2px;
     	border-color: #000;
@@ -31,12 +38,4 @@ border: 2px;
     	opacity: 1;
     	border-left: 1px solid rgb(95, 200, 255);
     	overflow: auto;
-}
-
-/*Main BG*/
-body 	
-{
-background-image:url('http://i.imgur.com/jKyBWxZ.jpg');
-background-repeat:no-repeat;
-background-position:center fixed;
 }
