@@ -900,7 +900,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 	        this.sendReply('Reloading poll.js...');
 	        CommandParser.uncacheTree('./source/poll.js');
-	        tour = require('./poll.js').tour();
+	        Poll = require('./poll.js').Poll();
 
 	        this.sendReply('Reloading hangman.js...');
 	        CommandParser.uncacheTree('./source/hangman.js');
