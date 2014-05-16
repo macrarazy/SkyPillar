@@ -57,13 +57,7 @@ border: 2px;
     background: url(http://wallpaperest.com/wallpapers/black-painted-brick-wall-texture_077032.jpg);
 }
     
-/*"Look for a battle" buttons (when hovered over)*/
-.menugroup .button:hover {
-   	background: url(http://i.imgur.com/wPpTK2B.png) no-repeat center;
-    height: 100%;
-   	border-color: rgb(32, 53, 74);
-   	opacity: 0.8;
-}
+
 
 /*"Look for a battle" buttons*/
 .menugroup .button {
