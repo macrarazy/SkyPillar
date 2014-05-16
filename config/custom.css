@@ -25,8 +25,10 @@ border: 2px;
 }
 
 /*Chat*/
-.chat-log{
-    	background: url("http://i.imgur.com/JEnd9wn.png?1") repeat;
-    	border-left: 1px solid;
+.chat-log {
+    	font-size: 10pt;
+    	background: url("http://i.imgur.com/q1Pkcrk.png") repeat;
+    	opacity: 1;
+    	border-left: 1px solid rgb(95, 200, 255);
     	overflow: auto;
 }
