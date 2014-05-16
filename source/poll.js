@@ -2,32 +2,48 @@
  * This is poll.js unedited raw.
  */
 
-exports.tour = function(t) {
-  if (typeof t != "undefined") var tour = t; else var tour = new Object();
-	var tourStuff = {
-		reset: function(rid) {
-			tour[rid] = {
-				question: undefined,
-				answerList: new Array(),
-				answers: new Object()
-			};
-		},
-		splint: function(target) {
-			var cmdArr =  target.split(",");
-			for (var i = 0; i < cmdArr.length; i++) cmdArr[i] = cmdArr[i].trim();
-			return cmdArr;
-		},
-	};
+exports.Poll = var poll: function () {
+        var poll = {};
+        var components = {
 
-	for (var i in tourStuff) tour[i] = tourStuff[i];
-	for (var i in Rooms.rooms) {
-		if (Rooms.rooms[i].type == "chat" && !tour[i]) {
-			tour[i] = new Object();
-			tour.reset(i);
-		}
-	}
-	return tour;
+            reset: function (roomId) {
+                poll[roomId] = {
+                    question: undefined,
+                    optionList: [],
+                    options: {},
+                    display: ''
+                };
+            },
+
+            splint: function (target) {
+                var parts = target.split(',');
+                var len = parts.length;
+                while (len--) {
+                    parts[len] = parts[len].trim();
+                }
+                return parts;
+            }
+
+        };
+
+        for (var i in components) {
+            if (components.hasOwnProperty(i)) {
+                poll[i] = components[i];
+            }
+        }
+
+        for (var id in Rooms.rooms) {
+            if (Rooms.rooms[id].type === 'chat' && !poll[id]) {
+                poll[id] = {};
+                poll.reset(id);
+            }
+        }
+
+        return poll;
+    },
+
 };
+
 function clean(string) {
 	var entityMap = {
 		"&": "&amp;",
@@ -45,7 +61,8 @@ function clean(string) {
  * Commands
  *********************************************************/
 var cmds = {
-	 poll: function (target, room, user) {
+
+    poll: function (target, room, user) {
         if (!this.can('broadcast')) return;
         if (Poll[room.id].question) return this.sendReply('There is currently a poll going on already.');
         if (!this.canTalk()) return;
@@ -109,7 +126,7 @@ var cmds = {
         room.add('|raw|<div class="infobox"><h2>Results to "' + Poll[room.id].question + '"</h2><font size="1" color="#AAAAAA"><strong>Poll ended by <em>' + user.name + '</em></font><br><hr>' + results + '</strong></div>');
         Poll.reset(room.id);
     },
-	vote: function (target, room, user) {
+    vote: function (target, room, user) {
         if (!Poll[room.id].question) return this.sendReply('There is no poll currently going on in this room.');
         if (!this.canTalk()) return;
         if (!target) return this.parse('/help vote');
@@ -131,7 +148,7 @@ var cmds = {
         if (!Poll[room.id].question) return this.sendReply('There is no poll currently going on in this room.');
         if (!this.canBroadcast()) return;
         this.sendReplyBox(Poll[room.id].display);
-    }
+    },
 };
 
 for (var i in cmds) CommandParser.commands[i] = cmds[i];
