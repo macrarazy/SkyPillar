@@ -3,7 +3,6 @@
  *
  * This is bascially where most of the core custom commands goes.
  * Commands Table of Contents:
- * General, Money, Tour, Override, Staff
  */
 
 var customCommands = {
@@ -749,7 +748,6 @@ target.toLowerCase().replace(/ /g,'-');
 			return this.sendReply("The room '"+target+"' already exists.");
 		}
 		if (Rooms.global.addChatRoom(target)) {
-			tour.reset(id);
 			hangman.reset(id);
 			return this.sendReply("The room '"+target+"' was created.");
 		}
