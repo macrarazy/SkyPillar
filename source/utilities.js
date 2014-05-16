@@ -244,45 +244,6 @@
 			}
 		}
 		return 0;
-	},
-	poll: function () {
-        var poll = {};
-        var customCommand = {
-
-            reset: function (roomId) {
-                poll[roomId] = {
-                    question: undefined,
-                    optionList: [],
-                    options: {},
-                    display: ''
-                };
-            },
-
-            splint: function (target) {
-                var parts = target.split(',');
-                var len = parts.length;
-                while (len--) {
-                    parts[len] = parts[len].trim();
-                }
-                return parts;
-            }
-
-        };
-
-        for (var i in customCommand) {
-            if (customCommand.hasOwnProperty(i)) {
-                poll[i] = customCommand[i];
-            }
-        }
-
-        for (var id in Rooms.rooms) {
-            if (Rooms.rooms[id].type === 'chat' && !poll[id]) {
-                poll[id] = {};
-                poll.reset(id);
-            }
-        }
-
-        return poll;
-    }
+	}
 
 };
