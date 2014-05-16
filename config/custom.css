@@ -1,6 +1,6 @@
 /*Main BG*/
 body {
-background-image:url('http://i.imgur.com/jKyBWxZ.jpg');
+background-image:url('http://i.imgur.com/OJ9tGQg.jpg');
 background-repeat:no-repeat;
 background-position:center fixed;
 }
@@ -42,21 +42,16 @@ border: 2px;
 }
 
 /*Header*/
-.header {
-  background: #A9271A;
+.header{
+    background: url(http://i.imgur.com/WHc11eO.jpg) repeat;
 }
+
 .userbar{
 	border:1px solid #b6b6b6;
 	padding:5px;
 	background:#EBEBEB;
 	margin-top:-5px
 }
-  
-.menugroup{
-    background: url(http://wallpaperest.com/wallpapers/black-painted-brick-wall-texture_077032.jpg);
-}
-    
-
 
 /*"Look for a battle" buttons*/
 .menugroup .button {
@@ -68,7 +63,30 @@ border: 2px;
     	width: 200px;
     	text-align: center;
     	text-decoration: none;
-    	color: fff;
+    	color: #000;
     	background: url(http://www.imagemakerart.com/automotive/Flame%20black%20A%20small.jpg) center; 
     	/*none repeat scroll 0% 0% rgb(189, 82, 127);*/
+}
+
+.mainmenuwrapper {
+background: url(http://i.imgur.com/XaQwLIW.png) no-repeat scroll right;
+}
+
+.userlist {
+  background: url(http://i.imgur.com/JZgrBq0.jpg);
+  color: #fff;
+  border: 1px solid;
+}
+
+.tabbar a.button.cur,.tabbar a.button.cur:hover {
+	color: #e1e1e1;
+	text-shadow:none;
+  	border: 2px;
+	background: url(http://wallpoper.com/images/00/28/43/76/minimalistic-wall_00284376.jpg) center top;
+	cursor: default;
+}
+
+.tabbar a.button {
+	background:url(http://www.emauanakahula.org/black___white_gradient.jpg) center top;
+	color: #fff;
 }
