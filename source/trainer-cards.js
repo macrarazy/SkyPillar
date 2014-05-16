@@ -112,6 +112,16 @@ var trainerCards = {
 	        '<b>PUNCH! KICK! BAM! SLAM!');
 
 	},
+	anrindas: 'anrin',
+	anrin: function (target, room, user) {
+	    if (!this.canBroadcast()) return;
+	    this.sendReplyBox('<center><img src="http://pldh.net/media/pokemon/gen6/xy-animated/381.gif"><br><img src="http://pldh.net/media/pokemon/gen6/xy-animated/445.gif"><img src="http://s29.postimg.org/hof2hh0xz/cooltext1560999349.png"><img src="http://pldh.net/media/pokemon/gen6/xy-animated/646-black.gif"><br><font color="blue"><blink>Ace: Kyurem-Black</blink><br><font color="blue">Outrage is Rageing with power until death.');
+	},
+        darkshadow6: function (target, room, user) {
+	    if (!this.canBroadcast()) return;
+	    this.sendReplyBox('<center><img src="http://r42.cooltext.com/rendered/cooltext1562813497.png"> <img src="http://www.pkparaiso.com/imagenes/xy/sprites/animados/charizard-megax.gif"> <img src="http://www.pkparaiso.com/imagenes/xy/sprites/animados/venusaur-mega.gif"> <img src="http://www.pkparaiso.com/imagenes/xy/sprites/animados/blastoise-mega.gif"> <br> <font color = red> <blink> Ace: Charizard Mega X </blink> </font> <br> <font color=blue> Get Ready To Face The Flying Master </font> </center>');
+	},	
+
 };
 
 Object.merge(CommandParser.commands, trainerCards);
