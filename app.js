@@ -499,7 +499,7 @@ try {
 	console.log('Error loading utilities.js: ' + e.stack);
 }
 try {
-	global.tour = require('./source/poll.js').tour();
+	global.Poll = require('./source/poll.js').Poll();
 } catch (e) {
 	console.log('Error loading poll.js: ' + e.stack);
 }
