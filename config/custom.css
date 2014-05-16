@@ -5,6 +5,7 @@ background-repeat:no-repeat;
 background-position:center fixed;
 }
 
+
 /*PM Box*/
 .pm-log {
 	min-height: 100px;
@@ -38,4 +39,43 @@ border: 2px;
     	opacity: 1;
     	border-left: 1px solid rgb(95, 200, 255);
     	overflow: auto;
+}
+
+/*Header*/
+.header{
+    background: url(http://i.imgur.com/aqLA66q.jpg) repeat;
+}
+
+.userbar{
+	border:1px solid #b6b6b6;
+	padding:5px;
+	background:#EBEBEB;
+	margin-top:-5px
+}
+  
+.menugroup{
+    background: url(http://wallpaperest.com/wallpapers/black-painted-brick-wall-texture_077032.jpg);
+}
+    
+/*"Look for a battle" buttons (when hovered over)*/
+.menugroup .button:hover {
+   	background: url(http://i.imgur.com/wPpTK2B.png) no-repeat center;
+    height: 100%;
+   	border-color: rgb(32, 53, 74);
+   	opacity: 0.8;
+}
+
+/*"Look for a battle" buttons*/
+.menugroup .button {
+    	opacity: 1;
+    	font-size: 14pt;
+    	font-family: "Rockwell, Times New Roman, Times, serif";
+    	display: inline-block;
+    	padding: 2px;
+    	width: 200px;
+    	text-align: center;
+    	text-decoration: none;
+    	color: 000;
+    	background: url(http://www.imagemakerart.com/automotive/Flame%20black%20A%20small.jpg) center; 
+    	/*none repeat scroll 0% 0% rgb(189, 82, 127);*/
 }
