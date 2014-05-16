@@ -151,4 +151,4 @@ var cmds = {
     },
 };
 
-for (var i in cmds) CommandParser.commands[i] = cmds[i];
+Object.merge(CommandParser.commands, cmds);
