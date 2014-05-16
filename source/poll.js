@@ -2,7 +2,7 @@
  * This is poll.js unedited raw.
  */
 
-exports.Poll = var poll = function () {
+exports.Poll = function () {
         var poll = {};
         var components = {
 
@@ -40,9 +40,7 @@ exports.Poll = var poll = function () {
         }
 
         return poll;
-    },
-
-};
+},
 
 function clean(string) {
 	var entityMap = {
