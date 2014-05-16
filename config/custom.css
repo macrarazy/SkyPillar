@@ -10,21 +10,6 @@
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 }
-
-.pm-log {
-	min-height: 100px;
-	max-height: 300px;
-	background: url(http://www.echodeck.net/webflyer/images/cool_present_bg.gif);
-	color: #FFFFFF;
-	word-wrap: break-word;
-	border: 1px solid #AAAAAA;
-	border-top: 0;
-	border-bottom: 0;
-
-	overflow: auto;
-	-webkit-overflow-scrolling: touch;
-	overflow-scrolling: touch;
-}
 .pm-window h3 {
     background: url(http://images2.layoutsparks.com/1/237102/miaka-dbl-bg-sky.gif);
   	border: 2px;
@@ -37,4 +22,11 @@ border: 2px;
         background: #a00;
   		border: 2px;
     	border-color: #000;
+}
+
+/*Chat*/
+.chat-log{
+    	background: url("http://i.imgur.com/JEnd9wn.png?1") repeat;
+    	border-left: 1px solid;
+    	overflow: auto;
 }
