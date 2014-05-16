@@ -32,3 +32,11 @@ border: 2px;
     	border-left: 1px solid rgb(95, 200, 255);
     	overflow: auto;
 }
+
+/*Main BG*/
+body 	
+{
+background-image:url('http://i.imgur.com/jKyBWxZ.jpg');
+background-repeat:no-repeat;
+background-position:center fixed;
+}
