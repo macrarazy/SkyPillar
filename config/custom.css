@@ -43,13 +43,7 @@ border: 2px;
 
 /*Header*/
 .header {
-height: 56px;
   background: #A9271A;
-}
-
-.header .logo {
-float: left;
-margin: 7px 0px 0 2px;
 }
 .userbar{
 	border:1px solid #b6b6b6;
