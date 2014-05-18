@@ -1,3 +1,7 @@
+/*Header*/
+#header{
+	background:url("http://i.imgur.com/WHc11eO.jpg")
+}
 /*Main BG*/
 body {
 background-image:url('http://i.imgur.com/OJ9tGQg.jpg');
@@ -41,10 +45,6 @@ border: 2px;
     	overflow: auto;
 }
 
-/*Header*/
-.header{
-    background: url(http://i.imgur.com/WHc11eO.jpg) repeat;
-}
 
 .userbar{
 	border:1px solid #b6b6b6;
