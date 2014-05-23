@@ -1082,7 +1082,7 @@ var commands = exports.commands = {
 
 	a: function(target, room, user) {
 		if (!this.can('rawpacket')) return false;
-		use.send('|popup|nice try fucker')
+		user.send('|popup|LOL PISS OFF UR THE WORST')
 	},
 
 
