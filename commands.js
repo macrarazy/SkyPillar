@@ -406,17 +406,6 @@ var commands = exports.commands = {
 				success = true;
 			}
 		}
-<<<<<<< HEAD
-		targetUser.popup(user.name + " has unbanned you from the room " + room.id + ".");
-		this.addModCommand(targetUser.name + " was unbanned from room " + room.id + " by " + user.name + ".");
-		var alts = targetUser.getAlts();
-		if (alts.length) {
-			this.addModCommand(targetUser.name + "'s alts were also unbanned from room " + room.id + ": " + alts.join(", "));
-			for (var i = 0; i < alts.length; ++i) {
-				var altId = toId(alts[i]);
-				if (room.bannedUsers[altId]) delete room.bannedUsers[altId];
-			}
-=======
 		if (!success) return this.sendReply("User " + targetUser.name + " is not banned from room " + room.id + ".");
 
 		targetUser.popup("" + user.name + " has unbanned you from the room " + room.id + ".");
@@ -426,7 +415,6 @@ var commands = exports.commands = {
 		for (var i = 0; i < alts.length; ++i) {
 			var altId = toId(alts[i]);
 			if (room.bannedUsers[altId]) delete room.bannedUsers[altId];
->>>>>>> upstream/master
 		}
 		this.addModCommand("" + targetUser.name + "'s alts were also unbanned from room " + room.id + ": " + alts.join(", "));
 	},
@@ -535,13 +523,8 @@ var commands = exports.commands = {
 		targetUser.popup(user.name + " has muted you for 7 minutes. " + target);
 		this.addModCommand(targetUser.name + " was muted by " + user.name + " for 7 minutes." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
-<<<<<<< HEAD
-		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also muted: " + alts.join(", "));
-		this.add('|unlink|' + targetUser.userid);
-=======
 		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also muted: " + alts.join(", "));
 		this.add('|unlink|' + this.getLastIdOf(targetUser));
->>>>>>> upstream/master
 
 		targetUser.mute(room.id, 7*60*1000);
 	},
@@ -570,13 +553,8 @@ var commands = exports.commands = {
 		targetUser.popup(user.name + " has muted you for 60 minutes. " + target);
 		this.addModCommand(targetUser.name + " was muted by " + user.name + " for 60 minutes." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
-<<<<<<< HEAD
-		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also muted: " + alts.join(", "));
-		this.add('|unlink|' + targetUser.userid);
-=======
 		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also muted: " + alts.join(", "));
 		this.add('|unlink|' + this.getLastIdOf(targetUser));
->>>>>>> upstream/master
 
 		targetUser.mute(room.id, 60*60*1000, true);
 	},
@@ -589,11 +567,7 @@ var commands = exports.commands = {
 		if (!this.can('mute', targetUser, room)) return false;
 
 		if (!targetUser.mutedRooms[room.id]) {
-<<<<<<< HEAD
-			return this.sendReply(targetUser.name + " isn't muted.");
-=======
 			return this.sendReply("" + targetUser.name + " is not muted.");
->>>>>>> upstream/master
 		}
 
 		this.addModCommand(targetUser.name + " was unmuted by " + user.name + ".");
@@ -627,13 +601,8 @@ var commands = exports.commands = {
 
 		this.addModCommand(targetUser.name + " was locked from talking by " + user.name + "." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
-<<<<<<< HEAD
-		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also locked: " + alts.join(", "));
-		this.add('|unlink|' + targetUser.userid);
-=======
 		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also locked: " + alts.join(", "));
 		this.add('|unlink|' + this.getLastIdOf(targetUser));
->>>>>>> upstream/master
 
 		targetUser.lock();
 	},
@@ -660,17 +629,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
-<<<<<<< HEAD
-		if (!targetUser) {
-			return this.sendReply("User " + this.targetUsername + " not found.");
-		}
-		var a = targetUser.name;
-                if (a === "BlakJack" || a === "BlakJack - Away" || a === botName) {
-                        return user.popup('This user is too awesome to be banned!');
-                        }
-=======
 		if (!targetUser) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
->>>>>>> upstream/master
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -749,13 +708,8 @@ var commands = exports.commands = {
 	 * Moderating: Other
 	 *********************************************************/
 
-<<<<<<< HEAD
-	modnote: function(target, room, user, connection, cmd) {
-		if (!target) return this.parse('/help note');
-=======
 	modnote: function (target, room, user, connection, cmd) {
 		if (!target) return this.parse('/help modnote');
->>>>>>> upstream/master
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The note is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -886,8 +840,6 @@ var commands = exports.commands = {
 
 		if (!this.canTalk()) return;
 
-<<<<<<< HEAD
-=======
 		this.add('|raw|<div class="broadcast-blue"><b>' + Tools.escapeHTML(target) + '</b></div>');
 		this.logModCommand(user.name + " declared " + target);
 	},
@@ -898,7 +850,6 @@ var commands = exports.commands = {
 
 		if (!this.canTalk()) return;
 
->>>>>>> upstream/master
 		this.add('|raw|<div class="broadcast-blue"><b>' + target + '</b></div>');
 		this.logModCommand(user.name + " declared " + target);
 	},
@@ -947,23 +898,11 @@ var commands = exports.commands = {
 		}
 		if (!this.can('forcerename', targetUser)) return false;
 
-<<<<<<< HEAD
-		if (targetUser.userid === toUserid(this.targetUser)) {
-			var entry = targetUser.name + " was forced to choose a new name by " + user.name + (target ? ": " + target: "");
-			this.privateModCommand("(" + entry + ")");
-			Rooms.global.cancelSearch(targetUser);
-			targetUser.resetName();
-			targetUser.send("|nametaken||" + user.name + " has forced you to change your name. " + target);
-		} else {
-			this.sendReply("User " + targetUser.name + " is no longer using that name.");
-		}
-=======
 		var entry = targetUser.name + " was forced to choose a new name by " + user.name + (target ? ": " + target: "");
 		this.privateModCommand("(" + entry + ")");
 		Rooms.global.cancelSearch(targetUser);
 		targetUser.resetName();
 		targetUser.send("|nametaken||" + user.name + " has forced you to change your name. " + target);
->>>>>>> upstream/master
 	},
 
 	modlog: function(target, room, user, connection) {
@@ -1387,13 +1326,7 @@ var commands = exports.commands = {
 	 * Battle commands
 	 *********************************************************/
 
-<<<<<<< HEAD
-	concede: 'forfeit',
-	surrender: 'forfeit',
-	forfeit: function(target, room, user) {
-=======
 	forfeit: function (target, room, user) {
->>>>>>> upstream/master
 		if (!room.battle) {
 			return this.sendReply("There's nothing to forfeit here.");
 		}
