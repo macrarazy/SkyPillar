@@ -420,7 +420,58 @@ target.toLowerCase().replace(/ /g,'-');
 			room.add('|raw|<b> * <font color="' + Utilities.hashColor(user.name) + '">' + user.name + '</font> set their status to: </b>"' + escapeHTML + '"');
 		}
 	},
+	
+	/*********************************************************
+	 * Rival Nick's Custom Commands'
+	 * *******************************************************/
+	skypillarplugin: 'plug',
+	plug: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"Check out Skypillar's very own  Music Plug-in<br />" +
+					"Creator- The Meh<br />" +
+					" <a href=\http://plug.dj/skypillar-dj/>Plug-in</a><br />" 
+							)
+	},
+	codinghelp: 'devhelp',
+	devhelp: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"If your a programmer or someone who wants to help out the server on the back-end<br />" +
+					"PM an ~(Admin) for more details<br />" +
+					" <a href=http://client01.chat.mibbit.com/#skypillar@irc.synirc.net>Mibbit developer chat</a><br />" +
+					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/Showdown-Boilerplate-master>Skypillar Github Code</a><br />"
+										)
+	},
+	doge: 'doge',
+	doge: function (target,room, user){
+		if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+			"DOGE2048<br />" + 
+			"PLAY IT: <a href=http://www.doge2048.com/>DOGE2048</a><br />"
+								)
+	},
+	sotd: function (target, room, user) {
+		if (!this.can('sotd')) return false;
 
+		Config.sotd = target;
+		Simulator.SimulatorProcess.eval('Config.sotd = \'' + toId(target) + '\'');
+		if (target) {
+			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day is now " + target + "!</b><br />This Song will be guaranteed to show up in our plug.</div>");
+			this.logModCommand("The Song of the Day was changed to " + target + " by " + user.name + ".");
+		} else {
+			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day was removed!</b><br />No Song will be guaranteed in our plug.</div>");
+			this.logModCommand("The Song of the Day was removed by " + user.name + ".");
+		}
+	},
+		tourmoney: 'tourgivemoney',
+	tourgivemoney: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"Here is a guide on giving money out based on tours.<br />" +
+					" <a href=URl HERE>Tour Money Help</a><br />" 
+										)
+	},
 	/*********************************************************
 	 * Money commands
 	 *********************************************************/
