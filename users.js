@@ -104,7 +104,7 @@ function can(group, permission, targetGroup, room, isSelf) {
 		if (checkedGroups[group]) return false;
 		checkedGroups[group] = true;
 
-		if (groupData[permission]) {
+		if (permission in groupData) {
 			var jurisdiction = groupData[permission];
 			if (!targetGroup) {
 				return !!jurisdiction;
@@ -121,7 +121,7 @@ function can(group, permission, targetGroup, room, isSelf) {
 			if (jurisdiction.indexOf('s') >= 0 && isSelf) {
 				return true;
 			}
-			if (jurisdiction.indexOf('u') >= 0 && groupData[roomType + 'Rank'] > Config.groups.bySymbol[targetGroup][roomType + 'Rank']) {
+			if (jurisdiction.indexOf('u') >= 0 && groupData.rank > Config.groups.bySymbol[targetGroup].rank) {
 				return true;
 			}
 			return false;
@@ -143,7 +143,9 @@ function socketConnect(worker, workerid, socketid, ip) {
 	var connection = connections[id] = new Connection(id, worker, socketid, null, ip);
 
 	if (ResourceMonitor.countConnection(ip)) {
-		return connection.destroy();
+		connection.destroy();
+		bannedIps[ip] = '#cflood';
+		return;
 	}
 	var checkResult = Users.checkBanned(ip);
 	if (!checkResult && Users.checkRangeBanned(ip)) {
@@ -152,7 +154,9 @@ function socketConnect(worker, workerid, socketid, ip) {
 	if (checkResult) {
 		console.log('CONNECT BLOCKED - IP BANNED: '+ip+' ('+checkResult+')');
 		if (checkResult === '#ipban') {
-			connection.send("|popup|Your IP ("+ip+") is on our abuse list and is permanently banned. If you are using a proxy, stop.");
+			connection.send("|popup|Your IP (" + ip + ") is on our abuse list and is permanently banned. If you are using a proxy, stop.");
+		} else if (checkResult === '#cflood') {
+			connection.send("|popup|PS is under heavy load and cannot accommodate your connection right now.");
 		} else {
 			connection.send("|popup|Your IP ("+ip+") used is banned under the username '"+checkResult+"''. Your ban will expire in a few days."+(Config.appealUri ? " Or you can appeal at:\n" + Config.appealUri:""));
 		}
@@ -593,9 +597,7 @@ var User = (function () {
 			name = Config.nameFilter(name);
 		}
 		name = toName(name);
-		while (Config.groups.bySymbol[name.charAt(0)] || name.charAt(0) === Config.mutedSymbol || name.charAt(0) === Config.lockedSymbol) {
-			name = name.substr(1);
-		}
+		name = name.replace(/^[^A-Za-z0-9]+/, "");
 		return name;
 	};
 	/**

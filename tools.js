@@ -557,8 +557,20 @@ module.exports = (function () {
 		// Step 7
 		return d[n][m];
 	};
+	Tools.prototype.clampIntRange = function (num, min, max) {
+		if (typeof num !== 'number') num = 0;
+		num = Math.floor(num);
+		if (num < min) num = min;
+		if (max !== undefined && num > max) num = max;
+		return num;
+	};
 
-	Tools.prototype.dataSearch = function(target, searchIn) {
+	Tools.prototype.escapeHTML = function (str) {
+		if (!str) return '';
+		return ('' + str).escapeHTML();
+	};
+
+	Tools.prototype.dataSearch = function (target, searchIn) {
 		if (!target) {
 			return false;
 		}

@@ -93,7 +93,7 @@ var commands = exports.commands = {
 
 		if (Config.modchat.pm) {
 			var userGroup = user.group;
-			if (Config.groups.bySymbol[userGroup].globalRank < Config.groups.bySymbol[Config.modchat.pm].globalRank) {
+			if (Config.groups.bySymbol[userGroup].rank < Config.groups.bySymbol[Config.modchat.pm].rank) {
 				var groupName = Config.groups.bySymbol[Config.modchat.pm].name || Config.modchat.pm;
 				this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to PM users.");
 				return false;
@@ -309,7 +309,7 @@ var commands = exports.commands = {
 			room.auth[userid] = nextGroup;
 		}
 
-		if (Config.groups.bySymbol[nextGroup][room.type + 'RoomRank'] < Config.groups.bySymbol[currentGroup][room.type + 'RoomRank']) {
+		if (Config.groups.bySymbol[nextGroup].rank < Config.groups.bySymbol[currentGroup].rank) {
 			this.privateModCommand("(" + name + " was demoted to Room " + groupName + " by " + user.name + ".)");
 			if (targetUser) targetUser.popup("You were demoted to Room " + groupName + " by " + user.name + ".");
 		} else {
@@ -389,16 +389,24 @@ var commands = exports.commands = {
 		var targetUser = this.targetUser;
 		var name = this.targetUsername;
 		var userid = toId(name);
+		var success;
 
 		if (!userid || !targetUser) return this.sendReply("User '" + name + "' does not exist.");
 		if (!this.can('ban', targetUser, room)) return false;
 		if (!room.bannedUsers || !room.bannedIps) {
 			return this.sendReply("Room bans are not meant to be used in room " + room.id + ".");
 		}
-		if (room.bannedUsers[userid]) delete room.bannedUsers[userid];
-		for (var ip in targetUser.ips) {
-			if (room.bannedIps[ip]) delete room.bannedIps[ip];
+		if (room.bannedUsers[userid]) {
+			delete room.bannedUsers[userid];
+			success = true;
 		}
+		for (var ip in targetUser.ips) {
+			if (room.bannedIps[ip]) {
+				delete room.bannedIps[ip];
+				success = true;
+			}
+		}
+<<<<<<< HEAD
 		targetUser.popup(user.name + " has unbanned you from the room " + room.id + ".");
 		this.addModCommand(targetUser.name + " was unbanned from room " + room.id + " by " + user.name + ".");
 		var alts = targetUser.getAlts();
@@ -408,7 +416,19 @@ var commands = exports.commands = {
 				var altId = toId(alts[i]);
 				if (room.bannedUsers[altId]) delete room.bannedUsers[altId];
 			}
+=======
+		if (!success) return this.sendReply("User " + targetUser.name + " is not banned from room " + room.id + ".");
+
+		targetUser.popup("" + user.name + " has unbanned you from the room " + room.id + ".");
+		this.addModCommand("" + targetUser.name + " was unbanned from room " + room.id + " by " + user.name + ".");
+		var alts = targetUser.getAlts();
+		if (!alts.length) return;
+		for (var i = 0; i < alts.length; ++i) {
+			var altId = toId(alts[i]);
+			if (room.bannedUsers[altId]) delete room.bannedUsers[altId];
+>>>>>>> upstream/master
 		}
+		this.addModCommand("" + targetUser.name + "'s alts were also unbanned from room " + room.id + ": " + alts.join(", "));
 	},
 
 	roomauth: function(target, room, user, connection) {
@@ -446,9 +466,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
-		if (!targetUser || !targetUser.connected) {
-			return this.sendReply("User " + this.targetUsername + " not found.");
-		}
+		if (!targetUser || !targetUser.connected) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
 		if (room.isPrivate && room.auth) {
 			return this.sendReply("You can't warn here: This is a privately-owned room not subject to global rules.");
 		}
@@ -463,7 +481,7 @@ var commands = exports.commands = {
 
 		this.addModCommand(targetUser.name + " was warned by " + user.name + "." + (target ? " (" + target + ")" : ""));
 		targetUser.send('|c|~|/warn ' + target);
-		this.add('|unlink|' + targetUser.userid);
+		this.add('|unlink|' + this.getLastIdOf(targetUser));
 	},
 
 	redirect: 'redir',
@@ -497,9 +515,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
-		if (!targetUser) {
-			return this.sendReply("User " + this.targetUsername + " not found.");
-		}
+		if (!targetUser) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -519,8 +535,13 @@ var commands = exports.commands = {
 		targetUser.popup(user.name + " has muted you for 7 minutes. " + target);
 		this.addModCommand(targetUser.name + " was muted by " + user.name + " for 7 minutes." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
+<<<<<<< HEAD
 		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also muted: " + alts.join(", "));
 		this.add('|unlink|' + targetUser.userid);
+=======
+		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also muted: " + alts.join(", "));
+		this.add('|unlink|' + this.getLastIdOf(targetUser));
+>>>>>>> upstream/master
 
 		targetUser.mute(room.id, 7*60*1000);
 	},
@@ -531,9 +552,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
-		if (!targetUser) {
-			return this.sendReply("User " + this.targetUsername + " not found.");
-		}
+		if (!targetUser) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -551,8 +570,13 @@ var commands = exports.commands = {
 		targetUser.popup(user.name + " has muted you for 60 minutes. " + target);
 		this.addModCommand(targetUser.name + " was muted by " + user.name + " for 60 minutes." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
+<<<<<<< HEAD
 		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also muted: " + alts.join(", "));
 		this.add('|unlink|' + targetUser.userid);
+=======
+		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also muted: " + alts.join(", "));
+		this.add('|unlink|' + this.getLastIdOf(targetUser));
+>>>>>>> upstream/master
 
 		targetUser.mute(room.id, 60*60*1000, true);
 	},
@@ -561,13 +585,15 @@ var commands = exports.commands = {
 	unmute: function(target, room, user) {
 		if (!target) return this.parse('/help unmute');
 		var targetUser = Users.get(target);
-		if (!targetUser) {
-			return this.sendReply("User " + target + " not found.");
-		}
+		if (!targetUser) return this.sendReply("User '" + target + "' does not exist.");
 		if (!this.can('mute', targetUser, room)) return false;
 
 		if (!targetUser.mutedRooms[room.id]) {
+<<<<<<< HEAD
 			return this.sendReply(targetUser.name + " isn't muted.");
+=======
+			return this.sendReply("" + targetUser.name + " is not muted.");
+>>>>>>> upstream/master
 		}
 
 		this.addModCommand(targetUser.name + " was unmuted by " + user.name + ".");
@@ -582,9 +608,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
-		if (!targetUser) {
-			return this.sendReply("User " + this.targetUser + " not found.");
-		}
+		if (!targetUser) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -603,8 +627,13 @@ var commands = exports.commands = {
 
 		this.addModCommand(targetUser.name + " was locked from talking by " + user.name + "." + (target ? " (" + target + ")" : ""));
 		var alts = targetUser.getAlts();
+<<<<<<< HEAD
 		if (alts.length) this.addModCommand(targetUser.name + "'s alts were also locked: " + alts.join(", "));
 		this.add('|unlink|' + targetUser.userid);
+=======
+		if (alts.length) this.addModCommand("" + targetUser.name + "'s alts were also locked: " + alts.join(", "));
+		this.add('|unlink|' + this.getLastIdOf(targetUser));
+>>>>>>> upstream/master
 
 		targetUser.lock();
 	},
@@ -621,7 +650,7 @@ var commands = exports.commands = {
 				((names.length > 1) ? "were" : "was") +
 				" unlocked by " + user.name + ".");
 		} else {
-			this.sendReply("User " + target + " is not locked.");
+			this.sendReply("User '" + target + "' is not locked.");
 		}
 	},
 
@@ -631,6 +660,7 @@ var commands = exports.commands = {
 
 		target = this.splitTarget(target);
 		var targetUser = this.targetUser;
+<<<<<<< HEAD
 		if (!targetUser) {
 			return this.sendReply("User " + this.targetUsername + " not found.");
 		}
@@ -638,6 +668,9 @@ var commands = exports.commands = {
                 if (a === "BlakJack" || a === "BlakJack - Away" || a === botName) {
                         return user.popup('This user is too awesome to be banned!');
                         }
+=======
+		if (!targetUser) return this.sendReply("User '" + this.targetUsername + "' does not exist.");
+>>>>>>> upstream/master
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The reason is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -659,7 +692,7 @@ var commands = exports.commands = {
 			}
 		}
 
-		this.add('|unlink|' + targetUser.userid);
+		this.add('|unlink|' + this.getLastIdOf(targetUser));
 		targetUser.ban();
 	},
 
@@ -672,7 +705,7 @@ var commands = exports.commands = {
 		if (name) {
 			this.addModCommand(name + " was unbanned by " + user.name + ".");
 		} else {
-			this.sendReply("User " + target + " is not banned.");
+			this.sendReply("User '" + target + "' is not banned.");
 		}
 	},
 
@@ -716,8 +749,13 @@ var commands = exports.commands = {
 	 * Moderating: Other
 	 *********************************************************/
 
+<<<<<<< HEAD
 	modnote: function(target, room, user, connection, cmd) {
 		if (!target) return this.parse('/help note');
+=======
+	modnote: function (target, room, user, connection, cmd) {
+		if (!target) return this.parse('/help modnote');
+>>>>>>> upstream/master
 		if (target.length > MAX_REASON_LENGTH) {
 			return this.sendReply("The note is too long. It cannot exceed " + MAX_REASON_LENGTH + " characters.");
 		}
@@ -769,7 +807,7 @@ var commands = exports.commands = {
 			return this.sendReply("/promote - WARNING: This user is offline and could be unregistered. Use /forcepromote if you're sure you want to risk it.");
 		}
 
-		if (Config.groups.bySymbol[nextGroup].globalRank < Config.groups.bySymbol[currentGroup].globalRank) {
+		if (Config.groups.bySymbol[nextGroup].rank < Config.groups.bySymbol[currentGroup].rank) {
 			this.privateModCommand("(" + name + " was demoted to " + groupName + " by " + user.name + ".)");
 			if (targetUser) targetUser.popup("You were demoted to " + groupName + " by " + user.name + ".");
 		} else {
@@ -831,7 +869,7 @@ var commands = exports.commands = {
 		if (!room.modchat) {
 			this.add("|raw|<div class=\"broadcast-blue\"><b>Moderated chat was disabled!</b><br />Anyone may talk now.</div>");
 		} else {
-			var modchat = sanitize(room.modchat);
+			var modchat = Tools.escapeHTML(room.modchat);
 			this.add("|raw|<div class=\"broadcast-red\"><b>Moderated chat was set to " + modchat + "!</b><br />Only users of rank " + modchat + " and higher can talk.</div>");
 		}
 		this.logModCommand(user.name + " set modchat to " + room.modchat);
@@ -848,6 +886,19 @@ var commands = exports.commands = {
 
 		if (!this.canTalk()) return;
 
+<<<<<<< HEAD
+=======
+		this.add('|raw|<div class="broadcast-blue"><b>' + Tools.escapeHTML(target) + '</b></div>');
+		this.logModCommand(user.name + " declared " + target);
+	},
+
+	htmldeclare: function (target, room, user) {
+		if (!target) return this.parse('/help htmldeclare');
+		if (!this.can('gdeclare', room)) return false;
+
+		if (!this.canTalk()) return;
+
+>>>>>>> upstream/master
 		this.add('|raw|<div class="broadcast-blue"><b>' + target + '</b></div>');
 		this.logModCommand(user.name + " declared " + target);
 	},
@@ -889,13 +940,14 @@ var commands = exports.commands = {
 	fr: 'forcerename',
 	forcerename: function(target, room, user) {
 		if (!target) return this.parse('/help forcerename');
-		target = this.splitTarget(target);
+		target = this.splitTarget(target, true);
 		var targetUser = this.targetUser;
 		if (!targetUser) {
-			return this.sendReply("User " + this.targetUsername + " not found.");
+			return this.sendReply("User '" + this.targetUsername + "' was not found or had already changed its name.");
 		}
 		if (!this.can('forcerename', targetUser)) return false;
 
+<<<<<<< HEAD
 		if (targetUser.userid === toUserid(this.targetUser)) {
 			var entry = targetUser.name + " was forced to choose a new name by " + user.name + (target ? ": " + target: "");
 			this.privateModCommand("(" + entry + ")");
@@ -905,6 +957,13 @@ var commands = exports.commands = {
 		} else {
 			this.sendReply("User " + targetUser.name + " is no longer using that name.");
 		}
+=======
+		var entry = targetUser.name + " was forced to choose a new name by " + user.name + (target ? ": " + target: "");
+		this.privateModCommand("(" + entry + ")");
+		Rooms.global.cancelSearch(targetUser);
+		targetUser.resetName();
+		targetUser.send("|nametaken||" + user.name + " has forced you to change your name. " + target);
+>>>>>>> upstream/master
 	},
 
 	modlog: function(target, room, user, connection) {
@@ -1328,9 +1387,13 @@ var commands = exports.commands = {
 	 * Battle commands
 	 *********************************************************/
 
+<<<<<<< HEAD
 	concede: 'forfeit',
 	surrender: 'forfeit',
 	forfeit: function(target, room, user) {
+=======
+	forfeit: function (target, room, user) {
+>>>>>>> upstream/master
 		if (!room.battle) {
 			return this.sendReply("There's nothing to forfeit here.");
 		}
@@ -1507,7 +1570,7 @@ var commands = exports.commands = {
 		if (target) {
 			if (Config.modchat.pm) {
 				var userGroup = user.group;
-				if (Config.groups.bySymbol[userGroup].globalRank < Config.groups.bySymbol[Config.modchat.pm].globalRank) {
+				if (Config.groups.bySymbol[userGroup].rank < Config.groups.bySymbol[Config.modchat.pm].rank) {
 					var groupName = Config.groups.bySymbol[Config.modchat.pm].name || Config.modchat.pm;
 					this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to search for a battle.");
 					return false;
@@ -1531,7 +1594,7 @@ var commands = exports.commands = {
 		}
 		if (Config.modchat.pm) {
 			var userGroup = user.group;
-			if (Config.groups.bySymbol[userGroup].globalRank < Config.groups.bySymbol[Config.modchat.pm].globalRank) {
+			if (Config.groups.bySymbol[userGroup].rank < Config.groups.bySymbol[Config.modchat.pm].rank) {
 				var groupName = Config.groups.bySymbol[Config.modchat.pm].name || Config.modchat.pm;
 				this.popupReply("Because moderated chat is set, you must be of rank " + groupName + " or higher to challenge users.");
 				return false;

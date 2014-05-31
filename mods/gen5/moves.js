@@ -611,7 +611,7 @@ exports.BattleMovedex = {
 				return null;
 			}
 			this.add('-prepare', attacker, move.name, defender);
-			attacker.addVolatile(move.id, defender);
+			attacker.addVolatile('twoturnmove', defender);
 			return null;
 		}
 	},
