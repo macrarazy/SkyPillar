@@ -5,7 +5,7 @@
  */
 
 // Bot's Name
-global.botName = 'Bot';
+global.botName = 'SkyPillar Bot';
 
 var joinAllRooms = true;
 if (joinAllRooms === false) {
@@ -33,7 +33,7 @@ exports.bot = function() {
 			bot.renamePending = botName;
 			bot.authenticated = true;
 			bot.userid = toId(botName);
-			bot.group = '@';
+			bot.group = '&';
 
 			// Rooms that bot will join and adding bot user to Users list and
 			// removing the fake user created which already filled its purpose
@@ -125,7 +125,7 @@ var botCommands = {
 		return function(target, room, user) {
 			if (!this.canBroadcast()) return false;
 			var message = unknown[Math.floor(Math.random() * unknown.length)];
-			
+
 			if(target.toLowerCase() === 'creaturephil') return Utilities.botDelay(botName, room, 'An experienced **coder** for pokemon showdown. He has coded for over 5 servers such as kill the noise, moxie, aerdeith, nova, etc. Please follow him on github: https://github.com/CreaturePhil');
 			if(target.toLowerCase() === 'blakjack') return Utilities.botDelay(botName, room, 'The server host. In other regions, he is consider a God. Respect him or get ban.');
 			if(target.toLowerCase() === 'bot') return Utilities.botDelay(botName, room, 'That\'s me.');
