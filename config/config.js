@@ -308,6 +308,7 @@ exports.groups = {
 			jurisdiction: 'u',
 			alts: '%u',
 			announce: true,
+			sotd: true,
 			bypassblocks: 'u%@&~',
 			forcerename: true,
 			kick: true,
