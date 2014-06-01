@@ -145,13 +145,16 @@ target.toLowerCase().replace(/ /g,'-');
 			"fell into the void.",
 			"went into a cave without a repel!",
 			"has left the building.",
-			"was forced to give rivalnick's mom an oil massage!",
+			//"was forced to give rivalnick's mom an oil massage!",
 			"was hit by Magikarp's Revenge!",
 			"ate a bomb!",
 			"is blasting off again!",
 			"(Quit: oh god how did this get here i am not good with computer)",
 			"was unfortunate and didn't get a cool message.",
 			"The Immortal accidently kicked {{user}} from the server!",
+			"Zarel accidently kick {{user}} from the server!",
+			"was IP banned by Zarel",
+			"was kernsey!",
 		];
 
 		return function(target, room, user) {
@@ -1062,7 +1065,8 @@ tournamentnote: function(target, room, user){
 		if (target.toLowerCase() == "lobby") {
 			return connection.sendTo('lobby','|html|<div class = "bajksdhjkah"><center><img src=http://i.imgur.com/but1Bih.jpg?1><br>' +
 			'<b><p>Welcome to Skypillar!</b><br><br><p>Welcome to the Hoenn Regions very own server! Skypillar has many things to offer in terms of plugins such as the Shop, our Elite Four League and many more!<br>If any problems occur feel free to PM a Driver (%) or Moderator (@), but only PM upper staff Leaders (&) and Admins (~) for special concerns. Enjoy yourself here!' +
-			'<center><a href = "http://skypillar.boards.net/"><button class="blackbutton title="Boards><font color="Blue"><b>Boards</b></a></button> | <a href ="http://www.reddit.com/r/skypillar"><button class="blackbutton title="Reddit"><font color="greem"><b>Skypillar Reddit</b></a></button>');
+			'<center><a href = "http://skypillar.boards.net/"><button class="blackbutton title="Boards><font color="Black"><b>Boards</b></a></button> | <a href ="http://www.reddit.com/r/skypillar"><button class="blackbutton title="Reddit"><font color="greem"><b>Skypillar Reddit</b></a></button>' + 
+			'<a href =https://gist.github.com/E4Arsh/8577715>This Server Is Hosted By BlakJack</a>');
 		}
 	},
 
