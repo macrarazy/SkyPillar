@@ -2,6 +2,71 @@
 // The rules that formats use are stored in data/rulesets.js
 
 exports.Formats = [
+	
+{	
+	name: "Random 1v1"
+	section: 'Skypillar'
+	
+	onBegin: function () {
+			
+this.p1.pokemon = this.p1.pokemon.slice(0, 1);
+			
+this.p1.pokemonLeft = this.p1.pokemon.length;
+			
+this.p2.pokemon = this.p2.pokemon.slice(0, 1);
+			
+this.p2.pokemonLeft = this.p2.pokemon.length;
+		
+},
+	team: 'random',
+	ruleset: ['PotD', 'Pokemon' , 'Sleep Clase Mod' , 'HP percentage Mod']
+},
+{
+	name: "Random Gen 1"
+	section: 'Skypillar'
+	
+	mod: 'gen1',
+	team: 'random',
+	ruleset: ['Pokemon', 'Standard'],
+banlist: ['Uber',
+			'Kakuna + Poison Sting + Harden', 'Kakuna + String Shot + Harden',
+			'Beedrill + Poison Sting + Harden', 'Beedrill + String Shot + Harden',
+			'Nidoking + Fury Attack + Thrash',
+			'Exeggutor + Poison Powder + Stomp', 'Exeggutor + Sleep Powder + Stomp', 'Exeggutor + Stun Spore + Stomp',
+			'Eevee + Tackle + Growl',
+			'Vaporeon + Tackle + Growl',
+			'Jolteon + Tackle + Growl', 'Jolteon + Focus Energy + Thunder Shock',
+			'Flareon + Tackle + Growl', 'Flareon + Focus Energy + Ember'
+		]
+},
+{
+	name:"Random Doubles CAP"
+	section:'Skypillar'
+
+	team:'random',
+	ruleset: ['CAP Pokemon', 'Standard', 'Team Preview'],
+		
+	banlist: ['Uber', 'Soul Dew', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Swagger']
+	
+},
+{
+	name:"OU Random Monotype"
+	section:'Skypillar'
+
+	onBegin: function () {
+			
+this.p1.pokemon = this.p1.pokemon.slice(0, 1);
+			
+this.p1.pokemonLeft = this.p1.pokemon.length;
+			
+this.p2.pokemon = this.p2.pokemon.slice(0, 1);
+			
+this.p2.pokemonLeft = this.p2.pokemon.length;
+		
+},
+	team:'random',
+	ruleset: ['OU', 'Same Type Clause']
+},
 
 	// XY Singles
 	///////////////////////////////////////////////////////////////////
