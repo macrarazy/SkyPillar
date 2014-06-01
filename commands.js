@@ -212,24 +212,6 @@ var commands = exports.commands = {
 			}
 		}
 	},
-	
-	skypillarroom: function(target, room, user) {
-		if (!this.can('makeroom')) return;
-		if (!room.chatRoomData) {
-			return this.sendReply('/skypillarroom - This room can\'t be marked as a pillar');
-		}
-		if (target === 'off') {
-			delete room.isSkypillar;
-			this.addModCommand(user.name+' has made this chat room a normal room.');
-			delete room.chatRoomData.isSkypillar;
-			Rooms.global.writeChatRoomData();
-		} else {
-			room.isSkypillar = true;
-			this.addModCommand(user.name+' made this room a SkyPillar room.');
-			room.chatRoomData.isSkypillar = true;
-			Rooms.global.writeChatRoomData();
-		}
-	},
 
 	officialchatroom: 'officialroom',
 	officialroom: function(target, room, user) {
@@ -246,48 +228,6 @@ var commands = exports.commands = {
 			room.isOfficial = true;
 			this.addModCommand(user.name + " made this chat room official.");
 			room.chatRoomData.isOfficial = true;
-			Rooms.global.writeChatRoomData();
-		}
-	},
-	
-	roomadmin: function(target, room, user) {
-		if (!room.chatRoomData) {
-			return this.sendReply("/roomadmin - This room isn't designed for per-room moderation to be added");
-		}
-		var target = this.splitTarget(target, true);
-		var targetUser = this.targetUser;
-
-		if (!targetUser) return this.sendReply("User '"+this.targetUsername+"' is not online.");
-
-		if (!this.can('makeroom', targetUser, room)) return false;
-
-		if (!room.auth) room.auth = room.chatRoomData.auth = {};
-
-		var name = targetUser.name;
-
-		room.auth[targetUser.userid] = '~';
-		this.addModCommand(''+name+' was appointed Room Administrator by '+user.name+'.');
-		room.onUpdateIdentity(targetUser);
-		Rooms.global.writeChatRoomData();
-	},
-	roomdeadmin: 'deroomadmin',
-	deroomadmin: function(target, room, user) {
-		if (!room.auth) {
-			return this.sendReply("/roomdeadmin - This room isn't designed for per-room moderation");
-		}
-		var target = this.splitTarget(target, true);
-		var targetUser = this.targetUser;
-		var name = this.targetUsername;
-		var userid = toId(name);
-		if (!userid || userid === '') return this.sendReply("User '"+name+"' does not exist.");
-
-		if (room.auth[userid] !== '~') return this.sendReply("User '"+name+"' is not a room admin.");
-		if (!this.can('makeroom', null, room)) return false;
-
-		delete room.auth[userid];
-		this.sendReply('('+name+' is no longer Room Administrator.)');
-		if (targetUser) targetUser.updateIdentity();
-		if (room.chatRoomData) {
 			Rooms.global.writeChatRoomData();
 		}
 	},
@@ -312,99 +252,13 @@ var commands = exports.commands = {
 		}
 	},
 
-	roommanager: function(target, room, user) {
-		if (!room.chatRoomData) {
-			return this.sendReply("/roommanager - This room is't designed for per-room moderation to be added.");
-		}
-		var target = this.splitTarget(target, true);
-		var targetUser = this.targetUser;
-		if (!targetUser) return this.sendReply("User '"+this.targetUsername+"' is not online.");
-		if (!this.can('makeroom')) return false;
-		if (!room.auth) room.auth = room.chatRoomData.auth = {};
-		var name = targetUser.name;
-		room.auth[targetUser.userid] = '#';
-		room.manager = targetUser.userid;
-		this.addModCommand(''+name+' was appointed to Room Manager by '+user.name+'.');
-		room.onUpdateIdentity(targetUser);
-		room.chatRoomData.manager = room.manager;
-		Rooms.global.writeChatRoomData();
-	},
-
-	roomowner: function(target, room, user) {
-		if (!room.chatRoomData) {
-			return this.sendReply("/roomowner - This room isn't designed for per-room moderation to be added");
-		}
-		var target = this.splitTarget(target, true);
-		var targetUser = this.targetUser;
-
-		if (!targetUser) return this.sendReply("User '"+this.targetUsername+"' is not online.");
-
-		if (!room.manager) return this.sendReply('The room needs a room manager before it can have a room owner.');
-		if (room.manager != user.userid && !this.can('makeroom')) return this.sendReply('/roomowner - Access denied.');
-
-		if (!room.auth) room.auth = room.chatRoomData.auth = {};
-
-		var name = targetUser.name;
-
-		room.auth[targetUser.userid] = '#';
-		this.addModCommand(''+name+' was appointed Room Owner by '+user.name+'.');
-		room.onUpdateIdentity(targetUser);
-		Rooms.global.writeChatRoomData();
-	},
-
-	roomdeowner: 'deroomowner',
-	deroomowner: function(target, room, user) {
-		if (!room.auth) {
-			return this.sendReply("/roomdeowner - This room isn't designed for per-room moderation");
-		}
-		var target = this.splitTarget(target, true);
-		var targetUser = this.targetUser;
-		var name = this.targetUsername;
-		var userid = toId(name);
-		if (!userid || userid === '') return this.sendReply("User '"+name+"' does not exist.");
-
-		if (room.auth[userid] !== '#') return this.sendReply("User '"+name+"' is not a room owner.");
-		if (!room.manager || user.userid != room.manager && !this.can('makeroom')) return false;
-
-		delete room.auth[userid];
-		this.sendReply('('+name+' is no longer Room Owner.)');
-		if (targetUser) targetUser.updateIdentity();
-		if (room.chatRoomData) {
-			Rooms.global.writeChatRoomData();
-		}
-	},
-	
-	roomdesc: function (target, room, user) {
-		if (!target) {
-			if (!this.canBroadcast()) return;
-			var re = /(https?:\/\/(([-\w\.]+)+(:\d+)?(\/([\w/_\.]*(\?\S+)?)?)?))/g;
-			if (!room.desc) return this.sendReply("This room does not have a description set.");
-			this.sendReplyBox("The room description is: " + room.desc.replace(re, '<a href="$1">$1</a>'));
-			return;
-		}
-		if (!this.can('roommod', null, room)) return false;
-		if (target.length > 80) return this.sendReply("Error: Room description is too long (must be at most 80 characters).");
-
-		room.desc = target;
-		this.sendReply("(The room description is now: " + target + ")");
-
-		if (room.chatRoomData) {
-			room.chatRoomData.desc = room.desc;
-			Rooms.global.writeChatRoomData();
-		}
-	},
-
 	roomdemote: 'roompromote',
-	roompromote: function (target, room, user, connection, cmd) {
-		if (!room.auth) {
-			this.sendReply("/roompromote - This room isn't designed for per-room moderation");
-			return this.sendReply("Before setting room mods, you need to set it up with /roomowner");
-		}
+	roompromote: function(target, room, user, connection, cmd) {
 		if (!target) return this.parse('/help roompromote');
 
 		target = this.splitTarget(target, true);
 		var targetUser = this.targetUser;
-		var userid = toId(this.targetUsername);
+		var userid = toUserid(this.targetUsername);
 		var name = targetUser ? targetUser.name : this.targetUsername;
 
 		if (!userid) return this.parse('/help roompromote');
@@ -412,41 +266,54 @@ var commands = exports.commands = {
 			return this.sendReply("User '" + name + "' is offline and unauthed, and so can't be promoted.");
 		}
 
-		var currentGroup = ((room.auth && room.auth[userid]) || ' ')[0];
-		var nextGroup = target || Users.getNextGroupSymbol(currentGroup, cmd === 'roomdemote', true);
-		if (target === 'deauth') nextGroup = Config.groupsranking[0];
-		if (!Config.groups[nextGroup]) {
+		var currentGroup = room.auth && room.auth[userid];
+		if (!Config.groups[room.type + 'Room'][currentGroup]) {
+			currentGroup = Config.groups.default[room.type + 'Room'];
+		}
+
+		var nextGroup = Config.groups.default[room.type + 'Room'];
+		if (target !== 'deauth') {
+			var isDemote = cmd === 'roomdemote';
+			var nextGroupRank = Config.groups.bySymbol[currentGroup][room.type + 'RoomRank'] + (isDemote ? -1 : 1);
+			nextGroup = target || Config.groups[room.type + 'RoomByRank'][nextGroupRank] || (isDemote ? Config.groups.default[room.type + 'Room'] : Config.groups[room.type + 'RoomByRank'].slice(-1)[0]);
+		}
+		if (!Config.groups.bySymbol[nextGroup]) {
 			return this.sendReply("Group '" + nextGroup + "' does not exist.");
 		}
-
-		if (Config.groups[nextGroup].globalonly) {
-			return this.sendReply("Group 'room" + Config.groups[nextGroup].id + "' does not exist as a room rank.");
+		if (!Config.groups[room.type + 'Room'][nextGroup]) {
+			return this.sendReply("Group '" + nextGroup + "' does not exist as a room rank.");
 		}
 
-		var groupName = Config.groups[nextGroup].name || "regular user";
+		if (!room.auth && nextGroup !== Config.groups[room.type + 'RoomByRank'].slice(-1)[0]) {
+			this.sendReply("/roompromote - This room isn't designed for per-room moderation");
+			return this.sendReply("Before setting room auth, you need to set it up with /room" + Config.groups.bySymbol[Config.groups[room.type + 'RoomByRank'].slice(-1)[0]].id);
+		}
+
+		var groupName = Config.groups.bySymbol[nextGroup].name || "regular user";
 		if (currentGroup === nextGroup) {
 			return this.sendReply("User '" + name + "' is already a " + groupName + " in this room.");
 		}
-		if (currentGroup !== ' ' && !user.can('room' + Config.groups[currentGroup].id, null, room)) {
-			return this.sendReply("/" + cmd + " - Access denied for promoting from " + Config.groups[currentGroup].name + ".");
-		}
-		if (nextGroup !== ' ' && !user.can('room' + Config.groups[nextGroup].id, null, room)) {
-			return this.sendReply("/" + cmd + " - Access denied for promoting to " + Config.groups[nextGroup].name + ".");
+		if (!user.can('makeroom')) {
+			if (!user.can('roompromote', currentGroup, room)) {
+				return this.sendReply("/" + cmd + " - Access denied for removing " + (Config.groups.bySymbol[currentGroup].name || "regular user") + ".");
+			}
+			if (!user.can('roompromote', nextGroup, room)) {
+				return this.sendReply("/" + cmd + " - Access denied for giving " + groupName + ".");
+			}
 		}
 
-		if (nextGroup === ' ') {
+		if (!room.auth) room.auth = room.chatRoomData.auth = {};
+		if (nextGroup === Config.groups.default[room.type + 'Room']) {
 			delete room.auth[userid];
 		} else {
 			room.auth[userid] = nextGroup;
 		}
 
-		if (Config.groups[nextGroup].rank < Config.groups[currentGroup].rank) {
+		if (Config.groups.bySymbol[nextGroup].rank < Config.groups.bySymbol[currentGroup].rank) {
 			this.privateModCommand("(" + name + " was demoted to Room " + groupName + " by " + user.name + ".)");
 			if (targetUser) targetUser.popup("You were demoted to Room " + groupName + " by " + user.name + ".");
-		} else if (nextGroup === '#') {
-			this.addModCommand("" + name + " was promoted to " + groupName + " by " + user.name + ".");
 		} else {
-			this.addModCommand("" + name + " was promoted to Room " + groupName + " by " + user.name + ".");
+			this.addModCommand(name + " was promoted to Room " + groupName + " by " + user.name + ".");
 		}
 
 		if (targetUser) targetUser.updateIdentity();
@@ -967,85 +834,35 @@ var commands = exports.commands = {
 		}
 	},
 
-	declaregreen: 'declare',
-	declarered: 'declare',
-	declare: function(target, room, user, connection, cmd) {
-		/*if (user.userid === 'shadowninjask') return false;**/
+	declare: function(target, room, user) {
 		if (!target) return this.parse('/help declare');
-		if (!this.can('declare', null, room)) return false;
+		if (!this.can('declare', room)) return false;
 
 		if (!this.canTalk()) return;
 
-		if (cmd === 'declare') {
-			this.add('|raw|<div class="broadcast-blue"><b>'+target+'</b></div>');
-		}
-		else if (cmd === 'declarered') {
-			this.add('|raw|<div class="broadcast-red"><b>'+target+'</b></div>');
-		}
-		else if (cmd === 'declaregreen') {
-			this.add('|raw|<div class="broadcast-green"><b>'+target+'</b></div>');
-		}
-		if (!room.auth) {
-			this.logModCommand(user.name+' declared '+target);
-		}
-		if (room.auth) {
-			this.logModCommand(user.name+' declared '+target);
-		}
+		this.add('|raw|<div class="broadcast-blue"><b>' + Tools.escapeHTML(target) + '</b></div>');
+		this.logModCommand(user.name + " declared " + target);
 	},
 
-	gdeclarered: 'gdeclare',
-	gdeclaregreen: 'gdeclare',
-	gdeclare: function(target, room, user, connection, cmd) {
-		if (!target) return this.parse('/help '+cmd);
+	htmldeclare: function (target, room, user) {
+		if (!target) return this.parse('/help htmldeclare');
+		if (!this.can('gdeclare', room)) return false;
+
+		if (!this.canTalk()) return;
+
+		this.add('|raw|<div class="broadcast-blue"><b>' + target + '</b></div>');
+		this.logModCommand(user.name + " declared " + target);
+	},
+
+	gdeclare: 'globaldeclare',
+	globaldeclare: function(target, room, user) {
+		if (!target) return this.parse('/help globaldeclare');
 		if (!this.can('gdeclare')) return false;
-		var staff = '';
-		this.logModCommand(user.name+' global declared '+target);
-		if (user.group == '~') staff = 'an Administrator';
 
-		//var roomName = (room.isPrivate)? 'a private room' : room.id;
-
-		if (cmd === 'gdeclare'){
-			for (var id in Rooms.rooms) {
-				if (id !== 'global') Rooms.rooms[id].addRaw('<div class="broadcast-blue"><b><font size=1><i>Global declare from '+staff+'<br /></i></font size>'+target+'</b></div>');
-			}
+		for (var id in Rooms.rooms) {
+			if (id !== 'global') Rooms.rooms[id].addRaw('<div class="broadcast-blue"><b>' + target + '</b></div>');
 		}
-		if (cmd === 'gdeclarered'){
-			for (var id in Rooms.rooms) {
-				if (id !== 'global') Rooms.rooms[id].addRaw('<div class="broadcast-red"><b><font size=1><i>Global declare from '+staff+'<br /></i></font size>'+target+'</b></div>');
-			}
-		}
-		else if (cmd === 'gdeclaregreen'){
-			for (var id in Rooms.rooms) {
-				if (id !== 'global') Rooms.rooms[id].addRaw('<div class="broadcast-green"><b><font size=1><i>Global declare from '+staff+'<br /></i></font size>'+target+'</b></div>');
-			}
-		}
-		this.logModCommand(user.name+' globally declared '+target);
-	},
-
-	pgdeclare: function(target, room, user) {
-		if (!target) return this.parse('/help pgdeclare');
-		if (!this.can('pgdeclare')) return;
-
-		if (!this.canTalk()) return;
-
-		for (var r in Rooms.rooms) {
-			if (Rooms.rooms[r].type === 'chat') Rooms.rooms[r].add('|raw|<b>'+target+'</b></div>');
-		}
-
-		this.logModCommand(user.name+' declared '+target+' to all rooms.');
-	},
-
-	modmsg: 'declaremod',
-	moddeclare: 'declaremod',
-	declaremod: function(target, room, user) {
-		if (!target) return this.sendReply('/declaremod [message] - Also /moddeclare and /modmsg');
-		if (!this.can('declare', null, room)) return false;
-
-		if (!this.canTalk()) return;
-
-		this.privateModCommand('|raw|<div class="broadcast-red"><b><font size=1><i>Private Auth (Driver +) declare from '+user.name+'<br /></i></font size>'+target+'</b></div>');
-
-		this.logModCommand(user.name+' mod declared '+target);
+		this.logModCommand(user.name + " globally declared " + target);
 	},
 
 	cdeclare: 'chatdeclare',
@@ -1054,9 +871,9 @@ var commands = exports.commands = {
 		if (!this.can('gdeclare')) return false;
 
 		for (var id in Rooms.rooms) {
-			if (id !== 'global') if (Rooms.rooms[id].type !== 'battle') Rooms.rooms[id].addRaw('<div class="broadcast-blue"><b>'+target+'</b></div>');
+			if (id !== 'global') if (Rooms.rooms[id].type !== 'battle') Rooms.rooms[id].addRaw('<div class="broadcast-blue"><b>' + target + '</b></div>');
 		}
-		this.logModCommand(user.name+' globally declared (chat level) '+target);
+		this.logModCommand(user.name + " globally declared (chat level) " + target);
 	},
 
 	wall: 'announce',
