@@ -4,7 +4,7 @@
  * This is bascially where most of the core custom commands goes.
  * Commands Table of Contents:
  */
-
+ 
 var customCommands = {
 	/*********************************************************
 	 * General commands
@@ -145,7 +145,7 @@ target.toLowerCase().replace(/ /g,'-');
 			"fell into the void.",
 			"went into a cave without a repel!",
 			"has left the building.",
-			"was forced to give Rival Nick's mom an oil massage!",
+			"was forced to give BeforeMath's mom an oil massage!",
 			"was hit by Magikarp's Revenge!",
 			"ate a bomb!",
 			"is blasting off again!",
@@ -420,58 +420,7 @@ target.toLowerCase().replace(/ /g,'-');
 			room.add('|raw|<b> * <font color="' + Utilities.hashColor(user.name) + '">' + user.name + '</font> set their status to: </b>"' + escapeHTML + '"');
 		}
 	},
-	
-	/*********************************************************
-	 * Rival Nick's Custom Commands'
-	 * *******************************************************/
-	skypillarplugin: 'plug',
-	plug: function (target, room, user) {
-			if (!this.canBroadcast()) return;
-			this.sendReplyBox(
-					"Check out Skypillar's very own  Music Plug-in<br />" +
-					"Creator- The Meh<br />" +
-					" <a href=\http://plug.dj/skypillar-dj/>Plug-in</a><br />" 
-							)
-	},
-	codinghelp: 'devhelp',
-	devhelp: function (target, room, user) {
-			if (!this.canBroadcast()) return;
-			this.sendReplyBox(
-					"If your a programmer or someone who wants to help out the server on the back-end<br />" +
-					"PM an ~(Admin) for more details<br />" +
-					" <a href=http://client01.chat.mibbit.com/#skypillar@irc.synirc.net>Mibbit developer chat</a><br />" +
-					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/Showdown-Boilerplate-master>Skypillar Github Code</a><br />"
-										)
-	},
-	doge: 'doge',
-	doge: function (target,room, user){
-		if (!this.canBroadcast()) return;
-			this.sendReplyBox(
-			"DOGE2048<br />" + 
-			"PLAY IT: <a href=http://www.doge2048.com/>DOGE2048</a><br />"
-								)
-	},
-	sotd: function (target, room, user) {
-		if (!this.can('sotd')) return false;
 
-		Config.sotd = target;
-		Simulator.SimulatorProcess.eval('Config.sotd = \'' + toId(target) + '\'');
-		if (target) {
-			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day is now " + target + "!</b><br />This Song will be guaranteed to show up in our plug.</div>");
-			this.logModCommand("The Song of the Day was changed to " + target + " by " + user.name + ".");
-		} else {
-			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day was removed!</b><br />No Song will be guaranteed in our plug.</div>");
-			this.logModCommand("The Song of the Day was removed by " + user.name + ".");
-		}
-	},
-		tourmoney: 'tourgivemoney',
-	tourgivemoney: function (target, room, user) {
-			if (!this.canBroadcast()) return;
-			this.sendReplyBox(
-					"Here is a guide on giving money out based on tours.<br />" +
-					" <a href=URl HERE>Tour Money Help</a><br />" 
-										)
-	},
 	/*********************************************************
 	 * Money commands
 	 *********************************************************/
@@ -579,7 +528,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 	shop: function(target, room, user) {
 		if (!this.canBroadcast()) return;
-		this.sendReplyBox('<center><h4><b><u>SkyPillar Sho[</u></b></h4><table border="1" cellspacing="0" cellpadding="3"><tr><th>Command</th><th>Description</th><th>Cost</th></tr><tr><td>Symbol</td><td>Buys a custom symbol to go infront of name and puts you at top of userlist. (temporary until restart)</td><td>5</td></tr><tr><td>Fix</td><td>Buys the ability to alter your current custom avatar or trainer card. (don\'t buy if you have neither)</td><td>10</td></tr><tr><td>Poof</td><td>Buys the ability to add a custom poof.</td><td>15</td></tr><tr><td>Custom</td><td>Buys a custom avatar to be applied to your name. (you supply)</td><td>20</td></tr><tr><td>Animated</td><td>Buys an animated avatar to be applied to your name. (you supply)</td><td>25</td></tr><tr><td>Trainer</td><td>Buys a trainer card which shows information through a command such as <i>/rivalnick</i>.</td><td>30</td></tr><tr><td>Room</td><td>Buys a chatroom for you to own. (within reason, can be refused)</td><td>50</td></tr><tr><td>Voice</td><td>Buys a promotion to global voice.</td><td>100</td></tr><tr><td>Player</td><td>Buys a promotion to room player of any room you want.</td><td>250</td></tr></table></table><br/>To buy an item from the shop, use /buy <i>command</i>. <br/></center>');
+		this.sendReplyBox('<center><h4><b><u>The InterVersal Shop</u></b></h4><table border="1" cellspacing="0" cellpadding="3"><tr><th>Items</th><th>Description</th><th>Cost</th></tr><tr><td>Symbol</td><td>Buys a custom symbol to go infront of name and puts you at top of userlist. (temporary until restart)</td><td>5</td></tr><tr><td>Fix</td><td>Buys the ability to alter your current custom avatar or trainer card. (don\'t buy if you have neither)</td><td>10</td></tr><tr><td>Poof</td><td>Buys the ability to add a custom poof.</td><td>15</td></tr><tr><td>Custom</td><td>Buys a custom avatar to be applied to your name. (you supply)</td><td>20</td></tr><tr><td>Animated</td><td>Buys an animated avatar to be applied to your name. (you supply)</td><td>25</td></tr><tr><td>Trainer</td><td>Buys a trainer card which shows information through a command such as <i>/beforemath</i>.</td><td>30</td></tr><tr><td>Room</td><td>Buys a chatroom for you to own. (within reason, can be refused)</td><td>50</td></tr><tr><td>Voice</td><td>Buys a promotion to global voice.</td><td>100</td></tr><tr><td>Player</td><td>Buys a promotion to room player of any room you want.</td><td>250</td></tr></table></table><br/>To buy an item from the shop, use /buy <i>command</i>. <br/></center>');
 	},
 
 	buy: function(target, room, user) {
@@ -674,7 +623,7 @@ target.toLowerCase().replace(/ /g,'-');
 			}
 		}
 		if (target === 'room') {
-			price = 50;
+			price = 120;
 			if (price <= user.money) {
 				user.money = user.money - price;
 				this.sendReply('You have purchased a room. Private Message an admin to make the room.');
@@ -685,7 +634,7 @@ target.toLowerCase().replace(/ /g,'-');
 			}
 		}
 		if (target === 'voice') {
-			price = 100;
+			price = 150;
 			if (price <= user.money) {
 				user.money = user.money - price;
 				this.sendReply('You have purchased a promotion to global voice. Private Message an admin to promote you.');
@@ -766,7 +715,284 @@ target.toLowerCase().replace(/ /g,'-');
 	dq: function(target, room, user) {
 		return this.parse('/tour dq' + target);
 	},
+	/*********************************************************
+	 * Rival Nick's Custom Commands'
+	 * *******************************************************/
+	skypillarplugin: 'plug',
+	plug: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"Check out Skypillar's very own  Music Plug-in<br />" +
+					"Creator- The Meh<br />" +
+					" <a href=\http://plug.dj/skypillar-dj/>Plug-in</a><br />" 
+							)
+	},
+	codinghelp: 'devhelp',
+	devhelp: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"If your a programmer or someone who wants to help out the server on the back-end<br />" +
+					"PM an ~(Admin) for more details<br />" +
+					" <a href=http://client01.chat.mibbit.com/#skypillar@irc.synirc.net>Mibbit developer chat</a><br />" +
+					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/Showdown-Boilerplate-master>Skypillar Github Code</a><br />"
+										)
+	},
+	doge: 'doge',
+	doge: function (target,room, user){
+		if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+			"DOGE2048<br />" + 
+			"PLAY IT: <a href=http://www.doge2048.com/>DOGE2048</a><br />"
+								)
+	},
+	sotd: function (target, room, user) {
+		if (!this.can('sotd')) return false;
 
+		Config.sotd = target;
+		Simulator.SimulatorProcess.eval('Config.sotd = \'' + toId(target) + '\'');
+		if (target) {
+			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day is now " + target + "!</b><br />This Song will be guaranteed to show up in our plug.</div>");
+			this.logModCommand("The Song of the Day was changed to " + target + " by " + user.name + ".");
+		} else {
+			if (Rooms.lobby) Rooms.lobby.addRaw("<div class=\"broadcast-blue\"><b>The Song of the Day was removed!</b><br />No Song will be guaranteed in our plug.</div>");
+			this.logModCommand("The Song of the Day was removed by " + user.name + ".");
+		}
+	},
+		tourmoney: 'tourgivemoney',
+	tourgivemoney: function (target, room, user) {
+			if (!this.canBroadcast()) return;
+			this.sendReplyBox(
+					"Here is a guide on giving money out based on tours.<br />" +
+					" <a href=URl HERE>Tour Money Help</a><br />" 
+										)
+	},
+	roomauth: function(target, room, user, connection) {
+		if (!room.auth) return this.sendReply("/roomauth - This room isn't designed for per-room moderation and therefore has no auth list.");
+		var buffer = [];
+		var owners = [];
+		var admins = [];
+		var leaders = [];
+		var mods = [];
+		var drivers = [];
+		var voices = [];
+
+		room.owners = ''; room.admins = ''; room.leaders = ''; room.mods = ''; room.drivers = ''; room.voices = ''; 
+		for (var u in room.auth) { 
+			if (room.auth[u] == '#') { 
+				room.owners = room.owners +u+',';
+			} 
+			if (room.auth[u] == '~') { 
+				room.admins = room.admins +u+',';
+			} 
+			if (room.auth[u] == '&') { 
+				room.leaders = room.leaders +u+',';
+			}
+			if (room.auth[u] == '@') { 
+				room.mods = room.mods +u+',';
+			} 
+			if (room.auth[u] == '%') { 
+				room.drivers = room.drivers +u+',';
+			} 
+			if (room.auth[u] == '+') { 
+				room.voices = room.voices +u+',';
+			} 
+		}
+
+		if (!room.manager) manager = '';
+		if (room.manager) manager = room.manager;
+
+		room.owners = room.owners.split(',');
+		room.admins = room.admins.split(',');
+		room.leaders = room.leaders.split(',');
+		room.mods = room.mods.split(',');
+		room.drivers = room.drivers.split(',');
+		room.voices = room.voices.split(',');
+
+		for (var u in room.owners) {
+			if (room.owners[u] != '') owners.push(room.owners[u]);
+		}
+		for (var u in room.admins) {
+			if (room.admins[u] != '') admins.push(room.admins[u]);
+		}
+		for (var u in room.leaders) {
+			if (room.leaders[u] != '') leaders.push(room.leaders[u]);
+		}
+		for (var u in room.mods) {
+			if (room.mods[u] != '') mods.push(room.mods[u]);
+		}
+		for (var u in room.drivers) {
+			if (room.drivers[u] != '') drivers.push(room.drivers[u]);
+		}
+		for (var u in room.voices) {
+			if (room.voices[u] != '') voices.push(room.voices[u]);
+		}
+		if (owners.length > 0) {
+			owners = owners.join(', ');
+		} 
+		if (admins.length > 0) {
+			admins = admins.join(', ');
+		}
+		if (leaders.length > 0) {
+			leaders = leaders.join(', ');
+		}
+		if (mods.length > 0) {
+			mods = mods.join(', ');
+		}
+		if (drivers.length > 0) {
+			drivers = drivers.join(', ');
+		}
+		if (voices.length > 0) {
+			voices = voices.join(', ');
+		}
+		connection.popup('Manager: \n'+manager+'\nOwners: \n'+owners+'\nAdministrators: \n'+admins+'\nLeaders: \n'+leaders+'\nModerators: \n'+mods+'\nDrivers: \n'+drivers+'\nVoices: \n'+voices);
+	},
+
+	spop: 'sendpopup',
+	sendpopup: function(target, room, user) {
+		if (!this.can('hotpatch')) return false;
+
+		target = this.splitTarget(target);
+		var targetUser = this.targetUser;
+
+		if (!targetUser) return this.sendReply('/sendpopup [user], [message] - You missed the user');
+		if (!target) return this.sendReply('/sendpopup [user], [message] - You missed the message');
+
+		targetUser.popup(target);
+		this.sendReply(targetUser.name + ' got the message as popup: ' + target);
+
+		targetUser.send(user.name+' sent a popup message to you.');
+
+		this.logModCommand(user.name+' send a popup message to '+targetUser.name);
+	},
+
+pb: 'permaban',
+	pban: 'permaban',
+        permban: 'permaban',
+        permaban: function(target, room, user) {
+                if (!target) return this.sendReply('/permaban [username] - Permanently bans the user from the server. Bans placed by this command do not reset on server restarts. Requires: & ~');
+                if (!this.can('pban')) return false;              
+                target = this.splitTarget(target);
+                var targetUser = this.targetUser;
+                if (!targetUser) {
+                        return this.sendReply('User '+this.targetUsername+' not found.');
+                }
+                if (Users.checkBanned(targetUser.latestIp) && !target && !targetUser.connected) {
+                        var problem = ' but was already banned';
+                        return this.privateModCommand('('+targetUser.name+' would be banned by '+user.name+problem+'.)');
+                }
+               
+                targetUser.popup(user.name+" has permanently banned you.");
+                this.addModCommand(targetUser.name+" was permanently banned by "+user.name+".");
+				this.add('|unlink|' + targetUser.userid);
+                targetUser.ban();
+                ipbans.write('\n'+targetUser.latestIp);
+        },
+
+sca: 'giveavatar',
+	setcustomavatar: 'giveavatar',
+	setcustomavi: 'giveavatar',
+	giveavatar: function(target, room, user, connection) {
+        if (!this.can('giveavatar')) return this.sendReply('/giveavatar - Access denied.');
+        try { 
+            request = require('request');
+        } catch (e) {
+            return this.sendReply('/giveavatar requires the request module. Please run "npm install request" before using this command.');
+        }
+        if (!target) return this.sendReply('Usage: /giveavatar [username], [image] - Gives [username] the image specified as their avatar. -' +
+            'Images are required to be .PNG or .GIF. Requires: & ~');
+        parts = target.split(',');
+        if (!parts[0] || !parts[1]) return this.sendReply('Usage: /giveavatar [username], [image] - Gives [username] the image specified as their avatar. -<br />' +
+            'Images are required to be .PNG or .GIF. Requires: & ~');
+        targetUser = Users.get(parts[0].trim());
+        filename = parts[1].trim();
+        uri = filename;
+        filename = targetUser.userid + filename.slice(filename.toLowerCase().length - 4,filename.length);
+        filetype = filename.slice(filename.toLowerCase().length - 4,filename.length);
+        if (filetype != '.png' && filetype != '.gif') {
+            return this.sendReply('/giveavatar - Invalid image format. Images are required to be in either PNG or GIF format.');
+        }
+        if (!targetUser) return this.sendReply('User '+target+' not found.');
+        self = this;
+        var download = function(uri, filename, callback) {
+            request.head(uri, function(err, res, body) {
+                var r = request(uri).pipe(fs.createWriteStream('config/avatars/'+filename));
+                r.on('close', callback);
+            });
+        };
+        download(uri, filename, function(err, res, body){
+            if (err) return console.log('/giveavatar error: '+err);
+            fs.readFile('config/avatars.csv','utf8',function(err, data) {
+                if (err) return self.sendReply('/giveavatar erred: '+e.stack);
+                match = false;
+                var row = (''+data).split("\n");
+                var line = '';
+                for (var i = row.length; i > -1; i--) {
+                    if (!row[i]) continue;
+                    var parts = row[i].split(",");
+                    if (targetUser.userid == parts[0]) {
+                        match = true;
+                        line = line + row[i];
+                        break;
+                    }
+                }
+                if (match === true) {
+                    var re = new RegExp(line,"g");
+                    var result = data.replace(re, targetUser.userid+','+filename);
+                    fs.writeFile('config/avatars.csv', result, 'utf8', function (err) {
+                        if (err) return console.log(err);
+                    });
+			for (var u in Users.customAvatars) {
+				var column = Users.customAvatars[u].split(',');
+				if (column[0] == targetUser.userid) {
+					Users.customAvatars[u] = targetUser.userid+','+filename;
+					break;
+				}
+			}
+                } else {
+                    fs.appendFile('config/avatars.csv','\n'+targetUser.userid+','+filename);
+                    Users.customAvatars.push(targetUser.userid+','+filename);
+                }
+                self.sendReply(targetUser.name+' has received a custom avatar.');
+                targetUser.avatar = filename;
+                targetUser.sendTo(room, 'You have received a custom avatar from ' + user.name + '.');
+                for (var u in Users.users) {
+                    if (Users.users[u].group == "~" || Users.users[u].group == "&") {
+                        Users.users[u].send('|pm|~Server|'+Users.users[u].group+Users.users[u].name+'|'+targetUser.name+' has received a custom avatar from '+user.name+'.');
+                    }
+                }
+                Rooms.rooms.staff.add(targetUser.name+' has received a custom avatar from '+user.name+'.');
+                if (filetype == '.gif' && targetUser.canAnimatedAvatar) targetUser.canAnimatedAvatar = false;
+                if (filetype == '.png' && targetUser.canCustomAvatar) targetUser.canCustomAvatar = false;
+            });
+        });
+	},
+
+pas: 'pmallstaff',
+	pmallstaff: function(target, room, user) {
+		if (!target) return this.sendReply('/pmallstaff [message] - Sends a PM to every user in a room.');
+		if (!this.can('pban')) return false;
+		for (var u in Users.users) { if (Users.users[u].isStaff) {
+		Users.users[u].send('|pm|~Staff PM|'+Users.users[u].group+Users.users[u].name+'|'+target+' (by: '+user.name+')'); } 
+		}
+	},
+
+tpm: 'tourpm',
+	tourpm: function(target, room, user) {
+		if (!target) return this.parse('/tourpm [message] - Sends a PM to every user in a room.');
+		if (!this.can('pban')) return false;
+
+		var pmName = '~Tournaments Note';
+
+		for (var i in Users.users) {
+			var message = '|pm|'+pmName+'|'+Users.users[i].getIdentity()+'|'+target;
+			Users.users[i].send(message);
+		}
+	},
+
+tournote: 'tournamentnote',
+tournamentnote: function(target, room, user){
+			return this.parse('/tpm A(n) Tour is taking place in the lobby chatroom or possibly the Tiers Room!');
+	},
 	/*********************************************************
 	 * Override commands
 	 *********************************************************/
@@ -783,13 +1009,10 @@ target.toLowerCase().replace(/ /g,'-');
 			return connection.sendTo(target, "|noinit|joinfailed|The room '" + target + "' could not be joined.");
 		}
 		if (target.toLowerCase() == "lobby") {
- 			return connection.sendTo('lobby','|html|<div class="infobox" style="border-color:blue"><center><b><u>Welcome to the SkyPillar Server!' +
- 			'</u></b></center><br/><center><a href ="https://gist.github.com/E4Arsh/8577715"><b>This Server is hosted By rivalnick</b></a></center><br/><br/> ' +
- 			'&nbsp;&nbsp;&nbsp;Battle users in the ladder or in tournaments, learn how to play Pokemon or just chat in lobby! ' +
- 			'Make sure to type <b>/serverhelp</b> or <b>/help</b> to get a list of commands that you can use and <b>/faq</b> to check out frequently asked questions. ' +
- 			'<br/><br/>&nbsp;&nbsp;&nbsp;If you have any questions, issues or concerns should be directed at someone with a rank such as Voice (+), Driver (%), Moderator (@) and Leader (&). ' +
- 			'Only serious issues or questions should be directed to Administrators (~).</div>');
- 		}
+			return connection.sendTo('lobby','|html|<div class = "welcomemssage"><center><img src=http://i.imgur.com/but1Bih.jpg?1><br>' +
+			'<b><p>Welcome to Skypillar!</b><br><br><p>Welcome to the Hoenn Regions very own server! Skypillar has many things to offer in terms of plugins such as the Shop, our Elite Four League and many more!<br>If any problems occur feel free to PM a Driver (%) or Moderator (@), but only PM upper staff Leaders (&) and Admins (~) for special concerns. Enjoy yourself here!' +
+			'<center><a href = "http://skypillar.boards.net/"><button class="blackbutton title="Boards><font color="Blue"><b>Boards</b></a></button> | <a href ="http://www.reddit.com/r/skypillar"><button class="blackbutton title="Reddit"><font color="greem"><b>Skypillar Reddit</b></a></button>');
+		}
 	},
 
 	makechatroom: function(target, room, user) {
@@ -991,7 +1214,8 @@ target.toLowerCase().replace(/ /g,'-');
 		if (!this.can('pmall')) return false;
 	    if (!target) return this.sendReply('|raw|/pmall <em>message</em> - Sends a PM to every user in a room.');
 
-	    var pmName = ('~SkyPillar');
+	    var pmName = Users.users[toId(botName)].group + botName;
+
 	    for (var i in Users.users) {
 	        var message = '|pm|' + pmName + '|' + Users.users[i].getIdentity() + '|' + target;
 	        Users.users[i].send(message);
