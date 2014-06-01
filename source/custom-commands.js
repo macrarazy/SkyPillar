@@ -770,7 +770,7 @@ target.toLowerCase().replace(/ /g,'-');
 	plug: function (target, room, user) {
 			if (!this.canBroadcast()) return;
 			this.sendReplyBox(
-					"Check out Skypillar's very own  Music Plug-in<br />" +
+					"Check out Skypillar's very own  Music Plug.dj<br />" +
 					"Creator- The Meh<br />" +
 					" <a href=\http://plug.dj/skypillar-dj/>Plug-in</a><br />" 
 							)
