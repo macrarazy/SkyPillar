@@ -4,8 +4,8 @@
 exports.Formats = [
 	
 {	
-	name: "Random 1v1"
-	section: 'Skypillar'
+	name: "Random 1v1",
+	section: 'Skypillar',
 	
 	onBegin: function () {
 			
@@ -22,8 +22,8 @@ this.p2.pokemonLeft = this.p2.pokemon.length;
 	ruleset: ['PotD', 'Pokemon' , 'Sleep Clase Mod' , 'HP percentage Mod']
 },
 {
-	name: "Random Gen 1"
-	section: 'Skypillar'
+	name: "Random Gen 1",
+	section: 'Skypillar',
 	
 	mod: 'gen1',
 	team: 'random',
@@ -40,8 +40,8 @@ banlist: ['Uber',
 		]
 },
 {
-	name:"Random Doubles CAP"
-	section:'Skypillar'
+	name:"Random Doubles CAP",
+	section:'Skypillar',
 
 	team:'random',
 	ruleset: ['CAP Pokemon', 'Standard', 'Team Preview'],
@@ -50,8 +50,8 @@ banlist: ['Uber',
 	
 },
 {
-	name:"OU Random Monotype"
-	section:'Skypillar'
+	name:"OU Random Monotype",
+	section:'Skypillar',
 
 	onBegin: function () {
 			
