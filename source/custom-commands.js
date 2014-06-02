@@ -788,11 +788,11 @@ target.toLowerCase().replace(/ /g,'-');
 					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/Showdown-Boilerplate-master>Skypillar Github Code</a><br />"
 										)
 	},
+	doge2048: 'doge'.
 	doge: 'doge',
 	doge: function (target,room, user){
 		if (!this.canBroadcast()) return;
 			this.sendReplyBox(
-			"DOGE2048<br />" + 
 			"PLAY IT: <a href=http://www.doge2048.com/>DOGE2048</a><br />"
 								)
 	},
