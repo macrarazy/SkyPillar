@@ -106,20 +106,21 @@ var botCommands = {
 			"Someone who is better than you",
 			"An amazing person",
 			"A beautiful person",
-			"A person who is probably still a virgin",
 			"A leader",
 			"A lord helix follower",
 			"An annoying person",
 			"A person with a salty personality",
 			"Not me",
 			"A StarCraft Pro",
-			"Cheater McCheaterson",
-			"A Really slow guy",
 			"A Coffee Addict",
 			"A Diamond League Player",
 			"A Grand Master in chess",
 			"A Mediocre Player",
-			"A guy who works at google"
+			"A guy who works at google",
+			"A Pokemon Addict",
+			"A weird stay-at-home parent.",
+			"A Computer.",
+			"A user from the future set to kill us all."
 		];
 
 		return function(target, room, user) {
