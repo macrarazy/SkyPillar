@@ -1313,7 +1313,6 @@ restart: function(target, room, user) {
        busy: 'away',
        afk: 'away',
        away: function(target, room, user, connection, cmd) {
-            if (!this.can('away')) return false;
             // unicode away message idea by Siiilver
             var t = 'Ⓐⓦⓐⓨ';
             var t2 = 'Away';
@@ -1373,7 +1372,6 @@ user.updateIdentity();
 },
 
 back: function(target, room, user, connection) {
-if (!this.can('away')) return false;
 
 if (user.isAway) {
 if (user.name === user.originalName) {
