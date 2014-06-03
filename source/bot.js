@@ -69,10 +69,10 @@ exports.bot = function() {
 };
 
 var botCommands = {
-	penislength: function(target, room, user) {
-		if (!this.canBroadcast()) return false;
-		Utilities.botDelay(botName, room, '8.5 inches from the base. Perv.');
-	},
+	//penislength: function(target, room, user) {
+	//	if (!this.canBroadcast()) return false;
+	//	Utilities.botDelay(botName, room, '8.5 inches from the base. Perv.');
+	//},
 
 	creator: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
@@ -82,6 +82,13 @@ var botCommands = {
 	joke: (function () {
 		var jokes = [
 			"Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo",
+			"Did you hear about the guy whose whole left side was cut off? He's all right now.",
+			"My friend's bakery burned down last night. Now his business is toast.",
+			"Have you ever tried to eat a clock? It's very time consuming.",
+			"When William joined the army he disliked the phrase 'fire at will'.",
+			"A prisoner's favorite punctuation mark is the period. It marks the end of his sentence.",
+			"In prison you spend a majority of your time in an 8×10 cell. At work you spend most of your time in a 6×8 cubicle.",
+			"Did you hear that researchers have discovered that diarrhea is hereditary? It runs in your jeans.",
 			"I ran out of jokes. Leave jokes in chat and if you can in staff room for a chance to be added"
 		];
 
