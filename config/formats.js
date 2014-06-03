@@ -9,12 +9,12 @@ exports.Formats = [
 	
 	onBegin: function () {
 			
-this.p1.pokemon = this.p1.pokemon.slice(0, 1);
-this.p1.pokemonLeft = this.p1.pokemon.length;
-this.p2.pokemon = this.p2.pokemon.slice(0, 1);
-this.p2.pokemonLeft = this.p2.pokemon.length;
+	this.p1.pokemon = this.p1.pokemon.slice(0, 1);
+	this.p1.pokemonLeft = this.p1.pokemon.length;
+	this.p2.pokemon = this.p2.pokemon.slice(0, 1);
+	this.p2.pokemonLeft = this.p2.pokemon.length;
 		
-},
+			},
 	team: 'random',
 	ruleset: ['PotD', 'Pokemon' , 'Sleep Clase Mod' , 'HP percentage Mod']
 },
@@ -25,7 +25,7 @@ this.p2.pokemonLeft = this.p2.pokemon.length;
 	mod: 'gen1',
 	team: 'random',
 	ruleset: ['Pokemon', 'Standard'],
-banlist: ['Uber',
+	banlist: ['Uber',
 			'Kakuna + Poison Sting + Harden', 'Kakuna + String Shot + Harden',
 			'Beedrill + Poison Sting + Harden', 'Beedrill + String Shot + Harden',
 			'Nidoking + Fury Attack + Thrash',
@@ -35,32 +35,65 @@ banlist: ['Uber',
 			'Jolteon + Tackle + Growl', 'Jolteon + Focus Energy + Thunder Shock',
 			'Flareon + Tackle + Growl', 'Flareon + Focus Energy + Ember'
 		]
+
 },
+
 {
-	name:"Random Doubles CAP",
+	name:"UnRated-Random Doubles CAP",
 	section:'Skypillar',
 
 	team:'random',
+	challengeShow: false,
+	rated: false,
 	ruleset: ['CAP Pokemon', 'Standard', 'Team Preview'],
 	banlist: ['Uber', 'Soul Dew', 'Gengarite', 'Kangaskhanite', 'Lucarionite', 'Swagger']
 	
-},
-{
+	},
+	{
 	name:"OU Random Monotype",
 	section:'Skypillar',
 
 	onBegin: function () {
 			
-this.p1.pokemon = this.p1.pokemon.slice(0, 1);
-this.p1.pokemonLeft = this.p1.pokemon.length;
-this.p2.pokemon = this.p2.pokemon.slice(0, 1);
-this.p2.pokemonLeft = this.p2.pokemon.length;
+		this.p1.pokemon = this.p1.pokemon.slice(0, 1);
+		this.p1.pokemonLeft = this.p1.pokemon.length;
+		this.p2.pokemon = this.p2.pokemon.slice(0, 1);
+		this.p2.pokemonLeft = this.p2.pokemon.length;
 		
 	},
 	team:'random',
-	ruleset: ['OU', 'Same Type Clause']
+	ruleset: ['OU', 'Same Type Clause''Sleep Clause Mod', 'HP Percentage Mod']
 	},
+	{
+	
+	name:"Random Little Cup",
+	section:"Skypillar",
+	
+	team:"random",
+	maxLevel: 5,
+	
+	ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
+	banlist: ['Dragon Rage', 'Sonic Boom', 'Swagger', 'LC Uber', 'Gligar']
+	},
+	{
+	name:"Doubles Little Cup",
+	section:"Skypillar",
 
+	gameType: 'doubles',
+	maxLevel: 5,
+	ruleset: ['Pokemon', 'Standard', 'Team Preview', 'Little Cup'],
+	banlist: ['Dragon Rage', 'Sonic Boom', 'Swagger', 'LC Uber', 'Gligar']
+	},
+	{
+	name:"Gen 2 Random",
+	section:"Skypillar",
+
+	mod:"gen2",
+	team:"random",	
+	debug: true,
+	ruleset: ['Pokemon', 'Standard'],
+	banlist: ['Uber', 'Mean Look + Hypnosis + Perish Song']
+	},
 	// XY Singles
 	///////////////////////////////////////////////////////////////////
 
