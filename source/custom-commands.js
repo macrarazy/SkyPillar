@@ -155,6 +155,7 @@ target.toLowerCase().replace(/ /g,'-');
 			"Zarel accidently kick {{user}} from the server!",
 			"was IP banned by Zarel",
 			"was kernsey!",
+			"was hit by splash!!!",
 		];
 
 		return function(target, room, user) {
