@@ -45,13 +45,14 @@ var trainerCards = {
      	if (!this.canBroadcast()) return;
      	this.sendReplyBox('<center><img src="http://i.imgur.com/XqM7grb.jpg"><br><font color="red"><blink>"There is a beast in man that should be exercised, not exorcised.” - Anton LaVey');
      	},
-	dataoverload:'(data_overload)',
-	overload:'(data_overload)',
+	dataoverload:'data_overload',
+	overload:'data_overload',
 	data_overload: function (target, room, user) {
 	if (!this.canBroadcast()) return;
 	this.sendReplyBox('<center><img src="http://img1.wikia.nocookie.net/__cb20140220182107/pokemon/images/thumb/3/37/376Metagross_Ranger_3.jpg/185px-376Metagross_Ranger_3.jpg"><br><font color="black"><blink>Data_Overload</blink><br><font color="blue">Work it Harder, Make it Better, Do it Faster, Makes us Stronger');
 	},
 	ashie: 'ashiemore',
+	ashismore:'ashiemore',
 	ashiemore: function (target, room, user) {
 	    if (!this.canBroadcast()) return;
 	    this.sendReplyBox('<center>Working on one :P');
