@@ -75,9 +75,7 @@ var customCommands = {
 		if (!this.canBroadcast()) return false;
 
 		return this.sendReplyBox('' +
-		'Follow <a href="https://github.com/CreaturePhil"><u><b>CreaturePhil</b></u></a> on Github for 5 bucks. Once you done so pm an admin. If you don\'t have a Github account' +
-		' you can make on <a href="https://github.com/join"><b><u>here</b></u></a>.');
-	},
+		'You can currently earn bucks by winning tournaments but there will be other ways soon!');
 
 	ratingtiers: 'ratingtier',
 	ratingtier: function(target, room, user) {
