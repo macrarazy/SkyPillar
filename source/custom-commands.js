@@ -76,7 +76,7 @@ var customCommands = {
 
 		return this.sendReplyBox('' +
 		'You can currently earn bucks by winning tournaments but there will be other ways soon!');
-
+	},
 	ratingtiers: 'ratingtier',
 	ratingtier: function(target, room, user) {
 		if (!this.canBroadcast()) return false;
