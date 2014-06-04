@@ -779,6 +779,7 @@ target.toLowerCase().replace(/ /g,'-');
 					" <a href=\http://plug.dj/skypillar-dj/>Plug-in</a><br />" 
 							)
 	},
+	dev: 'devhelp',
 	codinghelp: 'devhelp',
 	devhelp: function (target, room, user) {
 			if (!this.canBroadcast()) return;
