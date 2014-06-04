@@ -62,7 +62,7 @@ exports.Formats = [
 		
 	},
 	team:'random',
-	ruleset: ['OU', 'Same Type Clause''Sleep Clause Mod', 'HP Percentage Mod']
+	ruleset: ['OU', 'Same Type Clause', 'Sleep Clause Mod', 'HP Percentage Mod']
 	},
 	{
 	
