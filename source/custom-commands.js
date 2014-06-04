@@ -786,7 +786,7 @@ target.toLowerCase().replace(/ /g,'-');
 					"If your a programmer or someone who wants to help out the server on the back-end<br />" +
 					"PM an ~(Admin) for more details<br />" +
 					" <a href=http://client01.chat.mibbit.com/#skypillar@irc.synirc.net>Mibbit developer chat</a><br />" +
-					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/Showdown-Boilerplate-master>Skypillar Github Code</a><br />"
+					" Our code is on Rival Nick's Github <a href=https://github.com/RivalNick/skypillar>Skypillar Github Code</a><br />"
 										)
 	},
 	doge2048: 'doge',
