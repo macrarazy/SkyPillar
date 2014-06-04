@@ -60,6 +60,7 @@ var plugins = exports.plugins = {
 				var result = (cmd === 'startofficialhunt' ? 'An official' : 'A new') + ' Scavenger Hunt has been started by <em> ' + Tools.escapeHTML(user.name) + '</em>! The first hint is: ' + Tools.escapeHTML(plugins.scavengers.hintOne);
 				Rooms.rooms.scavengers.addRaw('<div class="broadcast-blue"><strong>' + result + '</strong></div>');
 			},
+			jh: 'joinhunt'
 			joinhunt: function (target, room, user) {
 				if (room.id !== 'scavengers') return;
 				if (plugins.scavengers.status !== 'on') return this.sendReply('There is no active scavenger hunt.');
@@ -67,6 +68,7 @@ var plugins = exports.plugins = {
 				plugins.scavengers.participants[user.userid] = {room: 0};
 				this.sendReply('You joined the scavenger hunt! Use the command /scavenge to answer. The first hint is: ' + plugins.scavengers.hintOne);
 			},
+			s: 'scavenge'
 			scavenge: function (target, room, user) {
 				if (room.id !== 'scavengers') return;
 				if (plugins.scavengers.status !== 'on') return this.sendReply('There is no active scavenger hunt.');
