@@ -678,6 +678,8 @@ var commands = {
 	moderation: {
 		dq: 'disqualify',
 		disqualify: function (tournament, user, params, cmd) {
+			if (!user.can('tournaments', room))
+			return this.sendReply(cmd + " -  Access denied.");
 			if (params.length < 1)
 				return this.sendReply("Usage: " + cmd + " <user>");
 			var targetUser = Users.get(params[0]);
@@ -688,6 +690,8 @@ var commands = {
 		end: 'delete',
 		stop: 'delete',
 		delete: function (tournament) {
+			if (!user.can('ban'))
+			return this.sendReply(cmd + " -  Access denied.");
 			deleteTournament(tournament.room.title, this);
 		}
 	}
