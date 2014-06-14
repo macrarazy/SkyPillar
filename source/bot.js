@@ -5,7 +5,7 @@
  */
 
 // Bot's Name
-global.botName = 'Bot';
+global.botName = 'KTN Bot';
 
 var joinAllRooms = true;
 if (joinAllRooms === false) {
