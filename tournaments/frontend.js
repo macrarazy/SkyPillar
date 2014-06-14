@@ -688,7 +688,7 @@ var commands = {
 	moderation: {
 		dq: 'disqualify',
 		disqualify: function (tournament, user, params, cmd) {
-			if (!user.can('tournaments', room))
+			if (!user.can('tournaments'))
 			return this.sendReply(cmd + " -  Access denied.");
 			if (params.length < 1)
 				return this.sendReply("Usage: " + cmd + " <user>");
