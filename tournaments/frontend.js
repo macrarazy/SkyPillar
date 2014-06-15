@@ -700,7 +700,7 @@ var commands = {
 		end: 'delete',
 		stop: 'delete',
 		delete: function (tournament) {
-			if (!user.can('ban'))
+			if (!this.can('ban'))
 			return this.sendReply(cmd + " -  Access denied.");
 			deleteTournament(tournament.room.title, this);
 		}
