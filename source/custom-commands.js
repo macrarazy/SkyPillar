@@ -958,6 +958,9 @@ target.toLowerCase().replace(/ /g,'-');
 	        Users.users[i].send(message);
 	    }
 	},
+	tierpoll: function (target, room, user) {
+          this.parse('/poll Tournament tier?, ' + Object.keys(Tools.data.Formats).filter(function (f) { return Tools.data.Formats[f].effectType === 'Format'; }).join(", "));
+		  },
 
 	eating: 'away',
        gaming: 'away',
