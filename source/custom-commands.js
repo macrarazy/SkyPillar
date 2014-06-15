@@ -968,7 +968,6 @@ target.toLowerCase().replace(/ /g,'-');
        busy: 'away',
        afk: 'away',
        away: function(target, room, user, connection, cmd) {
-            if (!this.can('away')) return false;
             // unicode away message idea by Siiilver
             var t = 'Ⓐⓦⓐⓨ';
             var t2 = 'Away';
@@ -1016,7 +1015,7 @@ var awayName = user.name + ' - '+t;
 delete Users.get(awayName);
 user.forceRename(awayName, undefined, true);
 
-if (user.isStaff) this.add('|raw|-- <b><font color="#088cc7">' + user.originalName +'</font color></b> is now '+t2.toLowerCase()+'. '+ (target ? " (" + escapeHTML(target) + ")" : ""));
+if (user.can('lock')) this.add('|raw|-- <b><font color="#088cc7">' + user.originalName +'</font color></b> is now '+t2.toLowerCase()+'. '+ (target ? " (" + escapeHTML(target) + ")" : ""));
 
 user.isAway = true;
 }
@@ -1028,7 +1027,6 @@ user.updateIdentity();
 },
 
 back: function(target, room, user, connection) {
-if (!this.can('away')) return false;
 
 if (user.isAway) {
 if (user.name === user.originalName) {
@@ -1046,7 +1044,7 @@ user.forceRename(newName, undefined, true);
 //user will be authenticated
 user.authenticated = true;
 
-if (user.isStaff) this.add('|raw|-- <b><font color="#088cc7">' + newName + '</font color></b> is no longer away.');
+if (user.can('lock')) this.add('|raw|-- <b><font color="#088cc7">' + newName + '</font color></b> is no longer away.');
 
 user.originalName = '';
 user.isAway = false;
