@@ -935,18 +935,6 @@ target.toLowerCase().replace(/ /g,'-');
 	    }
 	},
 
-	masspm: 'pmall',
-	pmall: function (target, room, user) {
-		if (!this.can('pmall')) return false;
-	    if (!target) return this.sendReply('|raw|/pmall <em>message</em> - Sends a PM to every user in a room.');
-
-	    var pmName = Users.users[toId(botName)].group + botName;
-
-	    for (var i in Users.users) {
-	        var message = '|pm|' + pmName + '|' + Users.users[i].getIdentity() + '|' + target;
-	        Users.users[i].send(message);
-	    }
-	},
 
 	buckslog: 'moneylog',
 	moneylog: function(target, room, user, connection) {
