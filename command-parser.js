@@ -104,13 +104,6 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 		cmd = cmd.substr(1);
 	}
 
-	// prevent users from using / with bot commands. They must broadcast it with '!'
-	for (var i in botcmds) {
-		if (prevent === '/' && cmd === botcmds[i]) {
-			return false;
-		}
-	}
-
 	var commandHandler = commands[cmd];
 	if (typeof commandHandler === 'string') {
 		// in case someone messed up, don't loop
@@ -171,26 +164,7 @@ var parse = exports.parse = function(message, room, user, connection, levelsDeep
 				return true;
 			},
 			canBroadcast: function() {
-				// bot commands
-				for (var i in botcmds) {
-					if (cmd === botcmds[i]) {
-						// broadcast cooldown
-						var normalized = toId(cmd);
-						if (room.lastBroadcast === normalized && room.lastBroadcastTime >= Date.now() - 60*1000) {
-							this.sendReply('You can\'t broadcast this because it was just broadcast. You must wait ' + Math.floor(((room.lastBroadcastTime-(Date.now() - 60*1000))/1000)) + ' seconds.');
-							return false;
-						}
-						this.add('|c|' + user.getIdentity(room.id) + '|' + message);
-						room.lastBroadcast = normalized;
-						room.lastBroadcastTime = Date.now();
-
-						this.broadcasting = true;
-
-						return true;
-					}
-				}
-
-				// default
+				
 				if (broadcast) {
 					message = this.canTalk(message);
 					if (!message) return false;
