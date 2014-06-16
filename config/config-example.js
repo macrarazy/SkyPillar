@@ -284,6 +284,7 @@ exports.groups = {
 			ip: true,
 			modchat: true,
 			roompromote: '+ ',
+			modlog: true,
 			scavengers: true
 		},
 		'%': {
