@@ -814,9 +814,6 @@ target.toLowerCase().replace(/ /g,'-');
 		targetUser.lastPM = user.userid;
 		user.lastPM = targetUser.userid;
 
-		if (targetUser.userid === toId(botName)) {
-			fs.appendFile('logs/botpms.log', '\n' + Date() + ': ' + user.group + '**' + user.name + '**' + ' sent this message, "' + sanitize(target) + '".');
-		}
 	},
 
 	hotpatch: function(target, room, user) {
@@ -861,7 +858,7 @@ target.toLowerCase().replace(/ /g,'-');
 		if (!target) return this.sendReply('|raw|/kick <em>username</em> - kicks the user from the room.');
 		var targetUser = Users.get(target);
 		if (!targetUser) return this.sendReply('User '+target+' not found.');
-		if (targetUser.can('lockdown') || targetUser.name === botName) {
+		if (targetUser.can('lockdown') || targetUser.name === blakjack) {
 			return this.sendReply('This user can\'t be room kicked.');
 		}
 		if (!Rooms.rooms[room.id].users[targetUser.userid]) return this.sendReply(target+' is not in this room.');
@@ -1071,16 +1068,6 @@ user.updateIdentity();
 		}
 	},
 
-	bpl: 'botpmlog',
-	botpmlog: function(target, room, user, connection) {
-		if (!this.can('lockdown')) return false;
-		try {
-			var log = fs.readFileSync('logs/botpms.log','utf8');
-            return user.send('|popup|'+'**Current Date:** ' + Date() + '\n' + log);
-		} catch (e) {
-			return user.send('|popup|You have not set made a botpms.log in the logs folder yet.\n\n ' + e.stack);
-		}
-	},
 
 	truncate: function(target, room, user, connection) {
 		if (!this.can('lockdown')) return false;
