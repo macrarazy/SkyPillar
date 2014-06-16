@@ -14,10 +14,19 @@ require('sugar');
 
 global.Config = require('./config/config.js');
 
-// graceful crash - allow current battles to finish before restarting
-/*process.on('uncaughtException', function (err) {
-	require('./crashlogger.js')(err, 'A simulator process');
-});*/
+if (Config.crashguard) {
+	// graceful crash - allow current battles to finish before restarting
+	process.on('uncaughtException', function (err) {
+		require('./crashlogger.js')(err, 'A simulator process');
+		/* var stack = ("" + err.stack).escapeHTML().split("\n").slice(0, 2).join("<br />");
+		if (Rooms.lobby) {
+			Rooms.lobby.addRaw('<div><b>THE SERVER HAS CRASHED:</b> ' + stack + '<br />Please restart the server.</div>');
+			Rooms.lobby.addRaw('<div>You will not be able to talk in the lobby or start new battles until the server restarts.</div>');
+		}
+		Config.modchat = 'crash';
+		Rooms.global.lockdown = true; */
+	});
+}
 
 /**
  * Converts anything to an ID. An ID must have only lowercase alphanumeric
@@ -61,7 +70,7 @@ var Battles = {};
 
 // Receive and process a message sent using Simulator.prototype.send in
 // another process.
-battleEngineFakeProcess.client.on('message', function (message) {
+process.on('message', function (message) {
 	//console.log('CHILD MESSAGE RECV: "' + message + '"');
 	var nlIndex = message.indexOf("\n");
 	var more = '';
@@ -82,9 +91,9 @@ battleEngineFakeProcess.client.on('message', function (message) {
 
 				if (!require('./crashlogger.js')(fakeErr, 'A battle')) {
 					var ministack = ("" + err.stack).escapeHTML().split("\n").slice(0, 2).join("<br />");
-					battleEngineFakeProcess.client.send(data[0] + '\nupdate\n|html|<div class="broadcast-red"><b>A BATTLE PROCESS HAS CRASHED:</b> ' + ministack + '</div>');
+					process.send(data[0] + '\nupdate\n|html|<div class="broadcast-red"><b>A BATTLE PROCESS HAS CRASHED:</b> ' + ministack + '</div>');
 				} else {
-					battleEngineFakeProcess.client.send(data[0] + '\nupdate\n|html|<div class="broadcast-red"><b>The battle crashed!</b><br />Don\'t worry, we\'re working on fixing it.</div>');
+					process.send(data[0] + '\nupdate\n|html|<div class="broadcast-red"><b>The battle crashed!</b><br />Don\'t worry, we\'re working on fixing it.</div>');
 				}
 			}
 		}
@@ -745,12 +754,12 @@ var BattlePokemon = (function () {
 	};
 	// returns the amount of damage actually dealt
 	BattlePokemon.prototype.faint = function (source, effect) {
-		if (this.fainted) return 0;
+		if (this.fainted || this.status === 'fnt') return 0;
 		var d = this.hp;
 		this.hp = 0;
 		this.switchFlag = false;
 		this.status = 'fnt';
-		//this.fainted = true;
+		// this.fainted = true;
 		this.battle.faintQueue.push({
 			target: this,
 			source: source,
@@ -2935,17 +2944,17 @@ var Battle = (function () {
 
 		var sourceLoc = -(source.position + 1);
 		var isFoe = (targetLoc > 0);
-		var isAdjacent = (isFoe ? Math.abs(-(numSlots + 1 - targetLoc) - sourceLoc) <= 1 : Math.abs(targetLoc - sourceLoc) <= 1);
+		var isAdjacent = (isFoe ? Math.abs(-(numSlots + 1 - targetLoc) - sourceLoc) <= 1 : Math.abs(targetLoc - sourceLoc) === 1);
 		var isSelf = (sourceLoc === targetLoc);
 
 		switch (targetType) {
 		case 'randomNormal':
 		case 'normal':
-			return isAdjacent && !isSelf;
+			return isAdjacent;
 		case 'adjacentAlly':
-			return isAdjacent && !isSelf && !isFoe;
-		case 'adjacentAllyOrSelf':
 			return isAdjacent && !isFoe;
+		case 'adjacentAllyOrSelf':
+			return isAdjacent && !isFoe || isSelf;
 		case 'adjacentFoe':
 			return isAdjacent && isFoe;
 		case 'any':
@@ -3763,7 +3772,7 @@ var Battle = (function () {
 	// Simulator.prototype.receive in simulator.js (in another process).
 	Battle.prototype.send = function (type, data) {
 		if (Array.isArray(data)) data = data.join("\n");
-		battleEngineFakeProcess.client.send(this.id + "\n" + type + "\n" + data);
+		process.send(this.id + "\n" + type + "\n" + data);
 	};
 	// This function is called by this process's 'message' event.
 	Battle.prototype.receive = function (data, more) {
