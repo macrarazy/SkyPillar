@@ -250,6 +250,7 @@ exports.groups = {
 			potd: true,
 			promote: 'u',
 			rangeban: true
+			modlog: true,
 		},
 		'#': {
 			id: 'owner',
@@ -284,7 +285,6 @@ exports.groups = {
 			ip: true,
 			modchat: true,
 			roompromote: '+ ',
-			modlog: true,
 			scavengers: true
 		},
 		'%': {
